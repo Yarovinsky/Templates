@@ -4,6 +4,37 @@ These rules apply to **all modes** in this repository at all times.
 
 ---
 
+## The Walking Skeleton Principle
+
+> **The system must be runnable and demonstrable after every completed story.**
+
+This is a non-negotiable constraint that sits alongside the Three Laws:
+
+- After story 001, a human must be able to **run the system and observe the implemented behaviour** — even if the interface is a single CLI command, a curl call, a script output, or a minimal web page.
+- Each story must leave the system in a **more complete, more visible state** than before.
+- "It passes tests" is not sufficient proof of value. **A person who did not write the code must be able to see it working.**
+
+### What "demonstrable" means per story type
+
+| Story type | Minimum demonstrability requirement |
+|------------|-------------------------------------|
+| REST API endpoint | A `curl` command or HTTP client request that returns the correct response |
+| Data pipeline / batch job | A script or CLI command that runs end-to-end and prints observable output |
+| ML model / inference | A script that loads the model and produces a prediction on sample input |
+| Background service | A startup command that logs observable activity to stdout |
+| UI feature | The UI element is visible and interactive in a browser **[preferred — see note below]** |
+| Library / utility | A runnable example script or REPL session that calls the public API |
+
+> **UI Preference Rule:** If the project has a UI (web or native), the UI demonstration is **preferred over** a raw API call or CLI command — even for stories that are primarily backend. Where possible, the `## Demonstrability` section should show the feature as a user would experience it: a visible screen, an interactive element, or an observable state change in the interface. A `curl` call is acceptable only when no UI surface exists for the implemented behaviour.
+
+### Responsibility
+
+- The **story author** defines how the story will be demonstrated in the `## Demonstrability` section of the story file.
+- The **tdd-review** mode verifies that the demonstration works before approving.
+- The **tdd-orchestrator** runs or requests the demonstration after review approval, before applying the git tag.
+
+---
+
 ## The Three Laws of TDD
 
 1. **You may not write production code unless it is to make a failing test pass.**

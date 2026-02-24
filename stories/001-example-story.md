@@ -105,6 +105,37 @@
 
 ---
 
+## Demonstrability
+
+**Run command:**
+```bash
+# 1. Start the API server
+pnpm dev
+
+# 2. Register a new user
+curl -X POST http://localhost:3000/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "demo@example.com", "password": "demo1234"}'
+```
+
+**Expected observable output:**
+```json
+HTTP/1.1 201 Created
+
+{
+  "id": "a3f1c2d4-...",
+  "email": "demo@example.com",
+  "createdAt": "2024-01-15T10:30:00.000Z"
+}
+```
+
+**Prerequisites to run:**
+- [x] API server running locally (`pnpm dev`)
+- [x] PostgreSQL running and migrated (`pnpm prisma migrate dev`)
+- [x] `.env` file configured with `DATABASE_URL`
+
+---
+
 ## Test Scenarios
 
 > Populated by `tdd-spec` during the Spec phase.

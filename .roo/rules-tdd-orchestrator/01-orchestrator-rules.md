@@ -80,22 +80,27 @@ Message: "Run the Review phase for story at stories/NNN-*.md"
 After completion, evaluate the review output:
 
 **If `✅ REVIEW APPROVED`:**
-1. Apply the git tag:
+1. Run the demonstration from the story's `## Demonstrability` section:
+   - Execute the run command(s) exactly as written.
+   - Confirm the observable output matches the expected output.
+   - If the demo **fails**: do NOT apply the git tag. Report failure and ask user to re-enter the appropriate phase.
+   - If the demo **passes**: proceed.
+2. Apply the git tag:
    ```
    git tag story/NNN-<story-slug>
    ```
-2. Push the tag if a remote exists:
+3. Push the tag if a remote exists:
    ```
    git push origin story/NNN-<story-slug>
    ```
-3. Update `stories/README.md` — mark all phase columns ✅ and fill in the Git Tag column.
-4. Update the story file — mark `- [ ] Committed & tagged` as `- [x] Committed & tagged`.
-5. Commit all updates:
+4. Update `stories/README.md` — mark all phase columns ✅ and fill in the Git Tag column.
+5. Update the story file — mark `- [ ] Committed & tagged` as `- [x] Committed & tagged`.
+6. Commit all updates:
    ```
    git add stories/
    git commit -m "chore: story/NNN — cycle complete ✅"
    ```
-6. Report to user: *"Story NNN complete. Tag `story/NNN-<slug>` applied."*
+7. Report to user: *"Story NNN complete. Demo passed. Tag `story/NNN-<slug>` applied."*
 
 **If `❌ REVIEW BLOCKED`:**
 1. Report the blocking issues to the user verbatim from the review output.

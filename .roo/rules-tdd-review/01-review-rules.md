@@ -56,7 +56,17 @@ Evaluate every item below. Mark each ✅ (pass) or ❌ (fail) with a note.
 - [ ] Story file status checkboxes are all checked: `Spec`, `Red`, `Green`, `Refactor`.
 - [ ] `stories/README.md` row for this story shows all phase columns as ✅ (except the git tag column, which is pending this review).
 
-### F — Commit History
+### F — Demonstrability (Walking Skeleton)
+- [ ] The story file contains a `## Demonstrability` section with a filled-in run command and expected output.
+- [ ] If the project has a UI (web or native): the demonstration uses the UI — not a raw API call — unless no UI surface exists for the implemented behaviour.
+- [ ] Run the demonstration command(s) exactly as written in that section.
+- [ ] The observable output matches what the section describes.
+- [ ] The system starts and responds without errors (no crash, no uncaught exception, no 500 response).
+
+> If the `## Demonstrability` section is missing or the demo fails, this is an automatic **BLOCKED** — regardless of test results.
+> If a `curl` call is used when a UI surface exists for the behaviour, this is also a **BLOCKED** — request the story author to update the demonstration to show the UI.
+
+### G — Commit History
 Run `git log --oneline` and verify the following commits exist for this story:
 - [ ] A `spec: NNN —` commit
 - [ ] A `test(red): NNN —` commit with `— PENDING` suffix

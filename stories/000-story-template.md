@@ -67,6 +67,40 @@
 
 ---
 
+## Demonstrability
+
+> This section is filled in by the **story author** before the Spec phase begins.
+> It defines how a human (who did not write the code) can verify the story is working
+> end-to-end after the Green phase completes.
+
+**Run command:**
+```
+# The exact command(s) a human runs to see the feature working.
+#
+# ⚠️ UI PREFERENCE: If the project has a web or native UI, demonstrate via the UI — not via curl.
+# Show the screen, the interactive element, or the observable state change a user would see.
+# A curl call is acceptable only when no UI surface exists for this feature.
+#
+# Examples:
+#   UI:      Open http://localhost:3000/register — fill in the form — submit — see success screen
+#   API:     curl -X POST http://localhost:3000/auth/register -H "Content-Type: application/json" -d '{"email":"test@example.com","password":"secret123"}'
+#   Script:  python scripts/run_pipeline.py --input sample_data.csv
+```
+
+**Expected observable output:**
+```
+# What the human should see when it works.
+# For UI: describe the visible screen state or element (e.g. "User sees 'Welcome!' message on dashboard")
+# For API/CLI: show the exact status code, JSON body, or printed output
+```
+
+**Prerequisites to run:**
+- [ ] Service/app is running locally (e.g. `pnpm dev` or `docker compose up`)
+- [ ] Database is seeded / test data exists (if needed)
+- [ ] Any required env vars are set
+
+---
+
 ## Test Scenarios
 
 > This section is filled in by `tdd-spec` during the Spec phase. Do not fill in manually.

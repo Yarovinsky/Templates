@@ -133,3 +133,9 @@ When adopting this template for a new project:
 ## Architecture Documentation
 
 See [`plans/tdd-infrastructure.md`](plans/tdd-infrastructure.md) for the full architecture document including design decisions, workflow diagrams, and component descriptions.
+
+---
+
+## Setting Up a New Project
+
+See [`docs/new-project-setup.md`](docs/new-project-setup.md) for step-by-step instructions on how to configure this template for a real project — including what to replace, what to delete, what to fill in, and how to verify Roo is reading the correct context before starting the TDD cycle.
