@@ -21,7 +21,7 @@
       "groups": [
         "read",
         "command",
-        ["edit", { "fileRegex": "(\\.(test|spec)\\.(ts|tsx|js|jsx|py|rb|go|java|cs|cpp|rs)|_test\\.(ts|tsx|js|jsx|py|rb|go)|test_.*\\.py|.*Test\\.(java|cs)|.*_test\\.go|stories/.*\\.md)$", "description": "Test files and story status files only" }]
+        ["edit", { "fileRegex": "(\\.(test|spec)\\.(ts|tsx|js|jsx|py|rb|go|java|cs|cpp|rs)|_tests?\\.(ts|tsx|js|jsx|py|rb|go)|tests?_.*\\.py|.*Tests?\\.(java|cs)|.*_tests?\\.go|stories/.*\\.md)$", "description": "Test files and story status files only" }]
       ],
       "source": "project"
     },
