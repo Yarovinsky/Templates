@@ -103,7 +103,12 @@ After completion, evaluate the review output:
    git add stories/
    git commit -m "chore: story/NNN — cycle complete ✅"
    ```
-7. Report to user: *"Story NNN complete. Demo passed. Tag `story/NNN-<slug>` applied."*
+7. Push all commits and tags to the remote:
+   ```
+   git push
+   git push origin story/NNN-<story-slug>
+   ```
+8. Report to user: *"Story NNN complete. Demo passed. Tag `story/NNN-<slug>` applied and pushed."*
 
 **If `❌ REVIEW BLOCKED`:**
 1. Report the blocking issues to the user verbatim from the review output.
@@ -116,11 +121,10 @@ After completion, evaluate the review output:
 
 ## After Each Story Completes
 
-Ask the user:
-> "Story NNN is complete. There are N stories remaining in the backlog. Proceed to story NNN+1 automatically, or pause here?"
+After reporting that the story is complete:
 
-- If **proceed** → run Startup Procedure again for the next story.
-- If **pause** → stop and wait for the user to re-invoke.
+- **Always stop here.** Do NOT automatically start the next story.
+- Wait for the user to explicitly re-invoke the Orchestrator to begin the next story.
 
 ---
 
