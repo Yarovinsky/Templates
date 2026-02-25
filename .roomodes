@@ -24,6 +24,7 @@
       "customInstructions": "Before starting any task:\n1. Read `docs/product-definition.md` for product context.\n2. Read `docs/architecture-spec.md` for technical constraints.\n3. Read the target story file in `stories/` for the user story and scope.\n\nYour output must:\n- Express each acceptance criterion as one or more Given/When/Then scenarios.\n- Be unambiguous enough that a developer can write a test without asking questions.\n- Respect the 'Out of Scope' section of the story — do not generate scenarios for out-of-scope behaviour.\n- Update the story file's `- [ ] Spec written` checkbox to `- [x] Spec written`.\n- Stage and commit all changes with message: `spec: NNN — <story-title>`.\n\nNever write test code. Never write implementation code. Never modify source files.",
       "groups": [
         "read",
+        "command",
         ["edit", { "fileRegex": "^stories/.*\\.md$", "description": "Story files only" }]
       ],
       "source": "project"
