@@ -33,10 +33,25 @@ This ensures CI stays green while preserving proof that the test genuinely tests
 
 ### Step 3 — Run the test (without skip)
 - Execute the test suite using the command in `docs/architecture-spec.md`.
-- **Expected result:** the new test FAILS.
-- **Required:** confirm the failure message is meaningful — it should fail because the implementation doesn't exist or doesn't behave correctly, NOT because of a syntax error in the test itself.
-- If the test passes unexpectedly → the test is wrong. Fix it before continuing.
-- If the test has a syntax error → fix the syntax, not the logic.
+- **Evaluate the result — three possible outcomes:**
+
+| Outcome | What it means | What to do |
+|---------|--------------|------------|
+| Test **fails** with a meaningful message (e.g. "Cannot read property of undefined", "404 expected 201", "module has no exported member") | ✅ Correct — the test is real | Proceed to Step 4 |
+| Test **errors** with a module-not-found / import resolution error (e.g. "Cannot find module './register'", "ModuleNotFoundError") | ⚠️ Missing stub — the source file doesn't exist yet | Call `tdd-scaffold` (see below) then return to Step 2 |
+| Test **passes** unexpectedly | ❌ The test is wrong — it cannot fail | Fix the test logic until it fails, then continue |
+| Test **fails** due to a syntax error in the test file itself | ❌ The test has a bug | Fix the syntax in the test; do NOT call tdd-scaffold |
+
+#### Calling `tdd-scaffold` for a missing stub
+
+If you hit a module-not-found error:
+1. Call `tdd-scaffold` as a sub-task (`new_task`) with this message:
+   > "Create a stub for `<missing-file-path>` needed by `<test-file-path>` for story NNN. The test imports `<ImportName>` and calls these methods: `<method1>`, `<method2>`."
+2. Wait for `tdd-scaffold` to complete and commit the stub file.
+3. Re-run the test suite.
+4. Return to Step 3 and re-evaluate the outcome.
+
+You may call `tdd-scaffold` multiple times if multiple imports are missing — call it once per missing file. **Never create source files yourself.** That is `tdd-scaffold`'s exclusive responsibility.
 
 ### Step 4 — Add the skip marker
 Add the appropriate skip marker for your test runner:

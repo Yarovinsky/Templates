@@ -46,9 +46,12 @@ After completion:
 Delegate to: tdd-red
 Message: "Run the Red phase for story at stories/NNN-*.md"
 ```
+During this phase, `tdd-red` may autonomously call `tdd-scaffold` as a sub-task if it encounters missing source files needed by the test. This is expected behaviour — `scaffold:` commits will appear in the git log interleaved with the Red phase work. You do not need to intervene.
+
 After completion:
 - Verify a `test(red): NNN` commit with `PENDING` suffix exists.
 - Verify the test suite is green (no failures — skipped is acceptable).
+- Any `scaffold: NNN` commits that appeared during this phase are normal and valid.
 - If missing → ask the user whether to retry or skip.
 
 ### Phase 3 — Green

@@ -91,16 +91,19 @@ Each story file contains: user story, acceptance criteria, scope boundaries, tec
 
 ## Modes Reference
 
-| Mode | Slug | Can Edit |
-|------|------|---------|
-| 🧾 TDD Spec | `tdd-spec` | `stories/*.md` only |
-| 🔴 TDD Red | `tdd-red` | Test files + `stories/*.md` |
-| 🟢 TDD Green | `tdd-green` | Source + test files |
-| 🔵 TDD Refactor | `tdd-refactor` | Source + test files |
-| 🔍 TDD Review | `tdd-review` | Read-only (reports only) |
-| 🔄 TDD Orchestrator | `tdd-orchestrator` | `stories/*.md` + shell commands |
+| Mode | Slug | Can Edit | Invoked By |
+|------|------|---------|------------|
+| 🧾 TDD Spec | `tdd-spec` | `stories/*.md` only | Orchestrator |
+| 🏗️ TDD Scaffold | `tdd-scaffold` | New source stub files only (no test files) | `tdd-red` / `tdd-green` on demand |
+| 🔴 TDD Red | `tdd-red` | Test files + `stories/*.md` | Orchestrator |
+| 🟢 TDD Green | `tdd-green` | Source + test files | Orchestrator |
+| 🔵 TDD Refactor | `tdd-refactor` | Source + test files | Orchestrator |
+| 🔍 TDD Review | `tdd-review` | Read-only (reports only) | Orchestrator |
+| 🔄 TDD Orchestrator | `tdd-orchestrator` | `stories/*.md` + shell commands | User |
 
 File restrictions are enforced by Roo Code — modes physically cannot edit files outside their allowed patterns.
+
+> **`tdd-scaffold` is a utility mode, not a mandatory pipeline phase.** It is called on-demand by `tdd-red` (or `tdd-green`) via `new_task` when a test fails because a source file it imports does not yet exist. It creates empty stub files with `throw new Error('not implemented')` bodies, commits them with a `scaffold: NNN` prefix, and returns control to the calling mode.
 
 ---
 

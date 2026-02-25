@@ -12,25 +12,49 @@ The infrastructure turns the classic Red → Green → Refactor cycle into a **c
 
 ### 1. Custom Modes (`.roomodes`)
 
-Six custom Roo Code modes form the agent team:
+Seven custom Roo Code modes form the agent team:
 
-| Mode | Slug | Responsibility |
-|------|------|----------------|
-| 🧾 TDD Spec | `tdd-spec` | Decomposes user stories into Given/When/Then test scenarios |
-| 🔴 TDD Red | `tdd-red` | Writes failing tests (hybrid: run→confirm fail→skip→commit PENDING) |
-| 🟢 TDD Green | `tdd-green` | Writes minimum code to make skipped tests pass |
-| 🔵 TDD Refactor | `tdd-refactor` | Improves code quality one step at a time, commit per step |
-| 🔍 TDD Review | `tdd-review` | Validates story completion checklist before git tag |
-| 🔄 TDD Orchestrator | `tdd-orchestrator` | Coordinates the full cycle across all stories in the backlog |
+| Mode | Slug | Responsibility | Invoked By |
+|------|------|----------------|------------|
+| 🧾 TDD Spec | `tdd-spec` | Decomposes user stories into Given/When/Then test scenarios | Orchestrator |
+| 🏗️ TDD Scaffold | `tdd-scaffold` | Creates empty source-file stubs on demand so tests can import them | `tdd-red` / `tdd-green` |
+| 🔴 TDD Red | `tdd-red` | Writes failing tests (hybrid: run→confirm fail→skip→commit PENDING) | Orchestrator |
+| 🟢 TDD Green | `tdd-green` | Writes minimum code to make skipped tests pass | Orchestrator |
+| 🔵 TDD Refactor | `tdd-refactor` | Improves code quality one step at a time, commit per step | Orchestrator |
+| 🔍 TDD Review | `tdd-review` | Validates story completion checklist before git tag | Orchestrator |
+| 🔄 TDD Orchestrator | `tdd-orchestrator` | Coordinates the full cycle across all stories in the backlog | User |
 
 Each mode has **restricted file access** enforced by Roo Code's `fileRegex` groups:
 
 - `tdd-spec` → can only edit `stories/*.md`
+- `tdd-scaffold` → can only create **new** source files (no test files, no story files, no infrastructure)
 - `tdd-red` → can only edit test files (`*.test.*`, `*.spec.*`, etc.) and `stories/*.md`
 - `tdd-green` → can edit source and test files (not infrastructure files)
 - `tdd-refactor` → can edit source and test files (not infrastructure files)
 - `tdd-review` → read-only except `stories/*.md` for status updates
 - `tdd-orchestrator` → can run commands and edit `stories/*.md`
+
+#### On-Demand Scaffold Pattern
+
+`tdd-scaffold` is **not a mandatory pipeline phase**. It is a utility mode called via `new_task` by `tdd-red` (or `tdd-green`) whenever a test fails with a module-not-found / import resolution error — meaning the source file being tested does not yet exist.
+
+```
+tdd-red writes test
+      │
+      ▼
+run test suite
+      │
+      ├─ fails with import error? ──► call tdd-scaffold (new_task)
+      │                                  │
+      │                               creates stub file
+      │                               commits: scaffold: NNN — stub ClassName
+      │                                  │
+      │◄─────────────────────────────────┘
+      │
+      └─ fails for right reason? ──► add skip → commit PENDING
+```
+
+`tdd-scaffold` creates the stub, commits it with a `scaffold: NNN` prefix, and returns. `tdd-red` then re-runs the test and proceeds normally.
 
 ### 2. Global Rules (`.roo/rules/`)
 
