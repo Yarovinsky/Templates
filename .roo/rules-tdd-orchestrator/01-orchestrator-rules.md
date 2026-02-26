@@ -112,10 +112,18 @@ After completion, evaluate the review output:
 
 **If `❌ REVIEW BLOCKED`:**
 1. Report the blocking issues to the user verbatim from the review output.
-2. Ask: *"Which phase should we re-enter to fix these issues?"*
+2. **Determine the re-entry phase autonomously** using this decision table — do NOT ask the user:
+
+   | Blocking issue type | Re-enter phase |
+   |---------------------|----------------|
+   | Missing tests / uncovered scenarios | `tdd-red` |
+   | Failing tests / missing implementation / missing artifacts | `tdd-green` |
+   | Code quality issues (duplication, naming, structure) only | `tdd-refactor` |
+
+   If multiple issue types are present, re-enter the **earliest** applicable phase (Red before Green before Refactor).
 3. Do NOT apply the git tag.
 4. Do NOT update `stories/README.md` with ✅ for incomplete phases.
-5. Re-enter the indicated phase and repeat from that step.
+5. Re-enter the determined phase automatically and repeat from that step.
 
 ---
 
