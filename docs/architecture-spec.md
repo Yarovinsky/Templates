@@ -21,6 +21,18 @@
 
 ## How to Run the Test Suite
 
+### Roo Mode Command (mandatory for Roo agents)
+
+```powershell
+# Default timeout (1 minute)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\.roo\scripts\run-tests.ps1 -Command "pnpm test"
+
+# Override timeout (example: 5 minutes)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\.roo\scripts\run-tests.ps1 -Command "pnpm test" -TimeoutMinutes 5
+```
+
+### Direct Commands (manual/local use)
+
 ```bash
 # Run all tests
 pnpm test
