@@ -113,6 +113,34 @@ This document defines rules for runtime failures, recovery procedures, and the i
 
 ---
 
+## Failure Mode 7: Direct Command Execution (Script Constraint Violation)
+
+- **Trigger**: Any skill executes a system command that does not start with `.agents/scripts/`.
+- **Detection**: Orchestrator or human reviewer identifies a raw command (e.g., `del`, `mkdir`, `dotnet`, `git`, `rm`, `type`, `dir`, `copy`, `move`) in terminal output instead of the corresponding `.agents/scripts/*.cmd` wrapper.
+- **Severity**: FATAL
+- **Recovery Procedure**:
+  1. HALT immediately.
+  2. Log as DEVIATION with severity FATAL per audit log spec:
+     ```
+     ## FATAL: Script Constraint Violation
+     
+     **Timestamp**: [ISO-8601]
+     **Attempted Command**: [the raw command that was executed]
+     **Required Form**: [the correct .agents/scripts/*.cmd equivalent]
+     **Phase**: [current phase]
+     **Skill**: [current skill]
+     
+     **Resolution**: Re-execute using the approved wrapper. If no wrapper exists,
+     extend one per Section 5 of ROO_EXECUTION_RULES.md.
+     ```
+  3. Undo any side effects of the unauthorized command if possible (e.g., if a file was deleted, restore it; if a file was created outside the wrapper, remove it and re-create via wrapper).
+  4. Re-execute the operation using the correct `.agents/scripts/*.cmd` wrapper.
+  5. If no wrapper exists for the needed operation, escalate to extend the wrapper per Section 5 of `ROO_EXECUTION_RULES.md`.
+- **Audit Log Entry**: `FAILURE:SCRIPT_CONSTRAINT_VIOLATION`
+- **Cross-Reference**: `.agents/ROO_EXECUTION_RULES.md` Section 0, `.agents/framework/10-script-constraint.md`
+
+---
+
 ## Audit Log Specification
 
 - **Path**: `.agents/state/audit.jsonl`

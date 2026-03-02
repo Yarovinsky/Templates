@@ -3,6 +3,33 @@
 This repository runs in a restricted execution model.
 These rules are mandatory.
 
+## 0) ABSOLUTE COMMAND CONSTRAINT (READ FIRST — INVIOLABLE)
+
+You are FORBIDDEN from executing ANY command that does not start with `.agents/scripts/`.
+
+This is not a guideline. This is an inviolable constraint. There are ZERO exceptions.
+
+### Pre-Execution Self-Check (MANDATORY before every execute_command call)
+
+Before EVERY command execution, apply this binary test:
+
+    Does the command string start with ".agents/scripts/"?
+    → YES: Proceed to Section 2 (Security Invariants) validation.
+    → NO:  HALT. FATAL VIOLATION. Do not execute. Rewrite using the correct wrapper.
+
+This means you must NEVER directly invoke ANY shell built-in or system binary, including
+but not limited to: `del`, `rm`, `mkdir`, `type`, `dir`, `cd`, `copy`, `move`, `ren`,
+`cat`, `ls`, `cp`, `mv`, `touch`, `grep`, `find`, `findstr`, `dotnet`, `docker`,
+`git`, `curl`, `npm`, `node`, `python`, `pip`, or any other executable.
+
+The ONLY commands you may execute are those listed in Section 3 (Approved Entry Points).
+If an operation you need is not covered by an existing wrapper, you MUST STOP and signal
+to the orchestrator that a wrapper extension is needed per Section 5. Do NOT improvise.
+
+**Violation of this rule is Failure Mode 7 (FATAL) per `08-failure-handling.md`.**
+
+---
+
 ## 1) Core Execution Rules
 
 1. Do **not** execute system commands directly.
