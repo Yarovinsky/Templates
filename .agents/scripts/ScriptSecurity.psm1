@@ -33,8 +33,8 @@ function Assert-PathWithinRoot {
     [Parameter(Mandatory = $true)][string]$Root
   )
 
-  $normalizedRoot = $Root.TrimEnd('\\','/')
-  $normalizedFull = $FullPath.TrimEnd('\\','/')
+  $normalizedRoot = $Root.TrimEnd([char]'\', [char]'/')
+  $normalizedFull = $FullPath.TrimEnd([char]'\', [char]'/')
 
   if ($normalizedFull.Equals($normalizedRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
     return
