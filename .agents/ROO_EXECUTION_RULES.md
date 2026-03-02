@@ -211,6 +211,27 @@ Required positive checks:
 
 Using forbidden command paths or bypassing wrappers is a policy violation.
 
+### 7.1) Mode File Restriction Bypass Prohibition (INVIOLABLE)
+
+Mode-level file restrictions (defined in `.roomodes` `fileRegex` patterns) apply to ALL file operations,
+regardless of mechanism. This means:
+
+- If a mode's `fileRegex` does not permit writing to `src/`, then that mode MUST NOT create, modify,
+  or write files under `src/` using `repo.cmd write`, `repo.cmd mkdir`, `repo.cmd touch`, `repo.cmd cp`,
+  `repo.cmd mv`, or any other wrapper command.
+- The `execute_command` tool does NOT exempt a mode from its file restrictions.
+- Wrappers are for executing approved operations within the mode's permitted scope, not for
+  circumventing mode boundaries.
+- **Violation of this rule is Failure Mode 7 (FATAL) per `08-failure-handling.md`.**
+
+Example: The Test Author mode (`test-author`) may write to `tests/`, `docs/`, `.agents/state/`, and may
+create project scaffolding under `src/` (solution files, project files, empty stub classes with no
+implementation). However, using `repo.cmd write src/MyClass.cs` to write a file containing method bodies
+or implementation logic is a FATAL violation — stubs must contain only namespace + empty type declarations.
+
+Example: The Validator mode (`validator`) may only write to `docs/` and `.agents/state/`.
+Using `repo.cmd write src/...` or `repo.cmd write tests/...` from the Validator mode is a FATAL violation.
+
 ## 8) TDD-DDD Framework Cross-Reference
 
 This execution rules document governs script security and command execution.

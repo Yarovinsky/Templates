@@ -260,13 +260,16 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Create test data builders and fixtures
 - Create traceability matrix documents (markdown)
 - READ production source files and interfaces for contract discovery (but NOT modify them)
+- **Project scaffolding** — Create solution files (`.sln`), project files (`.csproj`, `.fsproj`), build props files (`Directory.Build.props`, `Directory.Packages.props`), and empty stub source files under `src/` to enable test compilation. Stubs must contain ONLY a namespace declaration and an empty type declaration (class, struct, record, or interface) with NO method bodies, NO constructors with logic, and NO implementation code. Example: `namespace Ingestion.Domain.ValueObjects; public record Language;`
+- Create directories under `src/` as needed for project scaffolding
 
 ### Prohibited Actions
 
-- Writing or modifying ANY production code
-- Creating production source files
+- Writing ANY implementation code (method bodies, property logic, constructors with logic, factory methods) — in `src/` or anywhere else
+- Adding any behavior to stub files beyond empty type declarations
 - Implementing any business logic
-- Modifying production interfaces
+- Modifying existing production interfaces or implementation files
+- Using `repo.cmd`, `execute_command`, or any other tool to write implementation code that bypasses the "stubs only" constraint — mode-level restrictions apply to ALL file operations regardless of mechanism
 
 ### Input Artifacts
 
