@@ -40,10 +40,21 @@ Every handoff MUST use this structured format:
       "evidence": "path or description proving the condition"
     }
   ],
+  "storyScope": {
+    "storyId": "STORY-NNN (required when storyLoop is active, omitted otherwise)",
+    "storyTitle": "string",
+    "storyFilePath": "docs/stories/STORY-NNN-title.json",
+    "boundedContext": "PascalCase bounded context name",
+    "targetAggregates": ["PascalCase aggregate names"],
+    "targetDddArtifacts": ["relative paths to DDD spec documents"],
+    "acceptanceCriteria": ["AC-NNN IDs from the story"]
+  },
   "summary": "Human-readable summary of what was accomplished and what the target skill should do next",
   "blockers": ["any known blockers for the target skill"]
 }
 ```
+
+> **`storyScope` field**: This field is **required** when the orchestrator's story iteration loop is active (i.e., `storyLoop.active = true` in `phase-state.json`). It scopes Phases 4–7 to the current story. It is **omitted** during Phases 1–3, Phase 3.5, and the final full-product validation. See `11-story-decomposition.md` Section 8 for the complete specification.
 
 ---
 

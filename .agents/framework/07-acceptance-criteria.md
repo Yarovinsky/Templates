@@ -55,6 +55,33 @@ Applies to: domains, bounded contexts, aggregates, entities, value objects, even
 - MUST not contain speculative code (code not required by any test)
 - MUST align with ubiquitous language naming
 
+### Stories
+
+Applies to: individual story files produced in Phase 3.5.
+
+- MUST be scoped to a single bounded context
+- MUST reference at least one DDD artifact with a valid `specPath`
+- MUST have at least one testable acceptance criterion (`testable: true`)
+- MUST have at least one `[HLD-REQ-NNN]` traceability tag
+- MUST include an MVP justification explaining why the story is in scope
+- MUST have a valid `complexity` value (`XS`, `S`, `M`, `L`, or `XL`)
+- MUST have a `userStory` in "As a [persona], I want [capability] so that [benefit]" format
+- MUST NOT depend on a story with a higher sequence number
+- MUST use ubiquitous language terms from the glossary in the title and user story
+
+### Per-Story Definition of Done
+
+All of the following MUST be true for a single story to be marked `completed`:
+
+- [ ] Phase 4 complete: All acceptance criteria have corresponding failing tests
+- [ ] Phase 5 complete: All story tests pass (GREEN state)
+- [ ] Phase 6 complete: Refactoring checklist applied, all tests still pass
+- [ ] Phase 7 complete: Story-scoped quality gates pass (QG-01 through QG-05)
+- [ ] All previously passing tests (from prior stories) continue to pass — no regressions
+- [ ] Story status updated to `completed` in `docs/stories/backlog.json`
+- [ ] Story `completedAt` timestamp set
+- [ ] Story `phaseProgress` fields all set to `completed`
+
 ---
 
 ## 2. Definition of Done — Entire Product

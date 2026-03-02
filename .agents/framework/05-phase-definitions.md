@@ -2,17 +2,19 @@
 
 > **Status**: Normative
 > **Audience**: TDD-DDD Orchestrator, all skill modes
-> **Purpose**: Define the 7 mandatory phases, their entry/exit criteria, activities, and output artifacts
+> **Purpose**: Define the 8 phases (1–3, 3.5, 4–7), their entry/exit criteria, activities, and output artifacts
 
 ---
 
 ## 1. Phase Sequence Rule
 
-There are **7 mandatory phases** executed in **strict sequential order**:
+There are **8 mandatory phases** executed in **strict sequential order**:
 
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7
+Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
 ```
+
+After Phase 3.5 (Story Decomposition), the orchestrator enters a **story iteration loop**: Phases 4–7 are executed sequentially for each story in the backlog, one story at a time. After all stories complete, a final full-product validation pass is performed.
 
 **Rules**:
 - No phase may be skipped or reordered
@@ -20,6 +22,7 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7
 - The orchestrator verifies exit criteria before advancing
 - A phase may iterate internally (e.g., rework within Phase 1 for clarifications) without advancing
 - Backward routing is permitted only when a later phase's quality gate fails, and only the orchestrator may authorize it
+- During the story loop, Phases 4–7 are scoped to the current story; all handoff messages include `storyScope` (see `11-story-decomposition.md`)
 
 ---
 
@@ -148,9 +151,56 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 
 ---
 
-## 5. Phase 4: Test Specification
+## 5. Phase 3.5: Story Decomposition
+
+**Owner Skill**: Story Planner (`story-planner`)
+
+### Entry Criteria
+
+- Phase 3 complete with all exit criteria met
+- All DDD specifications exist at prescribed paths
+- All DDD artifacts have `[HLD-REQ-NNN]` traceability tags
+- Ubiquitous language glossary finalized
+
+### Activities
+
+1. Inventory all DDD artifacts across all bounded contexts
+2. Map DDD artifacts to HLD requirements via traceability tags
+3. Apply MVP filter based on business goal MoSCoW priorities
+4. Group MVP-in-scope DDD artifacts into implementation-ready stories
+5. Determine strict sequential execution order
+6. Generate testable acceptance criteria for each story
+7. Write individual story files and backlog manifest
+8. Document excluded features with rationale
+
+### Exit Criteria
+
+- All stories created with complete fields per the story schema in `11-story-decomposition.md`
+- Every `[HLD-REQ-NNN]` tag in the DDD model is covered by at least one story
+- Every story has at least one testable acceptance criterion
+- Backlog manifest created with correct story count and ordering
+- MVP scope document produced with inclusion/exclusion rationale
+- No stories span multiple bounded contexts
+- Sequential ordering respects dependency constraints
+
+### Output Artifacts
+
+| Artifact | Format | Path Convention |
+|----------|--------|-----------------|
+| Backlog Manifest | JSON | `docs/stories/backlog.json` |
+| Individual Story Files | JSON | `docs/stories/STORY-NNN-title.json` |
+| MVP Scope Document | Markdown | `docs/stories/mvp-scope.md` |
+| Phase 3.5 Completion Record | JSON | `.agents/state/phase-3.5-complete.json` |
+
+> **Full specification**: See `11-story-decomposition.md` for the complete decomposition algorithm, story schema, backlog format, and story-scoped iteration loop.
+
+---
+
+## 6. Phase 4: Test Specification (Story-Scoped)
 
 **Owner Skill**: Test Author (`test-author`)
+
+> **Story Loop**: After Phase 3.5, Phases 4–7 are executed iteratively for each story in the backlog. The orchestrator dispatches each phase with a `storyScope` field in the handoff message, scoping the work to the current story's bounded context, aggregates, DDD artifacts, and acceptance criteria.
 
 ### Entry Criteria
 
@@ -197,9 +247,11 @@ Uses the red-green-refactor cycle internally — **RED only**. All tests must be
 
 ---
 
-## 6. Phase 5: Implementation
+## 7. Phase 5: Implementation (Story-Scoped)
 
 **Owner Skill**: Implementer (`implementer`)
+
+> **Story Loop**: Scoped to the current story's failing tests and DDD artifacts. The Implementer writes minimum code to pass the story's tests while ensuring all previously passing tests (from prior stories) continue to pass.
 
 ### Entry Criteria
 
@@ -233,9 +285,11 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 
 ---
 
-## 7. Phase 6: Refactoring
+## 8. Phase 6: Refactoring (Story-Scoped)
 
 **Owner Skill**: Refactorer (`refactorer`)
+
+> **Story Loop**: Scoped to the current story's production code. The Refactorer applies the REFACTOR checklist to code introduced by the current story, while ensuring all tests (current story and all prior stories) continue to pass.
 
 ### Entry Criteria
 
@@ -274,13 +328,15 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 
 ---
 
-## 8. Phase 7: Validation and Delivery
+## 9. Phase 7: Validation and Delivery (Story-Scoped + Final)
 
 **Owner Skill**: Validator (`validator`)
 
+> **Story Loop**: Phase 7 is invoked twice: (1) **Per-story validation** — after each story's Phase 6, applying quality gates scoped to the story's tests, coverage, and traceability. (2) **Final full-product validation** — after all stories complete, applying quality gates across the entire codebase. See `11-story-decomposition.md` Section 7 for story-scoped quality gate behavior.
+
 ### Entry Criteria
 
-- Phase 6 complete
+- Phase 6 complete (for current story, or for all stories in final validation)
 - All tests passing
 - Refactoring complete
 
@@ -324,7 +380,7 @@ The orchestrator determines the correct routing based on the quality gate failur
 
 ---
 
-## 9. Phase Completion Record Schema
+## 10. Phase Completion Record Schema
 
 Each phase produces a **completion record** in JSON format. This record serves as the gate artifact that the orchestrator validates before allowing phase advancement.
 

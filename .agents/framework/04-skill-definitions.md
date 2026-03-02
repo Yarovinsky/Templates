@@ -2,13 +2,13 @@
 
 > **Status**: Normative
 > **Audience**: TDD-DDD Orchestrator, all skill modes
-> **Purpose**: Define the 7 skills (roles) that map 1:1 to custom Roo modes
+> **Purpose**: Define the 8 skills (roles) that map 1:1 to custom Roo modes
 
 ---
 
 ## 1. Overview
 
-This document defines **7 skills** (roles) that map 1:1 to custom Roo modes. Each skill has explicit responsibilities, permitted actions, prohibited actions, input/output artifacts, and preconditions.
+This document defines **8 skills** (roles) that map 1:1 to custom Roo modes. Each skill has explicit responsibilities, permitted actions, prohibited actions, input/output artifacts, and preconditions.
 
 The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may be activated except via orchestrator dispatch. Every skill transition must pass through the orchestrator; direct skill-to-skill handoffs are forbidden.
 
@@ -17,10 +17,11 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 | 1 | TDD-DDD Orchestrator | `tdd-ddd-orchestrator` | All (coordination) |
 | 2 | Analyst | `analyst` | Phase 1 |
 | 3 | DDD Architect | `ddd-architect` | Phase 2, Phase 3 |
-| 4 | Test Author | `test-author` | Phase 4 |
-| 5 | Implementer | `implementer` | Phase 5 |
-| 6 | Refactorer | `refactorer` | Phase 6 |
-| 7 | Validator | `validator` | Phase 7 |
+| 4 | Story Planner | `story-planner` | Phase 3.5 |
+| 5 | Test Author | `test-author` | Phase 4 |
+| 6 | Implementer | `implementer` | Phase 5 |
+| 7 | Refactorer | `refactorer` | Phase 6 |
+| 8 | Validator | `validator` | Phase 7 |
 
 ---
 
@@ -178,7 +179,64 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ---
 
-## 5. Skill: Test Author
+## 5. Skill: Story Planner
+
+**Mode Slug**: `story-planner`
+
+### Responsibilities
+
+- **DDD Model Analysis** — Read and interpret all DDD artifacts from Phases 2–3
+- **HLD Cross-Reference** — Map DDD artifacts back to HLD requirements, feature narratives, and business goals
+- **MVP Scope Determination** — Apply MVP scoping principles to identify the minimum set of stories that deliver core business value
+- **Story Decomposition** — Break the DDD model into implementation-ready stories, each scoped to a single bounded context
+- **Acceptance Criteria Generation** — Derive testable acceptance criteria from DDD invariants and HLD requirements
+- **Execution Order Determination** — Determine optimal strict sequential execution order
+- **Backlog Construction** — Produce the ordered backlog manifest and individual story files
+- **Exclusion Documentation** — Document features excluded from MVP scope with rationale
+
+### Permitted Actions
+
+- Read all project files (HLD, DDD specs, glossary, context maps, ADRs)
+- Write JSON and Markdown files under `docs/stories/`
+- Write Markdown documentation under `docs/`
+- Update `.agents/state/` files (phase state, audit log)
+
+### Prohibited Actions
+
+- Writing ANY source code or test code
+- Modifying DDD specification documents (owned by DDD Architect)
+- Modifying the validated HLD (owned by Analyst)
+- Making implementation decisions (technology choices, framework selections)
+- Skipping MVP justification for any included story
+- Creating stories that span multiple bounded contexts
+- Reordering stories after the backlog is finalized
+
+### Input Artifacts
+
+- Validated HLD (from Analyst, Phase 1)
+- Ubiquitous language glossary (from Analyst, Phase 1)
+- All DDD specifications (from DDD Architect, Phases 2–3)
+- Context map (from DDD Architect, Phase 2)
+- ADRs (from DDD Architect, Phase 3)
+
+### Output Artifacts
+
+- Backlog manifest (`docs/stories/backlog.json`)
+- Individual story files (`docs/stories/STORY-NNN-title.json`)
+- MVP scope document (`docs/stories/mvp-scope.md`)
+- Phase 3.5 completion record
+
+### Preconditions
+
+- Phase 3 must be complete with all exit criteria met
+- All DDD specifications must exist at prescribed paths
+- All DDD artifacts must have `[HLD-REQ-NNN]` traceability tags
+
+> **Full specification**: See `11-story-decomposition.md` for the complete decomposition algorithm, story schema, and backlog format.
+
+---
+
+## 6. Skill: Test Author
 
 **Mode Slug**: `test-author`
 
@@ -230,7 +288,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ---
 
-## 6. Skill: Implementer
+## 7. Skill: Implementer
 
 **Mode Slug**: `implementer`
 
@@ -273,7 +331,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ---
 
-## 7. Skill: Refactorer
+## 8. Skill: Refactorer
 
 **Mode Slug**: `refactorer`
 
@@ -320,7 +378,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ---
 
-## 8. Skill: Validator
+## 9. Skill: Validator
 
 **Mode Slug**: `validator`
 
@@ -368,7 +426,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ---
 
-## 9. Handoff Protocol Cross-Reference
+## 10. Handoff Protocol Cross-Reference
 
 All skill transitions **must** follow the structured handoff protocol defined in `09-handoff-protocol.md`. No skill may self-activate or bypass the orchestrator.
 
@@ -380,7 +438,7 @@ The handoff protocol specifies:
 
 ---
 
-## 10. Escalation Rules
+## 11. Escalation Rules
 
 When a skill encounters work outside its scope:
 

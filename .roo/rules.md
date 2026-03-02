@@ -31,13 +31,14 @@ Start with the overview document:
     .agents/framework/00-overview.md
 
 This framework defines:
-- 7 mandatory development phases (HLD Intake → Validation & Delivery)
-- 7 skill roles with enforced file restrictions (Orchestrator, Analyst, DDD Architect, Test Author, Implementer, Refactorer, Validator)
+- 8 mandatory development phases (HLD Intake → Story Decomposition → Validation & Delivery)
+- 8 skill roles with enforced file restrictions (Orchestrator, Analyst, DDD Architect, Story Planner, Test Author, Implementer, Refactorer, Validator)
+- Story-based iterative execution: Phase 3.5 decomposes the DDD model into MVP-scoped stories; Phases 4–7 execute per story
 - Strict red-green-refactor TDD cycle as the only permitted development cadence
 - Domain-Driven Design transformation pipeline
 - Quality gates, naming conventions, and acceptance criteria
 - Failure handling and recovery procedures
-- Structured handoff protocol between skills
+- Structured handoff protocol between skills (with story scoping)
 - Immutable audit log requirements
 
 The TDD-DDD Orchestrator mode (`tdd-ddd-orchestrator`) is the mandatory
