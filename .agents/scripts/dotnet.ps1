@@ -24,6 +24,7 @@ $ErrorActionPreference = "Stop"
 Import-Module (Join-Path $PSScriptRoot "ScriptSecurity.psm1") -Force
 
 function Validate-DotNetArgs([string[]]$Arguments) {
+  if (-not $Arguments -or $Arguments.Count -eq 0) { return }
   Assert-NoShellMetachars $Arguments
 
   # Validate known "path-bearing" flags and their following value
@@ -96,5 +97,6 @@ No pipes allowed in arguments. Use -MatchPattern / -LastLines instead.
 Validate-DotNetArgs $DotNetArgs
 
 # Compose final argv
-$argv = @($Action) + $DotNetArgs
+$argv = @($Action)
+if ($DotNetArgs) { $argv += $DotNetArgs }
 Invoke-DotNet -Arguments $argv -match $MatchPattern -last $LastLines
