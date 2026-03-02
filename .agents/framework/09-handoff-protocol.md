@@ -4,6 +4,24 @@
 
 This document defines the structured message format and validation rules for all skill-to-skill transitions. ALL handoffs are mediated by the orchestrator — no direct skill-to-skill communication is permitted.
 
+### Dispatch Mechanism: Subtasks (`new_task`)
+
+The orchestrator MUST dispatch to skill modes using the **`new_task` tool** (subtasks), NOT the `switch_mode` tool. This ensures:
+- Each skill runs in an isolated subtask context
+- The orchestrator retains control and receives the completion result
+- Auto-approved subtask creation enables seamless workflow without manual approval prompts
+- The handoff message JSON is passed as the `message` parameter of `new_task`
+
+**Usage pattern**:
+```
+new_task(
+  mode: "<target skill mode slug>",
+  message: "<structured handoff JSON from the format below>"
+)
+```
+
+When a skill completes, it uses `attempt_completion` to signal back. The orchestrator receives the result and proceeds with post-completion validation.
+
 ---
 
 ## Handoff Message Format
@@ -60,17 +78,17 @@ Every handoff MUST use this structured format:
 
 ## Handoff Types
 
-### DISPATCH (Orchestrator → Skill)
+### DISPATCH (Orchestrator → Skill via `new_task`)
 
-- Orchestrator sends when activating a skill for a phase.
+- Orchestrator sends when activating a skill for a phase, using the `new_task` tool with the target skill's mode slug and the handoff JSON as the message.
 - MUST include: all input artifacts the skill needs, phase number, traceability tags for scope, preconditions that have been validated.
 - Skill MUST verify all preconditions before accepting work.
 
-### COMPLETION (Skill → Orchestrator)
+### COMPLETION (Skill → Orchestrator via `attempt_completion`)
 
-- Skill sends when it has finished its assigned work.
+- Skill sends when it has finished its assigned work, using `attempt_completion` to return the result to the orchestrator.
 - MUST include: all output artifacts produced, traceability tags covered, summary of what was done.
-- Orchestrator validates output artifacts against phase exit criteria.
+- Orchestrator receives the subtask result and validates output artifacts against phase exit criteria.
 
 ### REJECTION (Skill → Orchestrator, or Orchestrator → Skill)
 
@@ -114,27 +132,28 @@ Every handoff MUST use this structured format:
 ## Handoff Flow Sequence
 
 ```
-Orchestrator                          Skill
+Orchestrator                          Skill (subtask)
     |                                   |
-    |--- DISPATCH (artifacts, preconds) ->|
+    |--- new_task(mode, handoff JSON) -->|  [subtask created]
     |                                   |-- validates preconditions
-    |                                   |-- [if invalid] REJECTION -->|
-    |<-- REJECTION (deficiencies) ------|
+    |                                   |-- [if invalid] attempt_completion(REJECTION) -->|
+    |<-- subtask result (REJECTION) ----|
     |    [address deficiencies]          |
-    |--- DISPATCH (retry) ------------->|
+    |--- new_task(mode, retry JSON) --->|  [new subtask]
     |                                   |-- [if valid] accepts work
     |                                   |-- performs skill activities
-    |                                   |-- [if out-of-scope] ESCALATION -->|
-    |<-- ESCALATION (details) ----------|
+    |                                   |-- [if out-of-scope] attempt_completion(ESCALATION) -->|
+    |<-- subtask result (ESCALATION) ---|
     |    [routes to correct skill]       |
     |                                   |-- completes work
-    |<-- COMPLETION (artifacts, summary)|
+    |                                   |-- attempt_completion(COMPLETION JSON)
+    |<-- subtask result (COMPLETION) ---|
     |-- validates outputs                |
-    |-- [if invalid] REJECTION -------->|
+    |-- [if invalid] new_task(mode, REJECTION JSON) -->|
     |                                   |-- addresses deficiencies
-    |<-- COMPLETION (retry) ------------|
+    |<-- subtask result (COMPLETION) ---|
     |-- [if valid] advances phase        |
-    |--- DISPATCH (next skill) -------->|
+    |--- new_task(next mode, JSON) ---->|  [next subtask]
 ```
 
 ---

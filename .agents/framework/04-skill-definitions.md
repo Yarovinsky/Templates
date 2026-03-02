@@ -32,7 +32,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 ### Responsibilities
 
 - **Phase state management** — Tracks phases 1–7, enforces strict sequential progression
-- **Skill dispatching** — Determines next skill mode and initiates switch with structured handoff
+- **Skill dispatching** — Determines next skill mode and dispatches via subtask (`new_task` tool) with structured handoff
 - **Precondition validation** — Verifies input artifacts exist and are valid before dispatching to any skill
 - **Handoff coordination** — Receives completion signals from skills, validates outputs, routes to next skill or rework
 - **Audit log maintenance** — Appends every transition, dispatch, and gate result to an immutable log
@@ -48,7 +48,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Write to `.agents/state/`, `docs/`, `.agents/framework/` (markdown and JSON only)
 - Create/update audit log
 - Create/update phase state
-- Dispatch to skill modes via mode switch
+- Dispatch to skill modes via subtask (`new_task` tool, NOT `switch_mode`)
 
 ### Prohibited Actions
 
