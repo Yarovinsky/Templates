@@ -10,6 +10,13 @@
         ["edit", { "fileRegex": "(^\\.agents/(state|framework)/.*\\.(md|json|jsonl)$)|(^docs/.*\\.(md|json)$)|(^plans/.*\\.md$)" }],
         "command"
       ],
+      "autoApprove": [
+        "read",
+        "edit",
+        "command",
+        "modeSwitch",
+        "subtask"
+      ],
       "source": "project"
     },
     {
@@ -20,6 +27,10 @@
       "groups": [
         "read",
         ["edit", { "fileRegex": "(^docs/.*\\.(md|json)$)|(^\\.agents/framework/.*\\.md$)|(^\\.agents/state/.*\\.(json|jsonl)$)" }]
+      ],
+      "autoApprove": [
+        "read",
+        "edit"
       ],
       "source": "project"
     },
@@ -32,6 +43,10 @@
         "read",
         ["edit", { "fileRegex": "(^docs/.*\\.(md|json)$)|(^\\.agents/(state|framework)/.*\\.(md|json|jsonl)$)" }]
       ],
+      "autoApprove": [
+        "read",
+        "edit"
+      ],
       "source": "project"
     },
     {
@@ -42,6 +57,11 @@
       "groups": [
         "read",
         ["edit", { "fileRegex": "(^tests/.*$)|(^docs/.*\\.(md|json)$)|(^\\.agents/state/.*\\.(json|jsonl)$)" }],
+        "command"
+      ],
+      "autoApprove": [
+        "read",
+        "edit",
         "command"
       ],
       "source": "project"
@@ -56,6 +76,11 @@
         ["edit", { "fileRegex": "(^src/.*$)|(^\\.agents/state/.*\\.(json|jsonl)$)|(^.*\\.(csproj|sln|fsproj|props|targets|config|yaml|yml|toml|xml)$)" }],
         "command"
       ],
+      "autoApprove": [
+        "read",
+        "edit",
+        "command"
+      ],
       "source": "project"
     },
     {
@@ -66,6 +91,11 @@
       "groups": [
         "read",
         ["edit", { "fileRegex": "(^src/.*$)|(^docs/.*\\.(md|json)$)|(^\\.agents/state/.*\\.(json|jsonl)$)" }],
+        "command"
+      ],
+      "autoApprove": [
+        "read",
+        "edit",
         "command"
       ],
       "source": "project"
@@ -80,6 +110,11 @@
         ["edit", { "fileRegex": "(^docs/.*\\.(md|json|xml)$)|(^\\.agents/state/.*\\.(json|jsonl)$)" }],
         "command"
       ],
+      "autoApprove": [
+        "read",
+        "edit",
+        "command"
+      ],
       "source": "project"
     },
     {
@@ -90,6 +125,10 @@
       "groups": [
         "read",
         ["edit", { "fileRegex": "(^docs/stories/.*\\.(json|md)$)|(^docs/.*\\.md$)|(^\\.agents/state/.*\\.(json|jsonl)$)" }]
+      ],
+      "autoApprove": [
+        "read",
+        "edit"
       ],
       "source": "project"
     }
