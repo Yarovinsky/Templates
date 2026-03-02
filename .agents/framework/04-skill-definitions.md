@@ -39,6 +39,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - **Failure routing** — Determines recovery path per `08-failure-handling.md`
 - **Progress reporting** — Maintains a living status dashboard
 - **Clarification aggregation** — Collects and batches clarification requests for the customer
+- **Story commit and push** — After each story passes per-story Phase 7 validation, commits all changes and pushes to the remote per `11-story-decomposition.md` Section 7.5
 
 ### Permitted Actions
 

@@ -449,6 +449,7 @@ After Phase 3.5 completes, the orchestrator enters a **story iteration loop** th
       - Set story completedAt timestamp
       - Increment completedStories in backlog.json
       - Update story phaseProgress fields
+      - **Git commit and push** — Stage all changes, commit with message `feat(STORY-NNN): <story title>`, and push to the remote (see Section 7.5)
    l. If story quality gates fail:
       - Route to appropriate phase per 08-failure-handling.md
       - Re-attempt from the routed phase for this story
@@ -503,6 +504,62 @@ The orchestrator's phase-state.json gains a `storyLoop` section:
   "artifactRegistry": {}
 }
 ```
+
+### 7.5 Git Commit and Push on Story Completion
+
+After a story passes its per-story Phase 7 validation (all quality gates pass), the orchestrator MUST commit and push the story's work to version control. This ensures each completed story is a discrete, traceable checkpoint in the repository history.
+
+#### Procedure
+
+1. **Stage all changes**: Run `.agents/scripts/git.cmd add -A` to stage all modified, added, and deleted files
+2. **Commit**: Run `.agents/scripts/git.cmd commit -m "feat(STORY-NNN): <story title>"` where `STORY-NNN` and `<story title>` are taken from the completed story file
+3. **Push**: Run `.agents/scripts/git.cmd push` to push the commit to the remote
+
+#### Commit Message Format
+
+```
+feat(STORY-NNN): <story title>
+```
+
+- `STORY-NNN` — the story ID (e.g., `STORY-003`)
+- `<story title>` — the story's `title` field from the story JSON file
+
+Examples:
+- `feat(STORY-001): Create Order aggregate`
+- `feat(STORY-005): Implement Pricing domain service`
+
+#### Rules
+
+| Rule | Description |
+|------|-------------|
+| GR-01 | Commit and push occurs **only** after the per-story Phase 7 quality gates pass — never on failure |
+| GR-02 | All scripts MUST be invoked via `.agents/scripts/git.cmd` — direct `git` invocation is forbidden per `10-script-constraint.md` |
+| GR-03 | If `git push` fails (e.g., network error), the orchestrator MUST retry once; if the retry also fails, log the failure to the audit log and continue to the next story — the commit is preserved locally |
+| GR-04 | The commit includes **all** project files changed during the story's Phases 4–7 (tests, source, docs, state files) |
+| GR-05 | The orchestrator appends a `STORY_COMMITTED` event to the audit log (`.agents/state/audit.jsonl`) with the story ID, commit hash (from git output), and timestamp |
+
+#### Audit Log Event
+
+```json
+{
+  "event": "STORY_COMMITTED",
+  "timestamp": "ISO-8601",
+  "storyId": "STORY-NNN",
+  "commitMessage": "feat(STORY-NNN): <story title>",
+  "pushStatus": "SUCCESS | FAILED_RETRIED_SUCCESS | FAILED_LOCAL_ONLY",
+  "notes": "optional details"
+}
+```
+
+#### Final Full-Product Commit
+
+After the Phase 7-Final full-product validation passes (step 4 in the loop procedure), the orchestrator performs one additional commit and push:
+
+```
+feat: complete MVP — all stories delivered
+```
+
+This final commit captures any remaining state updates from the full-product validation.
 
 ---
 

@@ -333,6 +333,8 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 **Owner Skill**: Validator (`validator`)
 
 > **Story Loop**: Phase 7 is invoked twice: (1) **Per-story validation** — after each story's Phase 6, applying quality gates scoped to the story's tests, coverage, and traceability. (2) **Final full-product validation** — after all stories complete, applying quality gates across the entire codebase. See `11-story-decomposition.md` Section 7 for story-scoped quality gate behavior.
+>
+> **Git Commit on Story Completion**: After a story passes its per-story Phase 7 validation, the orchestrator commits all changes and pushes to the remote. See `11-story-decomposition.md` Section 7.5 for the commit procedure, message format, and rules.
 
 ### Entry Criteria
 
