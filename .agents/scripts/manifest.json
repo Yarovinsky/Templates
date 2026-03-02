@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "description": "Inventory of all sanctioned scripts under .agents/scripts/ with input/output contracts.",
+  "scripts": [
+    {
+      "name": "curl",
+      "entryPoint": "curl.cmd",
+      "implementation": "curl.ps1",
+      "purpose": "HTTP client restricted to localhost URLs only (http/https to localhost, 127.0.0.1, or ::1). Validates all URL arguments and rejects non-localhost targets.",
+      "phaseAssociation": ["all"],
+      "inputContract": "Accepts standard curl arguments. All URL arguments must be absolute http/https URLs targeting localhost, 127.0.0.1, or ::1. Shell metacharacters (|, ;, &, `, >, <, &&, ||) are forbidden in all arguments.",
+      "outputContract": "Passes through curl stdout/stderr. Exits with curl's exit code on failure."
+    },
+    {
+      "name": "docker",
+      "entryPoint": "docker.cmd",
+      "implementation": "docker.ps1",
+      "purpose": "Docker CLI wrapper with path and volume mount validation. Ensures all host paths in volume mounts and file references are relative and within the repository root.",
+      "phaseAssociation": ["all"],
+      "inputContract": "First positional argument is the Docker subcommand (e.g., build, run, compose). Remaining arguments are passed to Docker. Path-bearing flags (-f, --file, --env-file) must use relative repo paths. Volume specs (-v, --volume, --mount) must use relative repo paths for bind mounts. Shell metacharacters are forbidden.",
+      "outputContract": "Passes through Docker stdout/stderr. Exits with Docker's exit code on failure."
+    },
+    {
+      "name": "dotnet",
+      "entryPoint": "dotnet.cmd",
+      "implementation": "dotnet.ps1",
+      "purpose": ".NET CLI wrapper restricted to a safe set of actions (test, run, build, restore, format). Validates path-bearing flags and provides built-in output filtering via -MatchPattern and -LastLines parameters.",
+      "phaseAssociation": ["all"],
+      "inputContract": "First positional argument is the action: test, run, build, restore, format, or help. Remaining arguments are forwarded to dotnet CLI. Path-bearing flags (--project, --solution, --startup-project, --results-directory, --output, -o) must use relative repo paths. Optional -MatchPattern <regex> filters output lines. Optional -LastLines <N> returns only the last N lines. Shell metacharacters are forbidden.",
+      "outputContract": "Filtered or unfiltered dotnet stdout/stderr. Exits with dotnet's exit code on failure. Help action prints usage examples and exits 0."
+    },
+    {
+      "name": "git",
+      "entryPoint": "git.cmd",
+      "implementation": "git.ps1",
+      "purpose": "Git CLI wrapper with path validation. Ensures path-bearing flags (-C, --git-dir, --work-tree) reference only relative paths within the repository root.",
+      "phaseAssociation": ["all"],
+      "inputContract": "First positional argument is the Git subcommand (e.g., status, add, commit, log). Remaining arguments are forwarded to git. Path-bearing flags (-C, --git-dir, --work-tree) must use relative repo paths. Shell metacharacters are forbidden.",
+      "outputContract": "Passes through git stdout/stderr. Exits with git's exit code on failure."
+    },
+    {
+      "name": "repo",
+      "entryPoint": "repo.cmd",
+      "implementation": "repo.ps1",
+      "purpose": "Sandboxed file system operations restricted to the repository root. Provides ls, cat, write, append, mkdir, rm, mv, cp, grep, and touch actions with path traversal protection.",
+      "phaseAssociation": ["all"],
+      "inputContract": "First positional argument is the action: ls, cat, write, append, mkdir, rm, mv, cp, grep, touch, or help. All path arguments must be relative and within the repo root. Write and append require a '--' separator before text content. Shell metacharacters are forbidden. Optional flags: -Recurse, -Depth <N>, -Force depending on action.",
+      "outputContract": "Action-dependent: ls outputs file listings; cat outputs file contents; grep outputs matched lines with path:line format; write/append/mkdir/rm/mv/cp/touch produce no output on success. Exits with non-zero code on failure."
+    }
+  ],
+  "sharedModules": [
+    {
+      "name": "ScriptSecurity",
+      "path": "ScriptSecurity.psm1",
+      "purpose": "Shared PowerShell security module imported by all script implementations. Provides: Fail (error + exit), Assert-NoShellMetachars (block shell injection), Assert-RelativeRepoPath (validate paths are relative and within repo root), Get-RepoRoot (resolve repo root), Assert-PathWithinRoot (validate absolute path containment), Assert-NoReparsePointTraversal (block symlink/junction escapes)."
+    }
+  ]
+}

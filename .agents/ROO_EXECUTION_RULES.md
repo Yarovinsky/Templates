@@ -183,3 +183,32 @@ Required positive checks:
 ## 7) Non-Compliance
 
 Using forbidden command paths or bypassing wrappers is a policy violation.
+
+## 8) TDD-DDD Framework Cross-Reference
+
+This execution rules document governs script security and command execution.
+For the complete TDD-DDD development framework — including phase definitions,
+skill roles, handoff protocols, quality gates, and naming conventions — see:
+
+    .agents/framework/
+
+The framework specification documents (00 through 10) define the authoritative
+process rules for building software using Test-Driven Development and
+Domain-Driven Design. The framework index is at:
+
+    .agents/framework/00-overview.md
+
+Key integration points:
+
+1. **Script constraint**: The framework enforces that all scripts must reside
+   under `.agents/scripts/` (see `.agents/framework/10-script-constraint.md`).
+   This aligns with and extends Section 2 (Approved Entry Points) of this document.
+
+2. **Skill modes**: Custom Roo modes defined in `.roomodes` enforce file-level
+   access restrictions per skill role. See `.agents/framework/04-skill-definitions.md`.
+
+3. **Validation**: The Validator skill uses approved wrappers from Section 4
+   to execute test suites and generate reports.
+
+Both this document and the framework are mandatory and complementary.
+In case of conflict, the more restrictive rule applies.
