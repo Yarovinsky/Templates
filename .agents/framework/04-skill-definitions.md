@@ -40,6 +40,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - **Progress reporting** — Maintains a living status dashboard
 - **Clarification aggregation** — Collects and batches clarification requests for the customer
 - **Story commit and push** — After each story passes per-story Phase 7 validation, commits all changes and pushes to the remote per `11-story-decomposition.md` Section 7.5
+- **Story pause control** — Reads `storyLoop.pauseAfterStory` from `phase-state.json` after each story commit; when `true`, halts and waits for customer approval before proceeding to the next story; when `false` (default), proceeds automatically
 
 ### Permitted Actions
 

@@ -450,6 +450,7 @@ After Phase 3.5 completes, the orchestrator enters a **story iteration loop** th
       - Increment completedStories in backlog.json
       - Update story phaseProgress fields
       - **Git commit and push** — Stage all changes, commit with message `feat(STORY-NNN): <story title>`, and push to the remote (see Section 7.5)
+      - **Pause check** — If `storyLoop.pauseAfterStory` is `true` in `phase-state.json`, HALT and present the customer with a summary of the completed story (story ID, title, commit hash, tests passed). Wait for explicit customer approval before proceeding to the next story. If `false`, proceed automatically to the next story.
    l. If story quality gates fail:
       - Route to appropriate phase per 08-failure-handling.md
       - Re-attempt from the routed phase for this story
@@ -496,7 +497,8 @@ The orchestrator's phase-state.json gains a `storyLoop` section:
     "backlogPath": "docs/stories/backlog.json",
     "totalStories": 12,
     "completedStories": 2,
-    "currentStorySequence": 3
+    "currentStorySequence": 3,
+    "pauseAfterStory": false
   },
   "phaseHistory": [],
   "pendingClarifications": [],
@@ -504,6 +506,12 @@ The orchestrator's phase-state.json gains a `storyLoop` section:
   "artifactRegistry": {}
 }
 ```
+
+#### `pauseAfterStory` Field
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `pauseAfterStory` | boolean | `false` | When `true`, the orchestrator halts after each story's commit/push and waits for explicit customer approval before proceeding to the next story. When `false`, the orchestrator advances automatically. The customer may change this value at any time in `phase-state.json`; the orchestrator reads it before each story iteration. |
 
 ### 7.5 Git Commit and Push on Story Completion
 

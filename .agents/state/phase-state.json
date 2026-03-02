@@ -1,0 +1,17 @@
+{
+  "currentPhase": null,
+  "currentSkill": null,
+  "currentStoryId": null,
+  "storyLoop": {
+    "active": false,
+    "backlogPath": "docs/stories/backlog.json",
+    "totalStories": 0,
+    "completedStories": 0,
+    "currentStorySequence": 0,
+    "pauseAfterStory": true
+  },
+  "phaseHistory": [],
+  "pendingClarifications": [],
+  "auditLogPath": ".agents/state/audit.jsonl",
+  "artifactRegistry": {}
+}
