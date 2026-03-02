@@ -5,7 +5,7 @@ These rules are mandatory.
 
 ## 0) ABSOLUTE COMMAND CONSTRAINT (READ FIRST — INVIOLABLE)
 
-You are FORBIDDEN from executing ANY command that does not start with `.agents/scripts/`.
+You are FORBIDDEN from executing ANY command that does not start with `.\.agents\scripts\`.
 
 This is not a guideline. This is an inviolable constraint. There are ZERO exceptions.
 
@@ -13,7 +13,7 @@ This is not a guideline. This is an inviolable constraint. There are ZERO except
 
 Before EVERY command execution, apply this binary test:
 
-    Does the command string start with ".agents/scripts/"?
+    Does the command string start with ".\.agents\scripts\"?
     → YES: Proceed to Section 2 (Security Invariants) validation.
     → NO:  HALT. FATAL VIOLATION. Do not execute. Rewrite using the correct wrapper.
 
@@ -35,7 +35,7 @@ to the orchestrator that a wrapper extension is needed per Section 5. Do NOT imp
 1. Do **not** execute system commands directly.
 2. Execute commands **only** through approved wrappers under:
 
-       .agents/scripts/*.cmd
+       .\.agents\scripts\*.cmd
 
 3. Trust boundary:
    - Restrictions apply to the agent/user command surface.
@@ -45,7 +45,8 @@ to the orchestrator that a wrapper extension is needed per Section 5. Do NOT imp
 ## 2) Global Security Invariants (apply to all wrappers)
 
 1. **No shell metacharacters** in arguments:
-   - `|`, `;`, `&`, `` ` ``, `>`, `<`, `&&`, `||`
+   - `|`, `&`, `` ` ``, `>`, `<`, `&&`, `||`
+   - Note: `;` is intentionally permitted — it is safe in argument arrays (direct process invocation via `&` and splatting) and is legitimately used in dotnet CLI values like `--logger "console;verbosity=detailed"`.
 2. **No path escaping** on validated path args:
    - must be relative
    - no `..`
@@ -62,21 +63,21 @@ to the orchestrator that a wrapper extension is needed per Section 5. Do NOT imp
 
 Use only:
 
-    .agents/scripts/dotnet.cmd
-    .agents/scripts/docker.cmd
-    .agents/scripts/git.cmd
-    .agents/scripts/curl.cmd
-    .agents/scripts/repo.cmd
+    .\.agents\scripts\dotnet.cmd
+    .\.agents\scripts\docker.cmd
+    .\.agents\scripts\git.cmd
+    .\.agents\scripts\curl.cmd
+    .\.agents\scripts\repo.cmd
 
 ## 4) Wrapper Contracts
 
 ### 4.1 dotnet.cmd
 
-Script: `.agents/scripts/dotnet.cmd`
+Script: `.\.agents\scripts\dotnet.cmd`
 
 Syntax:
 
-    .agents/scripts/dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>]
+    .\.agents\scripts\dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>]
 
 - `Action` (required): `test`, `run`, `build`, `restore`, `format`, `help`
 - Path-bearing flags validated as repo-relative:
@@ -87,16 +88,16 @@ Syntax:
 
 Examples:
 
-    .agents/scripts/dotnet.cmd test --no-build --filter "FullyQualifiedName~MyTests"
-    .agents/scripts/dotnet.cmd test -MatchPattern "failed" -LastLines 50
+    .\.agents\scripts\dotnet.cmd test --no-build --filter "FullyQualifiedName~MyTests"
+    .\.agents\scripts\dotnet.cmd test -MatchPattern "failed" -LastLines 50
 
 ### 4.2 git.cmd
 
-Script: `.agents/scripts/git.cmd`
+Script: `.\.agents\scripts\git.cmd`
 
 Syntax:
 
-    .agents/scripts/git.cmd <Subcommand> [git args...]
+    .\.agents\scripts\git.cmd <Subcommand> [git args...]
 
 - Any git subcommand is allowed.
 - Path-bearing flags validated as repo-relative:
@@ -106,16 +107,16 @@ Syntax:
 
 Examples:
 
-    .agents/scripts/git.cmd status
-    .agents/scripts/git.cmd diff HEAD~1
+    .\.agents\scripts\git.cmd status
+    .\.agents\scripts\git.cmd diff HEAD~1
 
 ### 4.3 docker.cmd
 
-Script: `.agents/scripts/docker.cmd`
+Script: `.\.agents\scripts\docker.cmd`
 
 Syntax:
 
-    .agents/scripts/docker.cmd <Subcommand> [docker args...]
+    .\.agents\scripts\docker.cmd <Subcommand> [docker args...]
 
 - Any docker subcommand is allowed.
 - File flags validated as repo-relative:
@@ -129,16 +130,16 @@ Syntax:
 
 Examples:
 
-    .agents/scripts/docker.cmd compose up --build -d
-    .agents/scripts/docker.cmd compose -f docker-compose.dev.yml up -d
+    .\.agents\scripts\docker.cmd compose up --build -d
+    .\.agents\scripts\docker.cmd compose -f docker-compose.dev.yml up -d
 
 ### 4.4 curl.cmd
 
-Script: `.agents/scripts/curl.cmd`
+Script: `.\.agents\scripts\curl.cmd`
 
 Syntax:
 
-    .agents/scripts/curl.cmd [curl args...]
+    .\.agents\scripts\curl.cmd [curl args...]
 
 - All URL targets must be localhost only:
   - `localhost`, `127.0.0.1`, `::1`
@@ -146,15 +147,15 @@ Syntax:
 
 Example:
 
-    .agents/scripts/curl.cmd http://localhost:5000/health
+    .\.agents\scripts\curl.cmd http://localhost:5000/health
 
 ### 4.5 repo.cmd
 
-Script: `.agents/scripts/repo.cmd`
+Script: `.\.agents\scripts\repo.cmd`
 
 Syntax:
 
-    .agents/scripts/repo.cmd <Action> [args...]
+    .\.agents\scripts\repo.cmd <Action> [args...]
 
 Allowed actions:
 
@@ -180,9 +181,9 @@ Path policy for all file-system actions:
 
 Examples:
 
-    .agents/scripts/repo.cmd ls src -Recurse -Depth 2
-    .agents/scripts/repo.cmd cat src/Program.cs
-    .agents/scripts/repo.cmd grep "TODO" src -Recurse
+    .\.agents\scripts\repo.cmd ls src -Recurse -Depth 2
+    .\.agents\scripts\repo.cmd cat src/Program.cs
+    .\.agents\scripts\repo.cmd grep "TODO" src -Recurse
 
 ## 5) Extension Rules
 

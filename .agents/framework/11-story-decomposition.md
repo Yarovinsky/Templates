@@ -519,9 +519,9 @@ After a story passes its per-story Phase 7 validation (all quality gates pass), 
 
 #### Procedure
 
-1. **Stage all changes**: Run `.agents/scripts/git.cmd add -A` to stage all modified, added, and deleted files
-2. **Commit**: Run `.agents/scripts/git.cmd commit -m "feat(STORY-NNN): <story title>"` where `STORY-NNN` and `<story title>` are taken from the completed story file
-3. **Push**: Run `.agents/scripts/git.cmd push` to push the commit to the remote
+1. **Stage all changes**: Run `.\.agents\scripts\git.cmd add -A` to stage all modified, added, and deleted files
+2. **Commit**: Run `.\.agents\scripts\git.cmd commit -m "feat(STORY-NNN): <story title>"` where `STORY-NNN` and `<story title>` are taken from the completed story file
+3. **Push**: Run `.\.agents\scripts\git.cmd push` to push the commit to the remote
 
 #### Commit Message Format
 
@@ -541,7 +541,7 @@ Examples:
 | Rule | Description |
 |------|-------------|
 | GR-01 | Commit and push occurs **only** after the per-story Phase 7 quality gates pass — never on failure |
-| GR-02 | All scripts MUST be invoked via `.agents/scripts/git.cmd` — direct `git` invocation is forbidden per `10-script-constraint.md` |
+| GR-02 | All scripts MUST be invoked via `.\.agents\scripts\git.cmd` — direct `git` invocation is forbidden per `10-script-constraint.md` |
 | GR-03 | If `git push` fails (e.g., network error), the orchestrator MUST retry once; if the retry also fails, log the failure to the audit log and continue to the next story — the commit is preserved locally |
 | GR-04 | The commit includes **all** project files changed during the story's Phases 4–7 (tests, source, docs, state files) |
 | GR-05 | The orchestrator appends a `STORY_COMMITTED` event to the audit log (`.agents/state/audit.jsonl`) with the story ID, commit hash (from git output), and timestamp |
