@@ -23,14 +23,14 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 Import-Module (Join-Path $PSScriptRoot "ScriptSecurity.psm1") -Force
 
-function Validate-DotNetArgs([string[]]$args) {
-  Assert-NoShellMetachars $args
+function Validate-DotNetArgs([string[]]$Arguments) {
+  Assert-NoShellMetachars $Arguments
 
   # Validate known "path-bearing" flags and their following value
   # (dotnet accepts both "--project foo" and "--project=foo")
   $pathFlags = @("--project","--solution","--startup-project","--results-directory","--output","-o")
-  for ($i = 0; $i -lt $args.Length; $i++) {
-    $a = $args[$i]
+  for ($i = 0; $i -lt $Arguments.Length; $i++) {
+    $a = $Arguments[$i]
 
     # handle --flag=value
     foreach ($pf in $pathFlags) {
@@ -42,8 +42,8 @@ function Validate-DotNetArgs([string[]]$args) {
 
     # handle --flag value
     if ($pathFlags -contains $a) {
-      if ($i + 1 -ge $args.Length) { Fail "Missing value after $a" }
-      $val = $args[$i + 1]
+      if ($i + 1 -ge $Arguments.Length) { Fail "Missing value after $a" }
+      $val = $Arguments[$i + 1]
       Assert-RelativeRepoPath $val
       $i++ # skip value
       continue
@@ -51,11 +51,11 @@ function Validate-DotNetArgs([string[]]$args) {
   }
 }
 
-function Invoke-DotNet([string[]]$args, [string]$match, [int]$last) {
-  Write-Host ">> dotnet $($args -join ' ')"
+function Invoke-DotNet([string[]]$Arguments, [string]$match, [int]$last) {
+  Write-Host ">> dotnet $($Arguments -join ' ')"
 
   # Capture stdout+stderr. We keep the original exit code via $LASTEXITCODE.
-  $lines = & dotnet @args 2>&1 | ForEach-Object { $_.ToString() }
+  $lines = & dotnet @Arguments 2>&1 | ForEach-Object { $_.ToString() }
 
   if ($match) {
     $lines = $lines | Select-String -Pattern $match | ForEach-Object { $_.ToString() }
@@ -97,4 +97,4 @@ Validate-DotNetArgs $DotNetArgs
 
 # Compose final argv
 $argv = @($Action) + $DotNetArgs
-Invoke-DotNet -args $argv -match $MatchPattern -last $LastLines
+Invoke-DotNet -Arguments $argv -match $MatchPattern -last $LastLines
