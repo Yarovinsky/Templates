@@ -56,7 +56,11 @@ function Invoke-DotNet([string[]]$Arguments, [string]$match, [int]$last) {
   Write-Host ">> dotnet $($Arguments -join ' ')"
 
   # Capture stdout+stderr. We keep the original exit code via $LASTEXITCODE.
-  $lines = & dotnet @Arguments 2>&1 | ForEach-Object { $_.ToString() }
+  # Scope ErrorActionPreference to SilentlyContinue so that stderr output from
+  # the native command (e.g. xUnit test-failure messages) flows through the
+  # pipeline as strings instead of triggering a NativeCommandError.
+  $lines = & { $ErrorActionPreference = 'SilentlyContinue'; & dotnet @Arguments 2>&1 } |
+    ForEach-Object { $_.ToString() }
 
   if ($match) {
     $lines = $lines | Select-String -Pattern $match | ForEach-Object { $_.ToString() }
