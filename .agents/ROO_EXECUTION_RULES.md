@@ -45,8 +45,9 @@ to the orchestrator that a wrapper extension is needed per Section 5. Do NOT imp
 ## 2) Global Security Invariants (apply to all wrappers)
 
 1. **No shell metacharacters** in arguments:
-   - `|`, `&`, `` ` ``, `>`, `<`, `&&`, `||`
+   - `&`, `` ` ``, `>`, `<`, `&&`, `||`
    - Note: `;` is intentionally permitted — it is safe in argument arrays (direct process invocation via `&` and splatting) and is legitimately used in dotnet CLI values like `--logger "console;verbosity=detailed"`.
+   - Note: `|` is intentionally permitted — it is safe in splatted argument arrays (not interpreted as a pipe operator) and is legitimately used in xUnit/NUnit `--filter` expressions like `"FullyQualifiedName~A|FullyQualifiedName~B"`.
 2. **No path escaping** on validated path args:
    - must be relative
    - no `..`

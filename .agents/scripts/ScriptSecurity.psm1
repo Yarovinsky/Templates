@@ -15,7 +15,10 @@ function Assert-NoShellMetachars {
   # Note: ';' is intentionally excluded — it's safe in argument arrays
   # (direct process invocation via & and splatting) and is legitimately
   # used in dotnet --logger values like "console;verbosity=detailed".
-  $meta = @('|','&','`','>','<','&&','||')
+  # Note: '|' is intentionally excluded — it's safe in splatted argument
+  # arrays (not interpreted as a pipe) and is legitimately used in
+  # xUnit/NUnit --filter expressions like "FullyQualifiedName~A|FullyQualifiedName~B".
+  $meta = @('&','`','>','<','&&','||')
   foreach ($t in $Tokens) {
     if ($null -eq $t) { continue }
     foreach ($m in $meta) {
