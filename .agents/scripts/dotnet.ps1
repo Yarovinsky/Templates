@@ -86,12 +86,13 @@ Usage:
 
 Examples:
 
-  .\.agents\scripts\dotnet.cmd test --no-build --filter "FullyQualifiedName~IngestionPipelineTests"
+  .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj --no-build --filter "FullyQualifiedName~SomeTests"
   .\.agents\scripts\dotnet.cmd test --collect:""XPlat Code Coverage"" -LastLines 200
   .\.agents\scripts\dotnet.cmd run --project src/VexaNews.Api/VexaNews.Api.csproj -- --urls http://localhost:5000
   .\.agents\scripts\dotnet.cmd build --configuration Release
   .\.agents\scripts\dotnet.cmd format
 
+Note: --project is automatically converted to a positional arg for 'test' (.NET 10+ compat).
 No pipes allowed in arguments. Use -MatchPattern / -LastLines instead.
 "@ | Write-Output
   exit 0
@@ -99,6 +100,49 @@ No pipes allowed in arguments. Use -MatchPattern / -LastLines instead.
 
 # Validate args before executing
 Validate-DotNetArgs $DotNetArgs
+
+# .NET 10+ SDK changed `dotnet test`: --project is no longer a valid switch.
+# The project/solution path must be passed as a positional argument.
+# We transparently rewrite --project <path> / --project=<path> to a positional arg
+# so callers don't need to know about the SDK version difference.
+function Rewrite-ProjectFlag([string]$act, [string[]]$args_in) {
+  if (-not $args_in -or $args_in.Count -eq 0) { return $args_in }
+  # Only rewrite for verbs where --project is now positional
+  $rewriteVerbs = @("test")
+  if ($rewriteVerbs -notcontains $act) { return $args_in }
+
+  $result = [System.Collections.Generic.List[string]]::new()
+  $projectPath = $null
+
+  for ($i = 0; $i -lt $args_in.Length; $i++) {
+    $a = $args_in[$i]
+
+    # --project=value form
+    if ($a -match '^--project=(.+)$') {
+      $projectPath = $Matches[1]
+      continue
+    }
+    # --project value form
+    if ($a -eq '--project') {
+      if ($i + 1 -lt $args_in.Length) {
+        $projectPath = $args_in[$i + 1]
+        $i++  # skip the value
+      }
+      continue
+    }
+
+    $result.Add($a)
+  }
+
+  if ($projectPath) {
+    # Insert project path at the beginning (positional arg comes right after verb)
+    $result.Insert(0, $projectPath)
+  }
+
+  return $result.ToArray()
+}
+
+$DotNetArgs = Rewrite-ProjectFlag -act $Action -args_in $DotNetArgs
 
 # Compose final argv
 $argv = @($Action)
