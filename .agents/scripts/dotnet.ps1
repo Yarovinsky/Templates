@@ -16,7 +16,10 @@ param(
 
   # Optional, replaces:
   # dotnet ... 2>&1 | Select-Object -Last N
-  [int] $LastLines = 0
+  [int] $LastLines = 0,
+
+  # Timeout in seconds. 0 = no timeout. Default 5 minutes.
+  [int] $Timeout = 300
 )
 
 Set-StrictMode -Version Latest
@@ -52,15 +55,65 @@ function Validate-DotNetArgs([string[]]$Arguments) {
   }
 }
 
-function Invoke-DotNet([string[]]$Arguments, [string]$match, [int]$last) {
+function Invoke-DotNet([string[]]$Arguments, [string]$match, [int]$last, [int]$timeoutSec) {
   Write-Host ">> dotnet $($Arguments -join ' ')"
 
-  # Capture stdout+stderr. We keep the original exit code via $LASTEXITCODE.
-  # Scope ErrorActionPreference to SilentlyContinue so that stderr output from
-  # the native command (e.g. xUnit test-failure messages) flows through the
-  # pipeline as strings instead of triggering a NativeCommandError.
-  $lines = & { $ErrorActionPreference = 'SilentlyContinue'; & dotnet @Arguments 2>&1 } |
-    ForEach-Object { $_.ToString() }
+  $dotnetExe = (Get-Command dotnet -ErrorAction Stop).Source
+
+  $psi = [System.Diagnostics.ProcessStartInfo]::new()
+  $psi.FileName = $dotnetExe
+  $psi.Arguments = ($Arguments | ForEach-Object {
+    if ($_ -match '\s') { "`"$_`"" } else { $_ }
+  }) -join ' '
+  $psi.UseShellExecute = $false
+  $psi.RedirectStandardOutput = $true
+  $psi.RedirectStandardError = $true
+  $psi.CreateNoWindow = $true
+
+  $outputLines = [System.Collections.Concurrent.ConcurrentQueue[string]]::new()
+
+  $proc = [System.Diagnostics.Process]::new()
+  $proc.StartInfo = $psi
+  $proc.EnableRaisingEvents = $true
+
+  # Use scriptblock event handlers to collect output
+  $outHandler = { if ($EventArgs.Data -ne $null) { $Event.MessageData.Enqueue($EventArgs.Data) } }
+  $errHandler = { if ($EventArgs.Data -ne $null) { $Event.MessageData.Enqueue($EventArgs.Data) } }
+
+  $outEvent = Register-ObjectEvent -InputObject $proc -EventName OutputDataReceived -Action $outHandler -MessageData $outputLines
+  $errEvent = Register-ObjectEvent -InputObject $proc -EventName ErrorDataReceived -Action $errHandler -MessageData $outputLines
+
+  try {
+    [void]$proc.Start()
+    $proc.BeginOutputReadLine()
+    $proc.BeginErrorReadLine()
+
+    if ($timeoutSec -gt 0) {
+      $exited = $proc.WaitForExit($timeoutSec * 1000)
+      if (-not $exited) {
+        # Kill the process tree
+        try { & taskkill /F /T /PID $proc.Id 2>$null | Out-Null } catch {}
+        try { $proc.Kill($true) } catch {}
+        Write-Error "TIMEOUT: dotnet process exceeded ${timeoutSec}s and was killed."
+        exit 124
+      }
+    } else {
+      $proc.WaitForExit()
+    }
+
+    # Ensure async output handlers have flushed
+    $proc.WaitForExit()
+
+    $exitCode = $proc.ExitCode
+  }
+  finally {
+    Unregister-Event -SourceIdentifier $outEvent.Name -ErrorAction SilentlyContinue
+    Unregister-Event -SourceIdentifier $errEvent.Name -ErrorAction SilentlyContinue
+    $proc.Dispose()
+  }
+
+  # Convert collected output to ordered array
+  $lines = $outputLines.ToArray()
 
   if ($match) {
     $lines = $lines | Select-String -Pattern $match | ForEach-Object { $_.ToString() }
@@ -71,7 +124,7 @@ function Invoke-DotNet([string[]]$Arguments, [string]$match, [int]$last) {
 
   $lines | ForEach-Object { Write-Output $_ }
 
-  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+  if ($exitCode -ne 0) { exit $exitCode }
 }
 
 if ($Action -eq "help") {
@@ -91,7 +144,9 @@ Examples:
   .\.agents\scripts\dotnet.cmd run --project src/VexaNews.Api/VexaNews.Api.csproj -- --urls http://localhost:5000
   .\.agents\scripts\dotnet.cmd build --configuration Release
   .\.agents\scripts\dotnet.cmd format
+  .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj -Timeout 120
 
+Timeout: Default 300s (5 min). Override with -Timeout 600. Use -Timeout 0 to disable.
 Note: --project is automatically converted to a positional arg for 'test' (.NET 10+ compat).
 No pipes allowed in arguments. Use -MatchPattern / -LastLines instead.
 "@ | Write-Output
@@ -147,4 +202,4 @@ $DotNetArgs = Rewrite-ProjectFlag -act $Action -args_in $DotNetArgs
 # Compose final argv
 $argv = @($Action)
 if ($DotNetArgs) { $argv += $DotNetArgs }
-Invoke-DotNet -Arguments $argv -match $MatchPattern -last $LastLines
+Invoke-DotNet -Arguments $argv -match $MatchPattern -last $LastLines -timeoutSec $Timeout
