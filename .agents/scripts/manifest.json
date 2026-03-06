@@ -26,8 +26,8 @@
       "implementation": "dotnet.ps1",
       "purpose": ".NET CLI wrapper restricted to a safe set of actions (test, run, build, restore, format). Validates path-bearing flags and provides built-in output filtering via -MatchPattern and -LastLines parameters.",
       "phaseAssociation": ["all"],
-      "inputContract": "First positional argument is the action: test, run, build, restore, format, or help. Remaining arguments are forwarded to dotnet CLI. Path-bearing flags (--project, --solution, --startup-project, --results-directory, --output, -o) must use relative repo paths. Optional -MatchPattern <regex> filters output lines. Optional -LastLines <N> returns only the last N lines. Shell metacharacters are forbidden.",
-      "outputContract": "Filtered or unfiltered dotnet stdout/stderr. Exits with dotnet's exit code on failure. Help action prints usage examples and exits 0."
+      "inputContract": "First positional argument is the action: test, run, build, restore, format, or help. Remaining arguments are forwarded to dotnet CLI. Path-bearing flags (--project, --solution, --startup-project, --results-directory, --output, -o) must use relative repo paths. For 'test' action, --project is automatically rewritten to a positional argument (.NET 10+ compatibility). Optional -MatchPattern <regex> filters output lines. Optional -LastLines <N> returns only the last N lines. Optional -Timeout <seconds> sets process timeout (default: 300s, 0 to disable). Shell metacharacters are forbidden.",
+      "outputContract": "Filtered or unfiltered dotnet stdout/stderr. Exits with dotnet's exit code on failure. Exits with code 124 if the process exceeds the timeout and is killed. Help action prints usage examples and exits 0."
     },
     {
       "name": "git",

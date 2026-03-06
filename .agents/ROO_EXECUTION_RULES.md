@@ -77,19 +77,24 @@ Script: `.\.agents\scripts\dotnet.cmd`
 
 Syntax:
 
-    .\.agents\scripts\dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>]
+    .\.agents\scripts\dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>] [-Timeout <seconds>]
 
 - `Action` (required): `test`, `run`, `build`, `restore`, `format`, `help`
 - Path-bearing flags validated as repo-relative:
   - `--project`, `--solution`, `--startup-project`, `--results-directory`, `--output`, `-o`
+- For the `test` action, `--project <path>` is automatically rewritten to a positional argument for .NET 10+ SDK compatibility.
 - Output controls:
   - `-MatchPattern` (regex filter)
   - `-LastLines` (tail N lines)
+- Timeout:
+  - `-Timeout` (seconds, default: 300, 0 to disable)
+  - Process is killed and exit code 124 returned on timeout.
 
 Examples:
 
-    .\.agents\scripts\dotnet.cmd test --no-build --filter "FullyQualifiedName~MyTests"
+    .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj --no-build --filter "FullyQualifiedName~MyTests"
     .\.agents\scripts\dotnet.cmd test -MatchPattern "failed" -LastLines 50
+    .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj -Timeout 120
 
 ### 4.2 git.cmd
 
