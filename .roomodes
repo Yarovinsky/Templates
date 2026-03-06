@@ -73,7 +73,7 @@
       "customInstructions": "Before starting, read `.agents/framework/03-tdd-execution-model.md` (GREEN phase rules). Read the failing test suite under `tests/` to understand expectations. Implement one test at a time: pick a failing test, write minimum code to pass it, run all tests, verify GREEN. If any previously passing test breaks, REVERT immediately — this is Failure Mode 2 per `08-failure-handling.md`. Do NOT refactor — that is the Refactorer's job. Output path: `src/` organized by bounded context per `06-naming-conventions.md`. When all tests pass, use `attempt_completion` to signal back to the orchestrator.",
       "groups": [
         "read",
-        ["edit", { "fileRegex": "(^src/.*$)|(^\\.agents/state/.*\\.(json|jsonl)$)|(^.*\\.(csproj|sln|fsproj|props|targets|config|yaml|yml|toml|xml)$)" }],
+        ["edit", { "fileRegex": "(^src/.*$)|(^\\.agents/state/.*\\.(json|jsonl)$)|(^.*\\.(csproj|sln|fsproj|props|targets|config|yaml|yml|toml|xml|bicep)$)|(^Dockerfile$)|(^infra/.*$)" }],
         "command"
       ],
       "autoApprove": [
@@ -90,7 +90,7 @@
       "customInstructions": "Before starting, read `.agents/framework/03-tdd-execution-model.md` (REFACTOR phase rules and checklist). Read `docs/glossary.md` for ubiquitous language alignment. Apply the 8-item SOLID checklist to all production code. Refactor one concern at a time, verify GREEN after each change. Output: modified `src/` files, `docs/tech-debt-register.md`, `docs/refactoring-report.md`, updated `docs/glossary.md` if naming changes. When complete, use `attempt_completion` to signal back to the orchestrator.",
       "groups": [
         "read",
-        ["edit", { "fileRegex": "(^src/.*$)|(^docs/.*\\.(md|json)$)|(^\\.agents/state/.*\\.(json|jsonl)$)" }],
+        ["edit", { "fileRegex": "(^src/.*$)|(^docs/.*\\.(md|json)$)|(^\\.agents/state/.*\\.(json|jsonl)$)|(^Dockerfile$)|(^infra/.*\\.bicep$)"}],
         "command"
       ],
       "autoApprove": [
