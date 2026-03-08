@@ -18,7 +18,11 @@ function Assert-NoShellMetachars {
   # Note: '|' is intentionally excluded — it's safe in splatted argument
   # arrays (not interpreted as a pipe) and is legitimately used in
   # xUnit/NUnit --filter expressions like "FullyQualifiedName~A|FullyQualifiedName~B".
-  $meta = @('&','`','>','<','&&','||')
+  # Note: '&' is intentionally excluded — it's safe in splatted argument
+  # arrays (not interpreted as command chaining) and is legitimately used in
+  # xUnit/NUnit --filter expressions as an AND operator like "A&B".
+  # The double '&&' is still blocked as a dedicated entry in $meta.
+  $meta = @('`','>','<','&&','||')
   foreach ($t in $Tokens) {
     if ($null -eq $t) { continue }
     foreach ($m in $meta) {
