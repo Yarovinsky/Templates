@@ -5,7 +5,7 @@ These rules are mandatory.
 
 ## 0) ABSOLUTE COMMAND CONSTRAINT (READ FIRST — INVIOLABLE)
 
-You are FORBIDDEN from executing ANY command that does not start with `.\.agents\scripts\`.
+You are FORBIDDEN from executing ANY command outside the approved list: `dotnet.cmd`, `docker.cmd`, `git.cmd`, `curl.cmd`, `repo.cmd`.
 
 This is not a guideline. This is an inviolable constraint. There are ZERO exceptions.
 
@@ -13,7 +13,7 @@ This is not a guideline. This is an inviolable constraint. There are ZERO except
 
 Before EVERY command execution, apply this binary test:
 
-    Does the command string start with ".\.agents\scripts\"?
+    Is the command one of the approved wrappers (dotnet.cmd, docker.cmd, git.cmd, curl.cmd, repo.cmd)?
     → YES: Proceed to Section 2 (Security Invariants) validation.
     → NO:  HALT. FATAL VIOLATION. Do not execute. Rewrite using the correct wrapper.
 
@@ -33,9 +33,7 @@ to the orchestrator that a wrapper extension is needed per Section 5. Do NOT imp
 ## 1) Core Execution Rules
 
 1. Do **not** execute system commands directly.
-2. Execute commands **only** through approved wrappers under:
-
-       .\.agents\scripts\*.cmd
+2. Execute commands **only** through approved wrappers: `dotnet.cmd`, `docker.cmd`, `git.cmd`, `curl.cmd`, `repo.cmd` (see Section 3).
 
 3. Trust boundary:
    - Restrictions apply to the agent/user command surface.
@@ -65,23 +63,23 @@ to the orchestrator that a wrapper extension is needed per Section 5. Do NOT imp
 
 Use only:
 
-    .\.agents\scripts\dotnet.cmd
-    .\.agents\scripts\docker.cmd
-    .\.agents\scripts\git.cmd
-    .\.agents\scripts\curl.cmd
-    .\.agents\scripts\repo.cmd
+    dotnet.cmd
+    docker.cmd
+    git.cmd
+    curl.cmd
+    repo.cmd
 
 ## 4) Wrapper Contracts
 
 ### 4.1 dotnet.cmd
 
-Script: `.\.agents\scripts\dotnet.cmd`
+Script: `dotnet.cmd`
 
 Syntax:
 
-    .\.agents\scripts\dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>] [-Timeout <seconds>]
+    dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>] [-Timeout <seconds>]
 
-- `Action` (required): `test`, `run`, `build`, `restore`, `format`, `help`
+- `Action` (required): `test`, `run`, `build`, `restore`, `format`, `help`, `sln`
 - Path-bearing flags validated as repo-relative:
   - `--project`, `--solution`, `--startup-project`, `--results-directory`, `--output`, `-o`
 - For the `test` action, `--project <path>` is automatically rewritten to a positional argument for .NET 10+ SDK compatibility.
@@ -94,17 +92,17 @@ Syntax:
 
 Examples:
 
-    .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj --no-build --filter "FullyQualifiedName~MyTests"
-    .\.agents\scripts\dotnet.cmd test -MatchPattern "failed" -LastLines 50
-    .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj -Timeout 120
+    dotnet.cmd test tests/MyTests.csproj --no-build --filter "FullyQualifiedName~MyTests"
+    dotnet.cmd test -MatchPattern "failed" -LastLines 50
+    dotnet.cmd test tests/MyTests.csproj -Timeout 120
 
 ### 4.2 git.cmd
 
-Script: `.\.agents\scripts\git.cmd`
+Script: `git.cmd`
 
 Syntax:
 
-    .\.agents\scripts\git.cmd <Subcommand> [git args...]
+    git.cmd <Subcommand> [git args...]
 
 - Any git subcommand is allowed.
 - Path-bearing flags validated as repo-relative:
@@ -114,16 +112,16 @@ Syntax:
 
 Examples:
 
-    .\.agents\scripts\git.cmd status
-    .\.agents\scripts\git.cmd diff HEAD~1
+    git.cmd status
+    git.cmd diff HEAD~1
 
 ### 4.3 docker.cmd
 
-Script: `.\.agents\scripts\docker.cmd`
+Script: `docker.cmd`
 
 Syntax:
 
-    .\.agents\scripts\docker.cmd <Subcommand> [docker args...]
+    docker.cmd <Subcommand> [docker args...]
 
 - Any docker subcommand is allowed.
 - File flags validated as repo-relative:
@@ -137,16 +135,16 @@ Syntax:
 
 Examples:
 
-    .\.agents\scripts\docker.cmd compose up --build -d
-    .\.agents\scripts\docker.cmd compose -f docker-compose.dev.yml up -d
+    docker.cmd compose up --build -d
+    docker.cmd compose -f docker-compose.dev.yml up -d
 
 ### 4.4 curl.cmd
 
-Script: `.\.agents\scripts\curl.cmd`
+Script: `curl.cmd`
 
 Syntax:
 
-    .\.agents\scripts\curl.cmd [curl args...]
+    curl.cmd [curl args...]
 
 - All URL targets must be localhost only:
   - `localhost`, `127.0.0.1`, `::1`
@@ -154,15 +152,15 @@ Syntax:
 
 Example:
 
-    .\.agents\scripts\curl.cmd http://localhost:5000/health
+    curl.cmd http://localhost:5000/health
 
 ### 4.5 repo.cmd
 
-Script: `.\.agents\scripts\repo.cmd`
+Script: `repo.cmd`
 
 Syntax:
 
-    .\.agents\scripts\repo.cmd <Action> [args...]
+    repo.cmd <Action> [args...]
 
 Allowed actions:
 
@@ -188,14 +186,14 @@ Path policy for all file-system actions:
 
 Examples:
 
-    .\.agents\scripts\repo.cmd ls src -Recurse -Depth 2
-    .\.agents\scripts\repo.cmd cat src/Program.cs
-    .\.agents\scripts\repo.cmd grep "TODO" src -Recurse
+    repo.cmd ls src -Recurse -Depth 2
+    repo.cmd cat src/Program.cs
+    repo.cmd grep "TODO" src -Recurse
 
 ## 5) Extension Rules
 
 If functionality is missing:
-1. modify the relevant `.ps1` wrapper
+1. propose how to modify the relevant `.ps1` wrapper
 2. add validated parameters/subcommands
 3. preserve all security invariants
 4. do not add ad-hoc direct-exec paths
@@ -232,13 +230,13 @@ regardless of mechanism. This means:
   circumventing mode boundaries.
 - **Violation of this rule is Failure Mode 7 (FATAL) per `08-failure-handling.md`.**
 
-Example: The Test Author mode (`test-author`) may write to `tests/`, `docs/`, `.agents/state/`, and may
+Example: The TDD-DDD Test Author mode (`tdd-ddd-test-author`) may write to `tests/`, `docs/`, `.agents/state/`, and may
 create project scaffolding under `src/` (solution files, project files, empty stub classes with no
 implementation). However, using `repo.cmd write src/MyClass.cs` to write a file containing method bodies
 or implementation logic is a FATAL violation — stubs must contain only namespace + empty type declarations.
 
-Example: The Validator mode (`validator`) may only write to `docs/` and `.agents/state/`.
-Using `repo.cmd write src/...` or `repo.cmd write tests/...` from the Validator mode is a FATAL violation.
+Example: The TDD-DDD Validator mode (`tdd-ddd-validator`) may only write to `docs/` and `.agents/state/`.
+Using `repo.cmd write src/...` or `repo.cmd write tests/...` from the TDD-DDD Validator mode is a FATAL violation.
 
 ## 8) TDD-DDD Framework Cross-Reference
 
@@ -257,7 +255,7 @@ Domain-Driven Design. The framework index is at:
 Key integration points:
 
 1. **Script constraint**: The framework enforces that all scripts must reside
-   under `.agents/scripts/` (see `.agents/framework/10-script-constraint.md`).
+   under `.agents\\scripts\\` (see `.agents/framework/10-script-constraint.md`).
    This aligns with and extends Section 2 (Approved Entry Points) of this document.
 
 2. **Skill modes**: Custom Roo modes defined in `.roomodes` enforce file-level

@@ -274,8 +274,8 @@ docs/
 | Property | Value |
 |----------|-------|
 | **Skill Name** | Story Planner |
-| **Mode Slug** | `story-planner` |
-| **Mode Name** | 📋 Story Planner |
+| **Mode Slug** | `tdd-ddd-story-planner` |
+| **Mode Name** | 📋 TDD-DDD Story Planner |
 | **Phase** | Phase 3.5: Story Decomposition |
 | **Skill Number** | 8 (extends the existing 7-skill roster) |
 
@@ -450,7 +450,7 @@ The orchestrator's phase state machine must be extended to support:
 ```json
 {
   "currentPhase": "3.5",
-  "currentSkill": "story-planner",
+  "currentSkill": "tdd-ddd-story-planner",
   "currentStoryId": null,
   "storyLoop": {
     "active": false,
@@ -504,7 +504,7 @@ The handoff protocol message format gains a new optional `storyScope` field:
   "handoffId": "HO-NNN-timestamp",
   "type": "DISPATCH",
   "from": { "skill": "tdd-ddd-orchestrator", "phase": "4", "mode": "tdd-ddd-orchestrator" },
-  "to": { "skill": "test-author", "phase": "4", "mode": "test-author" },
+  "to": { "skill": "tdd-ddd-test-author", "phase": "4", "mode": "tdd-ddd-test-author" },
   "storyScope": {
     "storyId": "STORY-003",
     "storyTitle": "Create Order Aggregate with Line Items",
@@ -562,8 +562,8 @@ A new framework document (number 11) defining the Story Planner skill, the story
 
 ```json
 {
-  "slug": "story-planner",
-  "name": "📋 Story Planner",
+  "slug": "tdd-ddd-story-planner",
+  "name": "📋 TDD-DDD Story Planner",
   "roleDefinition": "You are the Story Planner skill in the TDD-DDD Framework. You are responsible for Phase 3.5: Story Decomposition. You analyze the validated DDD architecture produced in Phases 2-3 and decompose it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story is scoped to a single bounded context, references specific DDD artifacts, includes testable acceptance criteria derived from aggregate invariants and HLD requirements, and carries full traceability tags. You apply MVP scoping principles to include only features required for core value delivery. You determine the optimal sequential execution order for the story backlog. You are PROHIBITED from writing ANY source code or test code. You may only write JSON story files and markdown documentation. Before executing ANY command, read and follow `.agents/ROO_EXECUTION_RULES.md`.",
   "customInstructions": "Before starting, read `.agents/framework/11-story-decomposition.md` completely. Read all DDD specifications under `docs/ddd/` and the validated HLD at `docs/hld/validated-hld.md`. Follow the 7-step decomposition algorithm exactly. Every story MUST have at least one `[HLD-REQ-NNN]` traceability tag. Stories must NOT span multiple bounded contexts. Apply MVP scoping: include only `must`-priority business goals and their transitive dependencies. Output artifacts: backlog at `docs/stories/backlog.json`, individual stories at `docs/stories/STORY-NNN-title.json`, MVP scope document at `docs/stories/mvp-scope.md`. When complete, use `attempt_completion` to signal back to the orchestrator.",
   "groups": [
@@ -611,7 +611,7 @@ The orchestrator's `roleDefinition` in `.roomodes` must be updated to include Ph
 
 | # | File Path | Change Description |
 |---|-----------|-------------------|
-| 1 | `.roomodes` | Add the `story-planner` mode entry (Section 8.1 of this plan) |
+| 1 | `.roomodes` | Add the `tdd-ddd-story-planner` mode entry (Section 8.1 of this plan) |
 | 2 | `.agents/framework/00-overview.md` | Add doc 11 to index; add Story Planner and Story to glossary |
 | 3 | `.agents/framework/04-skill-definitions.md` | Add Skill 8: Story Planner with responsibilities, permissions, prohibitions, I/O artifacts, preconditions |
 | 4 | `.agents/framework/05-phase-definitions.md` | Add Phase 3.5 definition with entry/exit criteria and artifacts; add story-scoped iteration notes to Phases 4-7 |
@@ -644,7 +644,7 @@ The files must be created/modified in this order:
 4. **Modify** `.agents/framework/05-phase-definitions.md` — Add Phase 3.5, update Phases 4-7 for story scope
 5. **Modify** `.agents/framework/07-acceptance-criteria.md` — Add story-level acceptance criteria
 6. **Modify** `.agents/framework/09-handoff-protocol.md` — Add `storyScope` to handoff format
-7. **Modify** `.roomodes` — Add story-planner mode entry
+7. **Modify** `.roomodes` — Add tdd-ddd-story-planner mode entry
 8. **Modify** `.roo/rules.md` — Add story decomposition reference
 9. **Create** `docs/stories/.gitkeep` — Ensure directory exists
 
@@ -654,7 +654,7 @@ The files must be created/modified in this order:
 
 After implementation, verify:
 
-- [ ] The `story-planner` mode is registered in `.roomodes` with correct file restrictions
+- [ ] The `tdd-ddd-story-planner` mode is registered in `.roomodes` with correct file restrictions
 - [ ] Framework document 11 exists and is referenced in the document index
 - [ ] The Story Planner skill is defined in `04-skill-definitions.md`
 - [ ] Phase 3.5 is defined in `05-phase-definitions.md` with entry/exit criteria

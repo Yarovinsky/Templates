@@ -41,7 +41,7 @@ Enforcement is achieved through **8 custom Roo modes** (including an orchestrato
 | 07 | `07-acceptance-criteria.md`      | Per-artifact and per-story acceptance criteria and Definition of Done        |
 | 08 | `08-failure-handling.md`         | Recovery procedures, rollback rules, and audit log specification            |
 | 09 | `09-handoff-protocol.md`         | Inter-skill structured handoff message format, validation, and story scope  |
-| 10 | `10-script-constraint.md`        | `.agents/scripts/` path enforcement, manifest reference, and violation rules |
+| 10 | `10-script-constraint.md`        | permitted commands list enforcement, manifest reference, and violation rules |
 | 11 | `11-story-decomposition.md`      | Story Planner skill, MVP-scoped story decomposition, backlog schema, and story-scoped iteration loop |
 
 ---
@@ -68,12 +68,12 @@ Enforcement is achieved through **8 custom Roo modes** (including an orchestrato
 
 ## 5. Relationship to Execution Rules
 
-This framework operates **in addition to** the script security and execution rules defined in [`.agents/ROO_EXECUTION_RULES.md`](.agents/ROO_EXECUTION_RULES.md).
+This framework operates **in addition to** the script security and execution rules defined in [`.agents/ROO_EXECUTION_RULES.md`](../ROO_EXECUTION_RULES.md).
 
 Specifically:
 
 - All script invocations during any framework phase MUST comply with the security constraints in `ROO_EXECUTION_RULES.md`.
-- The script inventory in [`.agents/scripts/manifest.json`](.agents/scripts/manifest.json) documents the sanctioned scripts and their contracts.
+- The script inventory in [`.agents/scripts/manifest.json`](../scripts/manifest.json) documents the sanctioned scripts and their contracts.
 - No scripts may be created, executed, or referenced outside the `.agents/scripts/` directory — see `10-script-constraint.md` for enforcement details.
 - The `ScriptSecurity.psm1` shared module provides the foundational security primitives (path validation, metacharacter blocking, symlink traversal prevention) that all scripts depend on.
 

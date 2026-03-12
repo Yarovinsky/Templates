@@ -1,0 +1,9 @@
+{
+  "status": "placeholder",
+  "description": "Initial quality gate configuration placeholder referenced by the framework.",
+  "coverageThreshold": null,
+  "mutationThreshold": null,
+  "notes": [
+    "Replace with concrete quality gate thresholds when the project defines them."
+  ]
+}

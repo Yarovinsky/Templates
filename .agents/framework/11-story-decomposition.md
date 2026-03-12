@@ -22,8 +22,8 @@ Phase 3.5 transforms the DDD model (a static architecture) into an **executable 
 
 ## 2. Skill: Story Planner
 
-**Mode Slug**: `story-planner`
-**Mode Name**: 📋 Story Planner
+**Mode Slug**: `tdd-ddd-story-planner`
+**Mode Name**: 📋 TDD-DDD Story Planner
 **Skill Number**: 8
 
 ### 2.1 Responsibilities
@@ -490,7 +490,7 @@ The orchestrator's phase-state.json gains a `storyLoop` section:
 ```json
 {
   "currentPhase": "4",
-  "currentSkill": "test-author",
+  "currentSkill": "tdd-ddd-test-author",
   "currentStoryId": "STORY-003",
   "storyLoop": {
     "active": true,
@@ -519,9 +519,9 @@ After a story passes its per-story Phase 7 validation (all quality gates pass), 
 
 #### Procedure
 
-1. **Stage all changes**: Run `.\.agents\scripts\git.cmd add -A` to stage all modified, added, and deleted files
-2. **Commit**: Run `.\.agents\scripts\git.cmd commit -m "feat(STORY-NNN): <story title>"` where `STORY-NNN` and `<story title>` are taken from the completed story file
-3. **Push**: Run `.\.agents\scripts\git.cmd push` to push the commit to the remote
+1. **Stage all changes**: Run `git.cmd add -A` to stage all modified, added, and deleted files
+2. **Commit**: Run `git.cmd commit -m "feat(STORY-NNN): <story title>"` where `STORY-NNN` and `<story title>` are taken from the completed story file
+3. **Push**: Run `git.cmd push` to push the commit to the remote
 
 #### Commit Message Format
 
@@ -541,7 +541,7 @@ Examples:
 | Rule | Description |
 |------|-------------|
 | GR-01 | Commit and push occurs **only** after the per-story Phase 7 quality gates pass — never on failure |
-| GR-02 | All scripts MUST be invoked via `.\.agents\scripts\git.cmd` — direct `git` invocation is forbidden per `10-script-constraint.md` |
+| GR-02 | All git operations MUST be invoked via `git.cmd` — direct `git` invocation is forbidden per `10-script-constraint.md` |
 | GR-03 | If `git push` fails (e.g., network error), the orchestrator MUST retry once; if the retry also fails, log the failure to the audit log and continue to the next story — the commit is preserved locally |
 | GR-04 | The commit includes **all** project files changed during the story's Phases 4–7 (tests, source, docs, state files) |
 | GR-05 | The orchestrator appends a `STORY_COMMITTED` event to the audit log (`.agents/state/audit.jsonl`) with the story ID, commit hash (from git output), and timestamp |
@@ -604,7 +604,7 @@ This field is:
   "handoffId": "HO-NNN-timestamp",
   "type": "DISPATCH",
   "from": { "skill": "tdd-ddd-orchestrator", "phase": "3.5", "mode": "tdd-ddd-orchestrator" },
-  "to": { "skill": "story-planner", "phase": "3.5", "mode": "story-planner" },
+  "to": { "skill": "tdd-ddd-story-planner", "phase": "3.5", "mode": "tdd-ddd-story-planner" },
   "artifacts": [
     { "name": "Validated HLD", "path": "docs/hld/validated-hld.md", "type": "MARKDOWN", "status": "VALIDATED" },
     { "name": "Glossary", "path": "docs/glossary.md", "type": "MARKDOWN", "status": "VALIDATED" },
@@ -629,7 +629,7 @@ This field is:
 {
   "handoffId": "HO-NNN-timestamp",
   "type": "COMPLETION",
-  "from": { "skill": "story-planner", "phase": "3.5", "mode": "story-planner" },
+  "from": { "skill": "tdd-ddd-story-planner", "phase": "3.5", "mode": "tdd-ddd-story-planner" },
   "to": { "skill": "tdd-ddd-orchestrator", "phase": "3.5", "mode": "tdd-ddd-orchestrator" },
   "artifacts": [
     { "name": "Backlog Manifest", "path": "docs/stories/backlog.json", "type": "JSON", "status": "CREATED" },
@@ -651,7 +651,7 @@ This field is:
   "phase": "3.5",
   "phaseName": "Story Decomposition",
   "completedAt": "ISO-8601 timestamp",
-  "ownerSkill": "story-planner",
+  "ownerSkill": "tdd-ddd-story-planner",
   "exitCriteriaResults": [
     {
       "criterion": "All stories have complete fields per schema",

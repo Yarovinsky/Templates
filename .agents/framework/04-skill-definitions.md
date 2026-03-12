@@ -15,13 +15,13 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 | # | Skill | Mode Slug | Primary Phase(s) |
 |---|-------|-----------|-------------------|
 | 1 | TDD-DDD Orchestrator | `tdd-ddd-orchestrator` | All (coordination) |
-| 2 | Analyst | `analyst` | Phase 1 |
-| 3 | DDD Architect | `ddd-architect` | Phase 2, Phase 3 |
-| 4 | Story Planner | `story-planner` | Phase 3.5 |
-| 5 | Test Author | `test-author` | Phase 4 |
-| 6 | Implementer | `implementer` | Phase 5 |
-| 7 | Refactorer | `refactorer` | Phase 6 |
-| 8 | Validator | `validator` | Phase 7 |
+| 2 | TDD-DDD Analyst | `tdd-ddd-analyst` | Phase 1 |
+| 3 | TDD-DDD Architect | `tdd-ddd-architect` | Phase 2, Phase 3 |
+| 4 | TDD-DDD Story Planner | `tdd-ddd-story-planner` | Phase 3.5 |
+| 5 | TDD-DDD Test Author | `tdd-ddd-test-author` | Phase 4 |
+| 6 | TDD-DDD Implementer | `tdd-ddd-implementer` | Phase 5 |
+| 7 | TDD-DDD Refactorer | `tdd-ddd-refactorer` | Phase 6 |
+| 8 | TDD-DDD Validator | `tdd-ddd-validator` | Phase 7 |
 
 ---
 
@@ -80,7 +80,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 3. Skill: Analyst
 
-**Mode Slug**: `analyst`
+**Mode Slug**: `tdd-ddd-analyst`
 
 ### Responsibilities
 
@@ -126,7 +126,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 4. Skill: DDD Architect
 
-**Mode Slug**: `ddd-architect`
+**Mode Slug**: `tdd-ddd-architect`
 
 ### Responsibilities
 
@@ -183,7 +183,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 5. Skill: Story Planner
 
-**Mode Slug**: `story-planner`
+**Mode Slug**: `tdd-ddd-story-planner`
 
 ### Responsibilities
 
@@ -240,7 +240,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 6. Skill: Test Author
 
-**Mode Slug**: `test-author`
+**Mode Slug**: `tdd-ddd-test-author`
 
 ### Responsibilities
 
@@ -295,7 +295,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 7. Skill: Implementer
 
-**Mode Slug**: `implementer`
+**Mode Slug**: `tdd-ddd-implementer`
 
 ### Responsibilities
 
@@ -338,7 +338,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 8. Skill: Refactorer
 
-**Mode Slug**: `refactorer`
+**Mode Slug**: `tdd-ddd-refactorer`
 
 ### Responsibilities
 
@@ -385,7 +385,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ## 9. Skill: Validator
 
-**Mode Slug**: `validator`
+**Mode Slug**: `tdd-ddd-validator`
 
 ### Responsibilities
 
@@ -398,7 +398,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ### Permitted Actions
 
-- Execute test runner commands via `.agents/scripts/` wrappers
+- Execute test runner commands via `.agents\\scripts\\` wrappers
 - Write report files (markdown, JSON, XML)
 - Read all source and test files for analysis
 

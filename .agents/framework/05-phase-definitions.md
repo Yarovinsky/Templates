@@ -28,7 +28,7 @@ After Phase 3.5 (Story Decomposition), the orchestrator enters a **story iterati
 
 ## 2. Phase 1: HLD Intake and Validation
 
-**Owner Skill**: Analyst (`analyst`)
+**Owner Skill**: TDD-DDD Analyst (`tdd-ddd-analyst`)
 
 ### Entry Criteria
 
@@ -67,7 +67,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 
 ## 3. Phase 2: Strategic Domain Modeling
 
-**Owner Skill**: DDD Architect (`ddd-architect`)
+**Owner Skill**: TDD-DDD Architect (`tdd-ddd-architect`)
 
 ### Entry Criteria
 
@@ -103,7 +103,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 
 ## 4. Phase 3: Tactical Domain Modeling
 
-**Owner Skill**: DDD Architect (`ddd-architect`)
+**Owner Skill**: TDD-DDD Architect (`tdd-ddd-architect`)
 
 ### Entry Criteria
 
@@ -153,7 +153,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 
 ## 5. Phase 3.5: Story Decomposition
 
-**Owner Skill**: Story Planner (`story-planner`)
+**Owner Skill**: TDD-DDD Story Planner (`tdd-ddd-story-planner`)
 
 ### Entry Criteria
 
@@ -198,7 +198,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 
 ## 6. Phase 4: Test Specification (Story-Scoped)
 
-**Owner Skill**: Test Author (`test-author`)
+**Owner Skill**: TDD-DDD Test Author (`tdd-ddd-test-author`)
 
 > **Story Loop**: After Phase 3.5, Phases 4–7 are executed iteratively for each story in the backlog. The orchestrator dispatches each phase with a `storyScope` field in the handoff message, scoping the work to the current story's bounded context, aggregates, DDD artifacts, and acceptance criteria.
 
@@ -249,7 +249,7 @@ Uses the red-green-refactor cycle internally — **RED only**. All tests must be
 
 ## 7. Phase 5: Implementation (Story-Scoped)
 
-**Owner Skill**: Implementer (`implementer`)
+**Owner Skill**: TDD-DDD Implementer (`tdd-ddd-implementer`)
 
 > **Story Loop**: Scoped to the current story's failing tests and DDD artifacts. The Implementer writes minimum code to pass the story's tests while ensuring all previously passing tests (from prior stories) continue to pass.
 
@@ -287,7 +287,7 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 
 ## 8. Phase 6: Refactoring (Story-Scoped)
 
-**Owner Skill**: Refactorer (`refactorer`)
+**Owner Skill**: TDD-DDD Refactorer (`tdd-ddd-refactorer`)
 
 > **Story Loop**: Scoped to the current story's production code. The Refactorer applies the REFACTOR checklist to code introduced by the current story, while ensuring all tests (current story and all prior stories) continue to pass.
 
@@ -330,7 +330,7 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 
 ## 9. Phase 7: Validation and Delivery (Story-Scoped + Final)
 
-**Owner Skill**: Validator (`validator`)
+**Owner Skill**: TDD-DDD Validator (`tdd-ddd-validator`)
 
 > **Story Loop**: Phase 7 is invoked twice: (1) **Per-story validation** — after each story's Phase 6, applying quality gates scoped to the story's tests, coverage, and traceability. (2) **Final full-product validation** — after all stories complete, applying quality gates across the entire codebase. See `11-story-decomposition.md` Section 7 for story-scoped quality gate behavior.
 >
@@ -391,7 +391,7 @@ Each phase produces a **completion record** in JSON format. This record serves a
   "phase": 1,
   "phaseName": "HLD Intake and Validation",
   "completedAt": "ISO-8601 timestamp",
-  "ownerSkill": "analyst",
+  "ownerSkill": "tdd-ddd-analyst",
   "exitCriteriaResults": [
     {
       "criterion": "description",

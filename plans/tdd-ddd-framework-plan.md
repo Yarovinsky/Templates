@@ -42,12 +42,12 @@ Create a production-ready, directly executable framework specification that serv
 ├── rules.md                        # Existing — update to also reference framework
 └── modes/
     ├── tdd-ddd-orchestrator.md     # Phase coordinator, handoff dispatcher, audit log
-    ├── analyst.md                   # HLD parsing, domain discovery, glossary
-    ├── ddd-architect.md            # Aggregate design, context maps, contracts
-    ├── test-author.md              # Test writing — may NOT write production code
-    ├── implementer.md              # Production code — may NOT write tests
-    ├── refactorer.md               # Post-green refactoring only
-    └── validator.md                # Test execution, quality gates, reports
+    ├── tdd-ddd-analyst.md                   # HLD parsing, domain discovery, glossary
+    ├── tdd-ddd-architect.md                # Aggregate design, context maps, contracts
+    ├── tdd-ddd-test-author.md              # Test writing — may NOT write production code
+    ├── tdd-ddd-implementer.md              # Production code — may NOT write tests
+    ├── tdd-ddd-refactorer.md               # Post-green refactoring only
+    └── tdd-ddd-validator.md                # Test execution, quality gates, reports
 ```
 
 ## 4. Custom Roo Mode Definitions
@@ -80,7 +80,7 @@ Each mode maps to a framework skill and enforces file restrictions:
 ```json
 {
   "currentPhase": 1,
-  "currentSkill": "analyst",
+  "currentSkill": "tdd-ddd-analyst",
   "phaseHistory": [],
   "pendingClarifications": [],
   "auditLogPath": ".agents/state/audit.jsonl",
@@ -92,8 +92,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 | Property | Value |
 |----------|-------|
-| Slug | `analyst` |
-| Name | 🔍 Analyst |
+| Slug | `tdd-ddd-analyst` |
+| Name | 🔍 TDD-DDD Analyst |
 | Role | HLD parsing, domain discovery, ubiquitous language glossary, context mapping |
 | Writable files | `*.md`, `*.json` under `docs/`, `.agents/framework/`, project `glossary/` |
 | Read-only | Everything else |
@@ -103,8 +103,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 | Property | Value |
 |----------|-------|
-| Slug | `ddd-architect` |
-| Name | 🏛️ DDD Architect |
+| Slug | `tdd-ddd-architect` |
+| Name | 🏛️ TDD-DDD Architect |
 | Role | Aggregate design, bounded context interface contracts, infrastructure topology, conflict resolution |
 | Writable files | `*.md`, `*.json`, interface/contract definition files, architecture decision records |
 | Read-only | Test files, production implementation files |
@@ -114,8 +114,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 | Property | Value |
 |----------|-------|
-| Slug | `test-author` |
-| Name | 🧪 Test Author |
+| Slug | `tdd-ddd-test-author` |
+| Name | 🧪 TDD-DDD Test Author |
 | Role | Writing all test artifacts before implementation, test data builders, traceability matrices |
 | Writable files | `*Test*`, `*Spec*`, `*test*`, `*spec*`, test fixture/builder files, `*.md` |
 | Read-only | Production source files — may read for interface discovery but NOT modify |
@@ -125,8 +125,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 | Property | Value |
 |----------|-------|
-| Slug | `implementer` |
-| Name | 🔨 Implementer |
+| Slug | `tdd-ddd-implementer` |
+| Name | 🔨 TDD-DDD Implementer |
 | Role | Writing minimum production code to pass existing failing tests |
 | Writable files | Production source files — NOT test files |
 | Read-only | Test files — may read to understand expectations |
@@ -136,8 +136,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 | Property | Value |
 |----------|-------|
-| Slug | `refactorer` |
-| Name | ♻️ Refactorer |
+| Slug | `tdd-ddd-refactorer` |
+| Name | ♻️ TDD-DDD Refactorer |
 | Role | Post-green refactoring, tech debt logging, DDD alignment review |
 | Writable files | Production source files, `*.md` for tech debt logs |
 | Read-only | Test files — must not change test expectations during refactoring |
@@ -147,8 +147,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 | Property | Value |
 |----------|-------|
-| Slug | `validator` |
-| Name | ✅ Validator |
+| Slug | `tdd-ddd-validator` |
+| Name | ✅ TDD-DDD Validator |
 | Role | Running test suites, enforcing quality gates, generating reports, issuing pass/fail verdicts |
 | Writable files | `*.md`, `*.json`, `*.xml` report files only |
 | Read-only | All source and test files |
@@ -402,12 +402,12 @@ The files should be created in this sequence:
 11. `.agents/framework/09-handoff-protocol.md`
 12. `.agents/framework/10-script-constraint.md`
 13. `.roo/modes/tdd-ddd-orchestrator.md` — Orchestrator mode (entry point)
-14. `.roo/modes/analyst.md`
-15. `.roo/modes/ddd-architect.md`
-16. `.roo/modes/test-author.md`
-17. `.roo/modes/implementer.md`
-18. `.roo/modes/refactorer.md`
-19. `.roo/modes/validator.md`
+14. `.roo/modes/tdd-ddd-analyst.md`
+15. `.roo/modes/tdd-ddd-architect.md`
+16. `.roo/modes/tdd-ddd-test-author.md`
+17. `.roo/modes/tdd-ddd-implementer.md`
+18. `.roo/modes/tdd-ddd-refactorer.md`
+19. `.roo/modes/tdd-ddd-validator.md`
 20. Update `.agents/ROO_EXECUTION_RULES.md` — Add framework cross-reference
 21. Update `.roo/rules.md` — Add framework cross-reference
 

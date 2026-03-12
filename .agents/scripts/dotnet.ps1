@@ -1,9 +1,9 @@
-# .agents/scripts/dotnet.ps1
+# dotnet.ps1
 [CmdletBinding(PositionalBinding = $false)]
 param(
   # Primary verb, not free-form
   [Parameter(Mandatory = $true, Position = 0)]
-  [ValidateSet("test","run","build","restore","format","help")]
+  [ValidateSet("test","run","build","restore","format","help","sln")]
   [string] $Action,
 
   # Everything else goes here (Roo passes args after --)
@@ -131,20 +131,20 @@ if ($Action -eq "help") {
 @"
 Usage:
 
-  .\.agents\scripts\dotnet.cmd test [dotnet test args...] [-MatchPattern '...' ] [-LastLines N]
-  .\.agents\scripts\dotnet.cmd run  [dotnet run  args...] [-MatchPattern '...' ] [-LastLines N]
-  .\.agents\scripts\dotnet.cmd build [dotnet build args...] ...
-  .\.agents\scripts\dotnet.cmd restore [dotnet restore args...] ...
-  .\.agents\scripts\dotnet.cmd format [dotnet format args...] ...
+  dotnet.cmd test [dotnet test args...] [-MatchPattern '...' ] [-LastLines N]
+  dotnet.cmd run  [dotnet run  args...] [-MatchPattern '...' ] [-LastLines N]
+  dotnet.cmd build [dotnet build args...] ...
+  dotnet.cmd restore [dotnet restore args...] ...
+  dotnet.cmd format [dotnet format args...] ...
 
 Examples:
 
-  .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj --no-build --filter "FullyQualifiedName~SomeTests"
-  .\.agents\scripts\dotnet.cmd test --collect:""XPlat Code Coverage"" -LastLines 200
-  .\.agents\scripts\dotnet.cmd run --project src/VexaNews.Api/VexaNews.Api.csproj -- --urls http://localhost:5000
-  .\.agents\scripts\dotnet.cmd build --configuration Release
-  .\.agents\scripts\dotnet.cmd format
-  .\.agents\scripts\dotnet.cmd test tests/MyTests.csproj -Timeout 120
+  dotnet.cmd test tests/MyTests.csproj --no-build --filter "FullyQualifiedName~SomeTests"
+  dotnet.cmd test --collect:""XPlat Code Coverage"" -LastLines 200
+  dotnet.cmd run --project src/VexaNews.Api/VexaNews.Api.csproj -- --urls http://localhost:5000
+  dotnet.cmd build --configuration Release
+  dotnet.cmd format
+  dotnet.cmd test tests/MyTests.csproj -Timeout 120
 
 Timeout: Default 300s (5 min). Override with -Timeout 600. Use -Timeout 0 to disable.
 Note: --project is automatically converted to a positional arg for 'test' (.NET 10+ compat).

@@ -238,7 +238,7 @@ Tests are organized into 5 layers, each with a defined scope, purpose, and owner
 
 ## 6. Quality Gates
 
-Quality gates are mandatory checkpoints that MUST pass before any artifact or phase can be marked complete. Gate configurations are stored in [`.agents/state/quality-gates.json`](../.agents/state/quality-gates.json) with overridable thresholds.
+Quality gates are mandatory checkpoints that MUST pass before any artifact or phase can be marked complete. Gate configurations are stored in [`.agents/state/quality-gates.json`](../state/quality-gates.json) with overridable thresholds.
 
 ### QG-01: No Skipped Tests
 

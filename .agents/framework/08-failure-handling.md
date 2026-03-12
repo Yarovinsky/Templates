@@ -115,8 +115,8 @@ This document defines rules for runtime failures, recovery procedures, and the i
 
 ## Failure Mode 7: Direct Command Execution (Script Constraint Violation)
 
-- **Trigger**: Any skill executes a system command that does not start with `.\.agents\scripts\`.
-- **Detection**: Orchestrator or human reviewer identifies a raw command (e.g., `del`, `mkdir`, `dotnet`, `git`, `rm`, `type`, `dir`, `copy`, `move`) in terminal output instead of the corresponding `.\.agents\scripts\*.cmd` wrapper.
+- **Trigger**: Any skill executes a system command that is not one of the approved wrappers (`dotnet.cmd`, `docker.cmd`, `git.cmd`, `curl.cmd`, `repo.cmd`).
+- **Detection**: Orchestrator or human reviewer identifies a raw command (e.g., `del`, `mkdir`, `dotnet`, `git`, `rm`, `type`, `dir`, `copy`, `move`) in terminal output instead of the corresponding approved `.cmd` wrapper.
 - **Severity**: FATAL
 - **Recovery Procedure**:
   1. HALT immediately.
@@ -126,7 +126,7 @@ This document defines rules for runtime failures, recovery procedures, and the i
      
      **Timestamp**: [ISO-8601]
      **Attempted Command**: [the raw command that was executed]
-     **Required Form**: [the correct .\.agents\scripts\*.cmd equivalent]
+     **Required Form**: [the correct approved .cmd wrapper equivalent]
      **Phase**: [current phase]
      **Skill**: [current skill]
      
@@ -134,7 +134,7 @@ This document defines rules for runtime failures, recovery procedures, and the i
      extend one per Section 5 of ROO_EXECUTION_RULES.md.
      ```
   3. Undo any side effects of the unauthorized command if possible (e.g., if a file was deleted, restore it; if a file was created outside the wrapper, remove it and re-create via wrapper).
-  4. Re-execute the operation using the correct `.\.agents\scripts\*.cmd` wrapper.
+  4. Re-execute the operation using the correct approved `.cmd` wrapper.
   5. If no wrapper exists for the needed operation, escalate to extend the wrapper per Section 5 of `ROO_EXECUTION_RULES.md`.
 - **Audit Log Entry**: `FAILURE:SCRIPT_CONSTRAINT_VIOLATION`
 - **Cross-Reference**: `.agents/ROO_EXECUTION_RULES.md` Section 0, `.agents/framework/10-script-constraint.md`
@@ -152,7 +152,7 @@ This document defines rules for runtime failures, recovery procedures, and the i
     "timestamp": "2026-03-02T12:00:00.000Z",
     "eventType": "PHASE_TRANSITION | SKILL_DISPATCH | SKILL_COMPLETION | HANDOFF_ACCEPTED | HANDOFF_REJECTED | QUALITY_GATE_EVALUATION | TEST_RESULT | FAILURE | DEVIATION | CLARIFICATION_REQUEST | CLARIFICATION_RESPONSE",
     "phase": 1,
-    "skill": "analyst",
+    "skill": "tdd-ddd-analyst",
     "details": {
       "description": "Human-readable description of the event",
       "artifacts": ["list of affected artifact paths"],
