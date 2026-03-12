@@ -2,7 +2,7 @@
 
 ## 1. Objective
 
-Create a production-ready, directly executable framework specification that serves as Roo's authoritative rule system for building software products using strict Test-Driven Development and Domain-Driven Design. The specification will be technology-agnostic, structured as a set of files under `.agents/framework/`, and enforced mechanically through 7 custom Roo modes with file restrictions (including an orchestrator mode that coordinates phase transitions and skill handoffs).
+Create a production-ready, directly executable framework specification that serves as Roo's authoritative rule system for building software products using strict Test-Driven Development and Domain-Driven Design. The specification will be technology-agnostic, structured as a set of files under `.agents/framework/`, and enforced mechanically through 8 custom Roo modes with file restrictions (including an orchestrator mode that coordinates phase transitions and skill handoffs).
 
 ## 2. Decisions Made
 
@@ -10,7 +10,7 @@ Create a production-ready, directly executable framework specification that serv
 |----------|--------|-----------|
 | Output format | Structured directory `.agents/framework/` with separate files per section | Modularity, independent updates, easier navigation |
 | Technology scope | Fully technology-agnostic; stack derived from HLD | Reusable across projects |
-| Skill enforcement | 7 custom Roo modes with hard file restrictions (including orchestrator) | Mechanical enforcement of TDD discipline — violations become impossible, not merely discouraged |
+| Skill enforcement | 8 custom Roo modes with hard file restrictions (including orchestrator) | Mechanical enforcement of TDD discipline — violations become impossible, not merely discouraged |
 | Existing rules relationship | New framework references existing `ROO_EXECUTION_RULES.md` by cross-reference; existing rules updated with a pointer to the framework | Avoids duplication, maintains single source of truth for script security |
 
 ## 3. File Structure
@@ -23,8 +23,8 @@ Create a production-ready, directly executable framework specification that serv
 │   ├── 01-hld-input-contract.md    # HLD parsing, validation, gap/ambiguity handling
 │   ├── 02-ddd-transformation.md    # DDD decomposition pipeline with traceability
 │   ├── 03-tdd-execution-model.md   # Red-green-refactor cycle, test layers, quality gates
-│   ├── 04-skill-definitions.md     # 7 skills: responsibilities, permissions, prohibitions
-│   ├── 05-phase-definitions.md     # 7 phases with artifacts, sequencing, iteration rules
+│   ├── 04-skill-definitions.md     # 8 skills: responsibilities, permissions, prohibitions
+│   ├── 05-phase-definitions.md     # 8 phases with artifacts, sequencing, iteration rules
 │   ├── 06-naming-conventions.md    # Enforceable naming rules for all artifact types
 │   ├── 07-acceptance-criteria.md   # Acceptance criteria, Definition of Done
 │   ├── 08-failure-handling.md      # Recovery, rollback, audit log specification
@@ -67,7 +67,7 @@ Each mode maps to a framework skill and enforces file restrictions:
 
 **Orchestrator Responsibilities:**
 
-1. **Phase State Management**: Track the current phase (1–7), enforce sequential progression, and block phase advancement until all exit criteria are met
+1. **Phase State Management**: Track the current phase (1–8), enforce sequential progression, and block phase advancement until all exit criteria are met
 2. **Skill Dispatching**: Determine which skill mode is needed next based on the current phase and sub-step, then initiate the mode switch with a structured handoff message
 3. **Precondition Validation**: Before dispatching to any skill mode, verify that all input artifacts exist and meet the expected contract
 4. **Handoff Coordination**: Receive completion signals from skill modes, validate output artifacts, and route to the next skill or back for rework
@@ -110,7 +110,18 @@ Each mode maps to a framework skill and enforces file restrictions:
 | Read-only | Test files, production implementation files |
 | Prohibited actions | Writing test bodies or production implementation logic |
 
-### 4.3 Test Author Mode
+### 4.3 Story Planner Mode
+
+| Property | Value |
+|----------|-------|
+| Slug | `tdd-ddd-story-planner` |
+| Name | 📋 TDD-DDD Story Planner |
+| Role | Decomposing validated DDD outputs into an ordered, MVP-scoped story backlog |
+| Writable files | `docs/stories/*.json`, `docs/stories/*.md`, `docs/**/*.md`, `.agents/state/*.json` |
+| Read-only | Source code and test files |
+| Prohibited actions | Writing production code or automated tests |
+
+### 4.4 Test Author Mode
 
 | Property | Value |
 |----------|-------|
@@ -121,7 +132,7 @@ Each mode maps to a framework skill and enforces file restrictions:
 | Read-only | Production source files — may read for interface discovery but NOT modify |
 | Prohibited actions | Writing or modifying production code |
 
-### 4.4 Implementer Mode
+### 4.5 Implementer Mode
 
 | Property | Value |
 |----------|-------|
@@ -132,7 +143,7 @@ Each mode maps to a framework skill and enforces file restrictions:
 | Read-only | Test files — may read to understand expectations |
 | Prohibited actions | Writing or modifying test files; writing speculative code beyond what failing tests require |
 
-### 4.5 Refactorer Mode
+### 4.6 Refactorer Mode
 
 | Property | Value |
 |----------|-------|
@@ -143,7 +154,7 @@ Each mode maps to a framework skill and enforces file restrictions:
 | Read-only | Test files — must not change test expectations during refactoring |
 | Prohibited actions | Modifying test assertions or expectations; adding new functionality |
 
-### 4.6 Validator Mode
+### 4.7 Validator Mode
 
 | Property | Value |
 |----------|-------|
@@ -209,6 +220,8 @@ Each mode maps to a framework skill and enforces file restrictions:
   - Mutation testing on aggregate invariant tests with >= 85% kill rate
   - All tests pass before artifact marked complete
 
+> ARCHIVAL NOTE: This planning document records the baseline design path that led to the current repository state. Where it conflicts with the authoritative framework under [`.agents/framework/`](.agents/framework/) or [`.roo/rules.md`](.roo/rules.md:1), the authoritative framework wins.
+
 ### 5.5 `04-skill-definitions.md`
 - Per-skill specification:
   - Responsibilities list
@@ -217,20 +230,21 @@ Each mode maps to a framework skill and enforces file restrictions:
   - Input artifacts expected
   - Output artifacts produced
   - Preconditions for activation
-- Skills: TDD-DDD Orchestrator, Analyst, DDD Architect, Test Author, Implementer, Refactorer, Validator
+- Skills: TDD-DDD Orchestrator, Analyst, DDD Architect, Story Planner, Test Author, Implementer, Refactorer, Validator
 - Cross-reference to Roo mode slugs
 - Orchestrator as the mandatory entry point and coordinator — no skill mode may be entered directly except via orchestrator dispatch
 - Escalation rules when a skill encounters work outside its scope
 
 ### 5.6 `05-phase-definitions.md`
-- 7 mandatory phases in strict sequence:
+- 8 mandatory phases in strict sequence:
   1. HLD Intake and Validation → validated HLD + gap report
   2. Strategic Domain Modeling → domains, bounded contexts, context maps, glossary
   3. Tactical Domain Modeling → aggregates, entities, VOs, events, repos, services with specs
-  4. Test Specification → complete failing test suite at all layers with traceability
-  5. Implementation → production code passing all tests, no speculative additions
-  6. Refactoring → cleaned, DDD-aligned, SOLID-compliant code + updated docs
-  7. Validation and Delivery → quality gate report, traceability matrix, ADRs, tech debt register, deployable artifacts
+  4. Story Decomposition → ordered MVP-scoped backlog, story files, and MVP scope record
+  5. Test Specification → complete failing test suite at all layers with traceability
+  6. Implementation → production code passing all tests, no speculative additions
+  7. Refactoring → cleaned, DDD-aligned, SOLID-compliant code + updated docs
+  8. Validation and Delivery → quality gate report, traceability matrix, ADRs, tech debt register, deployable artifacts
 - Named output artifacts per phase with specified formats
 - Phase skip/reorder prohibition
 - Intra-phase iteration via red-green-refactor only
@@ -255,7 +269,7 @@ Each mode maps to a framework skill and enforces file restrictions:
   - BC interface: has contract test
   - Application workflow: has E2E acceptance test
 - Definition of Done for entire product:
-  - All 7 phases completed in order
+  - All 8 phases completed in order
   - All quality gates passed
   - Traceability matrix complete — no orphaned requirements or tests
   - Zero failing tests
@@ -312,22 +326,22 @@ flowchart TD
     F --> ORC4[Orchestrator: Validate Phase 2 Outputs]
     ORC4 --> G[Phase 3: Dispatch to DDD Architect Mode]
     G --> ORC5[Orchestrator: Validate Phase 3 Outputs]
-    ORC5 --> H[Phase 4: Dispatch to Test Author Mode]
-    H --> ORC6[Orchestrator: Validate Failing Test Suite]
-    ORC6 --> I[Phase 5: Dispatch to Implementer Mode]
+    ORC5 --> H[Phase 4: Dispatch to Story Planner Mode]
+    H --> ORC6[Orchestrator: Validate Story Backlog]
+    ORC6 --> I[Phase 5: Dispatch to Test Author Mode]
     I --> J{All Tests Pass?}
     J -->|No| I
     J -->|Yes| ORC7[Orchestrator: Advance to Phase 6]
-    ORC7 --> K[Phase 6: Dispatch to Refactorer Mode]
+    ORC7 --> K[Phase 6: Dispatch to Implementer Mode]
     K --> L{Refactoring Broke Tests?}
     L -->|Yes| M[Orchestrator: Undo + Decompose]
     M --> K
     L -->|No| ORC8[Orchestrator: Advance to Phase 7]
-    ORC8 --> N[Phase 7: Dispatch to Validator Mode]
+    ORC8 --> N[Phase 7: Dispatch to Refactorer Mode]
     N --> P{Quality Gates Pass?}
     P -->|No| ORC9[Orchestrator: Route to Correct Phase]
-    ORC9 --> H
-    P -->|Yes| Q[Orchestrator: Finalize Deliverables]
+    ORC9 --> I
+    P -->|Yes| Q[Orchestrator: Dispatch Phase 8 Validator]
 ```
 
 ## 7. TDD Red-Green-Refactor Cycle Detail
@@ -353,6 +367,7 @@ sequenceDiagram
     participant OR as Orchestrator
     participant AN as Analyst
     participant AR as DDD Architect
+    participant SP as Story Planner
     participant TA as Test Author
     participant IM as Implementer
     participant RE as Refactorer

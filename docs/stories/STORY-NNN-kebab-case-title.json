@@ -1,5 +1,6 @@
 {
-  "$schema": "story-schema-v1",
+  "$schema": "./schemas/story.schema.json",
+  "templateWarning": "Baseline example only. Replace every placeholder value, requirement tag, and artifact reference before delivery use.",
   "storyId": "STORY-NNN",
   "sequenceNumber": 1,
   "title": "Replace With Story Title",
@@ -52,7 +53,8 @@
     "phase4": "pending",
     "phase5": "pending",
     "phase6": "pending",
-    "phase7": "pending"
+    "phase7": "pending",
+    "phase8": "pending"
   },
   "createdAt": "2026-03-12T12:00:00.000Z",
   "completedAt": null

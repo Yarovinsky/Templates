@@ -29,7 +29,7 @@ Read these as the contract first. Everything else in the repository either suppo
 This baseline implements the framework as an **8-skill / 8-phase** model:
 
 - **8 skills**: Orchestrator, Analyst, DDD Architect, Story Planner, Test Author, Implementer, Refactorer, and Validator
-- **8 phases**: Phase 1 through Phase 8, with **Phase 4 Story Decomposition** between tactical modeling and test specification
+- **8 phases**: Phase 1 through Phase 8, with **Phase 4 Story Decomposition** followed by **Phase 5 Test Specification**
 - **story-scoped execution loop**: after Phase 4, the orchestrator drives Phases 5–8 once per ordered story until the backlog is complete
 
 At a high level, the workflow is:
@@ -52,6 +52,22 @@ Within [`docs/`](docs/), the main subareas are:
 - [`docs/stories/`](docs/stories/) — Phase 4 story backlog, ordered story files, and MVP scope artifacts
 - [`docs/reports/`](docs/reports/) — quality-gate, coverage, and mutation reporting outputs
 - [`docs/adr/`](docs/adr/) — architecture decision records
+
+## Using this baseline
+
+Use this repository as a baseline to copy, tailor, and then replace with project-specific artifacts.
+
+1. Read the authoritative contract in [`.agents/framework/00-overview.md`](.agents/framework/00-overview.md:1), [`.roo/rules.md`](.roo/rules.md:1), and [`.roomodes`](.roomodes).
+2. Keep the repository structure, but replace placeholder values in [`docs/hld/`](docs/hld/), [`docs/ddd/`](docs/ddd/), [`docs/stories/`](docs/stories/), [`src/`](src/), and [`tests/`](tests/) with product-specific content.
+3. Treat [`docs/stories/backlog.json`](docs/stories/backlog.json) and each story file under [`docs/stories/`](docs/stories/) as runtime delivery artifacts, not fixed examples.
+4. Validate story and backlog JSON against [`docs/stories/schemas/backlog.schema.json`](docs/stories/schemas/backlog.schema.json) and [`docs/stories/schemas/story.schema.json`](docs/stories/schemas/story.schema.json).
+5. Preserve cross-links between HLD, DDD, stories, tests, and reports so traceability remains intact across all 8 phases.
+
+### Adoption notes
+
+- Files under [`plans/`](plans/) are historical planning records for building this baseline. They provide rationale, but the current contract is defined by the authoritative assets above.
+- Placeholder/template files intentionally contain examples. Replace all example names, IDs, timestamps, and requirements before using them in a real project.
+- The tactical DDD folders under [`docs/ddd/`](docs/ddd/) include sample artifact patterns that demonstrate expected detail; use them as shape references, not domain truth.
 
 ## Artifact categories and repository contract
 
@@ -92,7 +108,7 @@ In this baseline repository, some of those artifacts are present as examples or 
 
 ## Implementation status
 
-This repository should be treated as a **completed framework baseline**:
+This repository should be treated as a **current framework baseline**:
 
 - the framework contract is authored under [`.agents/framework/`](.agents/framework/)
 - Roo mode registration is present in [`.roomodes`](.roomodes)

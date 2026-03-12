@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/docs/stories/schemas/story.schema.json",
+  "title": "TDD-DDD Story Artifact",
+  "type": "object",
+  "required": ["storyId", "sequenceNumber", "title", "fileNameConvention", "userStory", "boundedContext", "aggregates", "dddArtifacts", "acceptanceCriteria", "traceability", "complexity", "mvpJustification", "dependsOn", "status", "phaseProgress", "createdAt", "completedAt"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "templateWarning": { "type": "string" },
+    "storyId": { "type": "string", "pattern": "^STORY-[0-9]{3}$" },
+    "sequenceNumber": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string" },
+    "fileNameConvention": { "type": "string" },
+    "userStory": { "type": "string" },
+    "boundedContext": { "type": "string" },
+    "aggregates": { "type": "array", "items": { "type": "string" } },
+    "dddArtifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "name", "specPath"],
+        "properties": {
+          "type": { "type": "string" },
+          "name": { "type": "string" },
+          "specPath": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "acceptanceCriteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "criterion", "testable"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^AC-[0-9]{3}$" },
+          "criterion": { "type": "string" },
+          "testable": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "required": ["hldRequirements", "hldFeatureNarratives", "hldBusinessGoals"],
+      "properties": {
+        "hldRequirements": { "type": "array", "items": { "type": "string", "pattern": "^HLD-REQ-[0-9]{3}$" } },
+        "hldFeatureNarratives": { "type": "array", "items": { "type": "string", "pattern": "^HLD-FN-[0-9]{3}$" } },
+        "hldBusinessGoals": { "type": "array", "items": { "type": "string", "pattern": "^HLD-BG-[0-9]{3}$" } }
+      },
+      "additionalProperties": false
+    },
+    "complexity": { "type": "string", "enum": ["XS", "S", "M", "L", "XL"] },
+    "mvpJustification": { "type": "string" },
+    "dependsOn": { "type": "array", "items": { "type": "string", "pattern": "^STORY-[0-9]{3}$" } },
+    "status": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] },
+    "phaseProgress": {
+      "type": "object",
+      "required": ["phase4", "phase5", "phase6", "phase7", "phase8"],
+      "properties": {
+        "phase4": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] },
+        "phase5": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] },
+        "phase6": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] },
+        "phase7": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] },
+        "phase8": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] }
+      },
+      "additionalProperties": false
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

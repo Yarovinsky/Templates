@@ -2,19 +2,19 @@
 
 > **Version**: 1.1.0
 > **Date**: 2026-03-12
-> **Status**: Draft — Awaiting Approval
+> **Status**: Archived planning record — baseline implemented; retained for rationale only
 
 ---
 
 ## 1. Executive Summary
 
-This plan introduces a new **Story Planner** skill into the TDD-DDD Framework. The skill sits between Phase 3 (Tactical Domain Modeling) and Phase 4 (Test Specification), creating a new **Phase 4: Story Decomposition**. It accepts the validated DDD architecture as input and decomposes it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story then drives a complete TDD red-green-refactor cycle through Phases 5–8, executed iteratively — one story at a time.
+This plan introduces a new **Story Planner** skill into the TDD-DDD Framework. The skill sits between Phase 3 (Tactical Domain Modeling) and Phase 5 (Test Specification), creating **Phase 4: Story Decomposition**. It accepts the validated DDD architecture as input and decomposes it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story then drives a complete TDD red-green-refactor cycle through Phases 5–8, executed iteratively — one story at a time.
 
 ### Key Design Decisions
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| Pipeline placement | Post-Phase-3, Pre-Phase-4 (Phase 4) | Requires validated DDD model as input; stories scope subsequent TDD cycles |
+| Pipeline placement | Post-Phase-3, Pre-Phase-5 (Phase 4) | Requires validated DDD model as input; stories scope subsequent TDD cycles |
 | Story granularity | Implementation-ready | Each story maps to one or more aggregates/services within a single bounded context |
 | Story ordering | Strict sequential | Story Planner determines optimal order upfront; order is fixed once backlog is created |
 | Story storage | Individual JSON files under `docs/stories/` | Version-control friendly, machine-parseable, human-readable, traceable |
@@ -25,6 +25,8 @@ This plan introduces a new **Story Planner** skill into the TDD-DDD Framework. T
 
 ## 2. Revised Workflow Architecture
 
+> ARCHIVAL NOTE: This document describes the transition plan for introducing the Story Planner. It is retained as design history and should not be treated as the current authoritative contract.
+
 ### 2.1 Original 7-Phase Pipeline
 
 ```
@@ -34,7 +36,7 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7
 ### 2.2 New Pipeline with Story Decomposition
 
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 5 → Phase 6 → Phase 7 → Phase 8] × N stories
 ```
 
 ### 2.3 Workflow Diagram
@@ -51,13 +53,13 @@ flowchart TD
     CLR --> P35
     BL -->|Yes| LOOP[Orchestrator: Begin Story Loop]
     LOOP --> PICK[Pick Next Story from Backlog]
-    PICK --> P4[Phase 4: Test Author - Tests for Current Story]
-    P4 --> P5[Phase 5: Implementer - Code for Current Story]
-    P5 --> P6[Phase 6: Refactorer - Refactor Current Story]
-    P6 --> P7[Phase 7: Validator - Validate Current Story]
-    P7 --> PASS{Story QG Pass?}
+    PICK --> P5[Phase 5: Test Author - Tests for Current Story]
+    P5 --> P6[Phase 6: Implementer - Code for Current Story]
+    P6 --> P7[Phase 7: Refactorer - Refactor Current Story]
+    P7 --> P8[Phase 8: Validator - Validate Current Story]
+    P8 --> PASS{Story QG Pass?}
     PASS -->|No| REWORK[Route to Appropriate Phase]
-    REWORK --> P4
+    REWORK --> P5
     PASS -->|Yes| MARK[Mark Story Complete]
     MARK --> MORE{More Stories?}
     MORE -->|Yes| PICK
@@ -90,13 +92,13 @@ sequenceDiagram
     SP->>OR: Ordered Backlog + Story Files
 
     loop For Each Story in Backlog Order
-        OR->>TA: Dispatch Phase 4 - Scope: Current Story
+        OR->>TA: Dispatch Phase 5 - Scope: Current Story
         TA->>OR: Failing Tests for Story
-        OR->>IM: Dispatch Phase 5 - Scope: Current Story
+        OR->>IM: Dispatch Phase 6 - Scope: Current Story
         IM->>OR: Green Code for Story
-        OR->>RE: Dispatch Phase 6 - Scope: Current Story
+        OR->>RE: Dispatch Phase 7 - Scope: Current Story
         RE->>OR: Refactored Code for Story
-        OR->>VA: Dispatch Phase 7 - Scope: Current Story
+        OR->>VA: Dispatch Phase 8 - Scope: Current Story
         VA->>OR: Story Quality Gate Verdict
         OR->>OR: Mark Story Complete in Backlog
     end
@@ -135,7 +137,7 @@ docs/
 
 ```json
 {
-  "$schema": "story-schema-v1",
+  "$schema": "./schemas/story.schema.json",
   "storyId": "STORY-001",
   "sequenceNumber": 1,
   "title": "Create Order Aggregate with Line Items",
@@ -179,7 +181,8 @@ docs/
     "phase4": "pending",
     "phase5": "pending",
     "phase6": "pending",
-    "phase7": "pending"
+    "phase7": "pending",
+    "phase8": "pending"
   },
   "createdAt": "2026-03-12T12:00:00.000Z",
   "completedAt": null
@@ -221,7 +224,7 @@ docs/
 
 ```json
 {
-  "$schema": "backlog-schema-v1",
+  "$schema": "./schemas/backlog.schema.json",
   "version": "1.1.0",
   "projectName": "Derived from HLD",
   "createdAt": "2026-03-12T12:00:00.000Z",
@@ -277,7 +280,7 @@ docs/
 | **Mode Slug** | `tdd-ddd-story-planner` |
 | **Mode Name** | 📋 TDD-DDD Story Planner |
 | **Phase** | Phase 4: Story Decomposition |
-| **Skill Number** | 8 (extends the existing 7-skill roster) |
+| **Skill Number** | 4 of the canonical 8-skill roster |
 
 ### 4.2 Role Definition
 

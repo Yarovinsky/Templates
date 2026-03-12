@@ -32,5 +32,5 @@ Phase 4 skill for story decomposition. This mode turns the completed DDD model i
 
 ## Handoff Position
 
-Runs after the DDD Architect completes tactical modeling and before the Test Author starts Phase 4 on the first ordered story.
+Runs after the DDD Architect completes tactical modeling and before the Test Author starts Phase 5 on the first ordered story.
 

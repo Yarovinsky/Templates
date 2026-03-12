@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Phase 4 skill for RED-phase test specification. This mode defines executable expectations before implementation begins.
+Phase 5 skill for RED-phase test specification. This mode defines executable expectations before implementation begins.
 
 ## Registry Alignment
 
@@ -38,4 +38,4 @@ Phase 4 skill for RED-phase test specification. This mode defines executable exp
 
 ## Handoff Position
 
-Runs after story planning and before the Implementer begins Phase 5 for the same story.
+Runs after story planning and before the Implementer begins Phase 6 for the same story.

@@ -1,5 +1,5 @@
 {
-  "$schema": "backlog-schema-v1",
+  "$schema": "./schemas/backlog.schema.json",
   "version": "1.1.0",
   "projectName": "<project-name-derived-from-validated-hld>",
   "createdAt": "2026-03-12T12:00:00.000Z",
@@ -30,7 +30,7 @@
       "boundedContext": "CoreDomain",
       "complexity": "M",
       "status": "pending",
-      "filePath": "docs/stories/STORY-001-create-core-aggregate.json"
+      "filePath": "docs/stories/STORY-NNN-kebab-case-title.json"
     },
     {
       "storyId": "STORY-002",
@@ -39,7 +39,7 @@
       "boundedContext": "CoreDomain",
       "complexity": "L",
       "status": "pending",
-      "filePath": "docs/stories/STORY-002-orchestrate-core-application-workflow.json"
+      "filePath": "docs/stories/STORY-NNN-kebab-case-title.json"
     }
   ]
 }

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/docs/stories/schemas/backlog.schema.json",
+  "title": "TDD-DDD Story Backlog",
+  "type": "object",
+  "required": ["version", "projectName", "createdAt", "updatedAt", "totalStories", "completedStories", "currentStoryId", "mvpScope", "stories"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "type": "string" },
+    "projectName": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "totalStories": { "type": "integer", "minimum": 0 },
+    "completedStories": { "type": "integer", "minimum": 0 },
+    "currentStoryId": { "type": ["string", "null"], "pattern": "^STORY-[0-9]{3}$" },
+    "mvpScope": {
+      "type": "object",
+      "required": ["description", "includedBoundedContexts", "excludedFeatures"],
+      "properties": {
+        "description": { "type": "string" },
+        "includedBoundedContexts": { "type": "array", "items": { "type": "string" } },
+        "excludedFeatures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["feature", "reason", "hldRequirements"],
+            "properties": {
+              "feature": { "type": "string" },
+              "reason": { "type": "string" },
+              "hldRequirements": { "type": "array", "items": { "type": "string", "pattern": "^HLD-REQ-[0-9]{3}$" } }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "stories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["storyId", "sequenceNumber", "title", "boundedContext", "complexity", "status", "filePath"],
+        "properties": {
+          "storyId": { "type": "string", "pattern": "^STORY-[0-9]{3}$" },
+          "sequenceNumber": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string" },
+          "boundedContext": { "type": "string" },
+          "complexity": { "type": "string", "enum": ["XS", "S", "M", "L", "XL"] },
+          "status": { "type": "string", "enum": ["pending", "in-progress", "completed", "blocked"] },
+          "filePath": { "type": "string", "pattern": "^docs/stories/STORY-[A-Za-z0-9-]+\\.json$" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
