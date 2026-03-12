@@ -57,7 +57,7 @@ Applies to: domains, bounded contexts, aggregates, entities, value objects, even
 
 ### Stories
 
-Applies to: individual story files produced in Phase 3.5.
+Applies to: individual story files produced in Phase 4.
 
 - MUST be scoped to a single bounded context
 - MUST reference at least one DDD artifact with a valid `specPath`
@@ -73,10 +73,10 @@ Applies to: individual story files produced in Phase 3.5.
 
 All of the following MUST be true for a single story to be marked `completed`:
 
-- [ ] Phase 4 complete: All acceptance criteria have corresponding failing tests
-- [ ] Phase 5 complete: All story tests pass (GREEN state)
-- [ ] Phase 6 complete: Refactoring checklist applied, all tests still pass
-- [ ] Phase 7 complete: Story-scoped quality gates pass (QG-01 through QG-05)
+- [ ] Phase 5 complete: All acceptance criteria have corresponding failing tests
+- [ ] Phase 6 complete: All story tests pass (GREEN state)
+- [ ] Phase 7 complete: Refactoring checklist applied, all tests still pass
+- [ ] Phase 8 complete: Story-scoped quality gates pass (QG-01 through QG-05)
 - [ ] All previously passing tests (from prior stories) continue to pass — no regressions
 - [ ] Story status updated to `completed` in `docs/stories/backlog.json`
 - [ ] Story `completedAt` timestamp set
@@ -88,7 +88,7 @@ All of the following MUST be true for a single story to be marked `completed`:
 
 All of the following MUST be true for the product to be considered complete:
 
-- [ ] All 8 phases completed in prescribed order (Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → Phase 4 → Phase 5 → Phase 6 → Phase 7)
+- [ ] All 8 phases completed in prescribed order (Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7 → Phase 8)
 - [ ] All quality gates passed (QG-01 through QG-05):
   - [ ] QG-01: No skipped/pending tests without blocking-issue ID
   - [ ] QG-02: Code coverage ≥ threshold (default 90%) on domain/application layers
@@ -120,7 +120,7 @@ The orchestrator maintains a Definition of Done checklist in `.agents/state/defi
   "items": [
     {
       "id": "DOD-01",
-      "description": "All 8 phases completed in order, including Phase 3.5",
+      "description": "All 8 phases completed in order, including Phase 4 story decomposition",
       "status": "PASS|FAIL|PENDING",
       "evidence": "path to proof or description",
       "evaluatedAt": "ISO-8601 timestamp"

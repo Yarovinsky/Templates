@@ -1,6 +1,6 @@
 # MVP Scope
 
-This template captures the Story Planner output for **Phase 3.5: Story Decomposition**.
+This template captures the Story Planner output for **Phase 4: Story Decomposition**.
 
 ## Purpose
 
@@ -13,7 +13,7 @@ This template captures the Story Planner output for **Phase 3.5: Story Decomposi
 | Field | Value |
 | --- | --- |
 | Project / Product | `<name-derived-from-validated-hld>` |
-| Phase | `3.5` |
+| Phase | `4` |
 | Prepared By | `Story Planner` |
 | Decision Date | `<yyyy-mm-dd>` |
 | Scope Principle | `Include only must-have business value plus required transitive dependencies.` |
@@ -53,4 +53,5 @@ This template captures the Story Planner output for **Phase 3.5: Story Decomposi
 
 - Keep backlog summary values synchronized with [`docs/stories/backlog.json`](docs/stories/backlog.json).
 - Use kebab-case story filenames in all references: `STORY-NNN-kebab-case-title.json`.
-- Update this document whenever Phase 3.5 regenerates the story backlog.
+- Update this document whenever Phase 4 regenerates the story backlog.
+

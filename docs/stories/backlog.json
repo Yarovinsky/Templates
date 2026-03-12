@@ -8,7 +8,7 @@
   "completedStories": 0,
   "currentStoryId": null,
   "mvpScope": {
-    "description": "Baseline example showing how Phase 3.5 records MVP inclusion and exclusion decisions.",
+    "description": "Baseline example showing how Phase 4 records MVP inclusion and exclusion decisions.",
     "includedBoundedContexts": [
       "CoreDomain"
     ],
@@ -43,3 +43,4 @@
     }
   ]
 }
+

@@ -72,7 +72,7 @@ Every handoff MUST use this structured format:
 }
 ```
 
-> **`storyScope` field**: This field is **required** when the orchestrator's story iteration loop is active (i.e., `storyLoop.active = true` in `phase-state.json`). It scopes Phases 4–7 to the current story. It is **omitted** during Phases 1–3, Phase 3.5, and the final full-product validation. See `11-story-decomposition.md` Section 8 for the complete specification.
+> **`storyScope` field**: This field is **required** when the orchestrator's story iteration loop is active (i.e., `storyLoop.active = true` in `phase-state.json`). It scopes Phases 5–8 to the current story. It is **omitted** during Phases 1–4 and the final full-product validation. See `11-story-decomposition.md` Section 8 for the complete specification.
 
 ---
 

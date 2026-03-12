@@ -2,21 +2,21 @@
 
 > **Framework Document**: 11 of 11
 > **Authority**: [00-overview.md](00-overview.md)
-> **Phase Association**: Phase 3.5 — Story Decomposition
+> **Phase Association**: Phase 4 — Story Decomposition
 
 ---
 
 ## 1. Purpose
 
-This document defines the **Story Planner** skill and the **Phase 3.5: Story Decomposition** process. After the DDD Architect completes tactical domain modeling (Phase 3), the Story Planner decomposes the validated DDD architecture into an **ordered backlog of MVP-scoped, implementation-ready user stories**. Each story then drives a complete TDD red-green-refactor cycle through Phases 4–7, executed iteratively — one story at a time.
+This document defines the **Story Planner** skill and the **Phase 4: Story Decomposition** process. After the DDD Architect completes tactical domain modeling (Phase 3), the Story Planner decomposes the validated DDD architecture into an **ordered backlog of MVP-scoped, implementation-ready user stories**. Each story then drives a complete TDD red-green-refactor cycle through Phases 5–8, executed iteratively — one story at a time.
 
 ### Pipeline Position
 
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
 ```
 
-Phase 3.5 transforms the DDD model (a static architecture) into an **executable plan** (an ordered sequence of implementation units). This bridges the gap between "what to build" (DDD model) and "in what order to build it" (story backlog).
+Phase 4 transforms the DDD model (a static architecture) into an **executable plan** (an ordered sequence of implementation units). This bridges the gap between "what to build" (DDD model) and "in what order to build it" (story backlog).
 
 ---
 
@@ -79,7 +79,7 @@ Phase 3.5 transforms the DDD model (a static architecture) into an **executable 
 | Backlog Manifest | `docs/stories/backlog.json` | JSON |
 | Individual Story Files | `docs/stories/STORY-NNN-title.json` | JSON |
 | MVP Scope Document | `docs/stories/mvp-scope.md` | Markdown |
-| Phase 3.5 Completion Record | `.agents/state/phase-3.5-complete.json` | JSON |
+| Phase 4 Completion Record | `.agents/state/phase-4-complete.json` | JSON |
 
 ### 2.6 Preconditions for Activation
 
@@ -99,7 +99,7 @@ Phase 3.5 transforms the DDD model (a static architecture) into an **executable 
 - No stories span multiple bounded contexts
 - All story `dependsOn` references are valid (reference existing story IDs)
 - Sequential ordering respects dependency constraints (no story depends on a later-sequenced story)
-- Phase 3.5 completion record created at `.agents/state/phase-3.5-complete.json`
+- Phase 4 completion record created at `.agents/state/phase-4-complete.json`
 
 ---
 
@@ -222,7 +222,7 @@ Each acceptance criterion MUST:
 1. Generate individual story JSON files per the schema in Section 4
 2. Generate the backlog manifest per the schema in Section 5
 3. Generate the MVP scope document per the template in Section 6
-4. Create the Phase 3.5 completion record
+4. Create the Phase 4 completion record
 
 **Validation before completion:**
 - Every story file validates against the story schema
@@ -379,7 +379,7 @@ The MVP scope document is stored at `docs/stories/mvp-scope.md`:
 # MVP Scope — [Project Name]
 
 > **Generated**: [ISO-8601 timestamp]
-> **Phase**: 3.5 — Story Decomposition
+> **Phase**: 4 — Story Decomposition
 > **Story Count**: [N] stories
 > **Estimated Complexity**: [sum of complexity points]
 
@@ -426,7 +426,7 @@ The MVP scope document is stored at `docs/stories/mvp-scope.md`:
 
 ## 7. Story-Scoped Iteration Loop
 
-After Phase 3.5 completes, the orchestrator enters a **story iteration loop** that executes Phases 4–7 for each story in backlog order.
+After Phase 4 completes, the orchestrator enters a **story iteration loop** that executes Phases 5–8 for each story in backlog order.
 
 ### 7.1 Loop Procedure
 
@@ -455,7 +455,7 @@ After Phase 3.5 completes, the orchestrator enters a **story iteration loop** th
       - Route to appropriate phase per 08-failure-handling.md
       - Re-attempt from the routed phase for this story
 4. After ALL stories complete:
-   a. Dispatch Phase 7-Final (Validator) for full product validation
+   a. Dispatch Phase 8-Final (Validator) for full product validation
    b. Apply ALL quality gates (QG-01 through QG-05) across the entire codebase
    c. Validate the complete traceability matrix
 5. Set storyLoop.active = false
@@ -543,7 +543,7 @@ Examples:
 | GR-01 | Commit and push occurs **only** after the per-story Phase 7 quality gates pass — never on failure |
 | GR-02 | All git operations MUST be invoked via `git.cmd` — direct `git` invocation is forbidden per `10-script-constraint.md` |
 | GR-03 | If `git push` fails (e.g., network error), the orchestrator MUST retry once; if the retry also fails, log the failure to the audit log and continue to the next story — the commit is preserved locally |
-| GR-04 | The commit includes **all** project files changed during the story's Phases 4–7 (tests, source, docs, state files) |
+| GR-04 | The commit includes **all** project files changed during the story's Phases 5–8 (tests, source, docs, state files) |
 | GR-05 | The orchestrator appends a `STORY_COMMITTED` event to the audit log (`.agents/state/audit.jsonl`) with the story ID, commit hash (from git output), and timestamp |
 
 #### Audit Log Event
@@ -561,7 +561,7 @@ Examples:
 
 #### Final Full-Product Commit
 
-After the Phase 7-Final full-product validation passes (step 4 in the loop procedure), the orchestrator performs one additional commit and push:
+After the Phase 8-Final full-product validation passes (step 4 in the loop procedure), the orchestrator performs one additional commit and push:
 
 ```
 feat: complete MVP — all stories delivered
@@ -593,7 +593,7 @@ During the story iteration loop, all handoff messages MUST include a `storyScope
 
 This field is:
 - **Required** when `storyLoop.active = true` in phase-state.json
-- **Omitted** when not in the story loop (Phases 1–3, Phase 3.5, Phase 7-Final)
+- **Omitted** when not in the story loop (Phases 1–3, Phase 4, Phase 8-Final)
 
 ### 8.2 Story Planner Handoff Messages
 
@@ -603,8 +603,8 @@ This field is:
 {
   "handoffId": "HO-NNN-timestamp",
   "type": "DISPATCH",
-  "from": { "skill": "tdd-ddd-orchestrator", "phase": "3.5", "mode": "tdd-ddd-orchestrator" },
-  "to": { "skill": "tdd-ddd-story-planner", "phase": "3.5", "mode": "tdd-ddd-story-planner" },
+  "from": { "skill": "tdd-ddd-orchestrator", "phase": "4", "mode": "tdd-ddd-orchestrator" },
+  "to": { "skill": "tdd-ddd-story-planner", "phase": "4", "mode": "tdd-ddd-story-planner" },
   "artifacts": [
     { "name": "Validated HLD", "path": "docs/hld/validated-hld.md", "type": "MARKDOWN", "status": "VALIDATED" },
     { "name": "Glossary", "path": "docs/glossary.md", "type": "MARKDOWN", "status": "VALIDATED" },
@@ -629,8 +629,8 @@ This field is:
 {
   "handoffId": "HO-NNN-timestamp",
   "type": "COMPLETION",
-  "from": { "skill": "tdd-ddd-story-planner", "phase": "3.5", "mode": "tdd-ddd-story-planner" },
-  "to": { "skill": "tdd-ddd-orchestrator", "phase": "3.5", "mode": "tdd-ddd-orchestrator" },
+  "from": { "skill": "tdd-ddd-story-planner", "phase": "4", "mode": "tdd-ddd-story-planner" },
+  "to": { "skill": "tdd-ddd-orchestrator", "phase": "4", "mode": "tdd-ddd-orchestrator" },
   "artifacts": [
     { "name": "Backlog Manifest", "path": "docs/stories/backlog.json", "type": "JSON", "status": "CREATED" },
     { "name": "MVP Scope Document", "path": "docs/stories/mvp-scope.md", "type": "MARKDOWN", "status": "CREATED" }
@@ -644,11 +644,11 @@ This field is:
 
 ---
 
-## 9. Phase 3.5 Completion Record
+## 9. Phase 4 Completion Record
 
 ```json
 {
-  "phase": "3.5",
+  "phase": "4",
   "phaseName": "Story Decomposition",
   "completedAt": "ISO-8601 timestamp",
   "ownerSkill": "tdd-ddd-story-planner",
@@ -722,7 +722,8 @@ This document works in conjunction with:
 - [01-hld-input-contract.md](01-hld-input-contract.md) — Defines HLD structure and requirement numbering that stories trace to
 - [02-ddd-transformation.md](02-ddd-transformation.md) — Defines DDD artifacts that stories decompose
 - [04-skill-definitions.md](04-skill-definitions.md) — Story Planner listed as Skill 8
-- [05-phase-definitions.md](05-phase-definitions.md) — Phase 3.5 definition
+- [05-phase-definitions.md](05-phase-definitions.md) — Phase 4 definition
 - [07-acceptance-criteria.md](07-acceptance-criteria.md) — Story-level acceptance criteria and per-story Definition of Done
 - [08-failure-handling.md](08-failure-handling.md) — Failure modes apply during story-scoped TDD cycles
 - [09-handoff-protocol.md](09-handoff-protocol.md) — `storyScope` field in handoff messages
+

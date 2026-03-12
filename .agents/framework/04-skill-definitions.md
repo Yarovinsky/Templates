@@ -17,11 +17,11 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 | 1 | TDD-DDD Orchestrator | `tdd-ddd-orchestrator` | All (coordination) |
 | 2 | TDD-DDD Analyst | `tdd-ddd-analyst` | Phase 1 |
 | 3 | TDD-DDD Architect | `tdd-ddd-architect` | Phase 2, Phase 3 |
-| 4 | TDD-DDD Story Planner | `tdd-ddd-story-planner` | Phase 3.5 |
-| 5 | TDD-DDD Test Author | `tdd-ddd-test-author` | Phase 4 |
-| 6 | TDD-DDD Implementer | `tdd-ddd-implementer` | Phase 5 |
-| 7 | TDD-DDD Refactorer | `tdd-ddd-refactorer` | Phase 6 |
-| 8 | TDD-DDD Validator | `tdd-ddd-validator` | Phase 7 |
+| 4 | TDD-DDD Story Planner | `tdd-ddd-story-planner` | Phase 4 |
+| 5 | TDD-DDD Test Author | `tdd-ddd-test-author` | Phase 5 |
+| 6 | TDD-DDD Implementer | `tdd-ddd-implementer` | Phase 6 |
+| 7 | TDD-DDD Refactorer | `tdd-ddd-refactorer` | Phase 7 |
+| 8 | TDD-DDD Validator | `tdd-ddd-validator` | Phase 8 |
 
 ---
 
@@ -31,7 +31,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ### Responsibilities
 
-- **Phase state management** — Tracks phases 1–3, 3.5, and 4–7, enforces strict sequential progression
+- **Phase state management** — Tracks phases 1–8, enforces strict sequential progression
 - **Skill dispatching** — Determines next skill mode and dispatches via subtask (`new_task` tool) with structured handoff
 - **Precondition validation** — Verifies input artifacts exist and are valid before dispatching to any skill
 - **Handoff coordination** — Receives completion signals from skills, validates outputs, routes to next skill or rework
@@ -39,9 +39,9 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - **Failure routing** — Determines recovery path per `08-failure-handling.md`
 - **Progress reporting** — Maintains a living status dashboard
 - **Clarification aggregation** — Collects and batches clarification requests for the customer
-- **Story commit and push** — After each story passes per-story Phase 7 validation, commits all changes and pushes to the remote per `11-story-decomposition.md` Section 7.5
+- **Story commit and push** — After each story passes per-story Phase 8 validation, commits all changes and pushes to the remote per `11-story-decomposition.md` Section 7.5
 - **Story pause control** — Reads `storyLoop.pauseAfterStory` from `phase-state.json` after each story commit; when `true`, halts and waits for customer approval before proceeding to the next story; when `false` (default), proceeds automatically
-- **Final validation coordination** — After all stories are complete, dispatches Phase 7-Final for full-product validation before delivery
+- **Final validation coordination** — After all stories are complete, dispatches final Phase 8 validation for full-product validation before delivery
 
 ### Permitted Actions
 
@@ -227,7 +227,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Backlog manifest (`docs/stories/backlog.json`)
 - Individual story files (`docs/stories/STORY-NNN-title.json`)
 - MVP scope document (`docs/stories/mvp-scope.md`)
-- Phase 3.5 completion record
+- Phase 4 completion record
 
 ### Preconditions
 

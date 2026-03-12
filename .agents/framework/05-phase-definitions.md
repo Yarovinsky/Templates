@@ -2,7 +2,7 @@
 
 > **Status**: Normative
 > **Audience**: TDD-DDD Orchestrator, all skill modes
-> **Purpose**: Define the 8 phases (1–3, 3.5, 4–7), their entry/exit criteria, activities, and output artifacts
+> **Purpose**: Define the 8 phases (1–8), their entry/exit criteria, activities, and output artifacts
 
 ---
 
@@ -11,10 +11,10 @@
 There are **8 mandatory phases** executed in **strict sequential order**:
 
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 5 → Phase 6 → Phase 7 → Phase 8] × N stories
 ```
 
-After Phase 3.5 (Story Decomposition), the orchestrator enters a **story iteration loop**: Phases 4–7 are executed sequentially for each story in the backlog, one story at a time. After all stories complete, a final full-product validation pass is performed.
+After Phase 4 (Story Decomposition), the orchestrator enters a **story iteration loop**: Phases 5–8 are executed sequentially for each story in the backlog, one story at a time. After all stories complete, a final full-product validation pass is performed.
 
 **Rules**:
 - No phase may be skipped or reordered
@@ -22,7 +22,7 @@ After Phase 3.5 (Story Decomposition), the orchestrator enters a **story iterati
 - The orchestrator verifies exit criteria before advancing
 - A phase may iterate internally (e.g., rework within Phase 1 for clarifications) without advancing
 - Backward routing is permitted only when a later phase's quality gate fails, and only the orchestrator may authorize it
-- During the story loop, Phases 4–7 are scoped to the current story; all handoff messages include `storyScope` (see `11-story-decomposition.md`)
+- During the story loop, Phases 5–8 are scoped to the current story; all handoff messages include `storyScope` (see `11-story-decomposition.md`)
 
 ---
 
@@ -151,7 +151,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 
 ---
 
-## 5. Phase 3.5: Story Decomposition
+## 5. Phase 4: Story Decomposition
 
 **Owner Skill**: TDD-DDD Story Planner (`tdd-ddd-story-planner`)
 
@@ -190,21 +190,21 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 | Backlog Manifest | JSON | `docs/stories/backlog.json` |
 | Individual Story Files | JSON | `docs/stories/STORY-NNN-title.json` |
 | MVP Scope Document | Markdown | `docs/stories/mvp-scope.md` |
-| Phase 3.5 Completion Record | JSON | `.agents/state/phase-3.5-complete.json` |
+| Phase 4 Completion Record | JSON | `.agents/state/phase-4-complete.json` |
 
 > **Full specification**: See `11-story-decomposition.md` for the complete decomposition algorithm, story schema, backlog format, and story-scoped iteration loop.
 
 ---
 
-## 6. Phase 4: Test Specification (Story-Scoped)
+## 6. Phase 5: Test Specification (Story-Scoped)
 
 **Owner Skill**: TDD-DDD Test Author (`tdd-ddd-test-author`)
 
-> **Story Loop**: After Phase 3.5, Phases 4–7 are executed iteratively for each story in the backlog. The orchestrator dispatches each phase with a `storyScope` field in the handoff message, scoping the work to the current story's bounded context, aggregates, DDD artifacts, and acceptance criteria.
+> **Story Loop**: After Phase 4, Phases 5–8 are executed iteratively for each story in the backlog. The orchestrator dispatches each phase with a `storyScope` field in the handoff message, scoping the work to the current story's bounded context, aggregates, DDD artifacts, and acceptance criteria.
 
 ### Entry Criteria
 
-- Phase 3 complete
+- Phase 4 complete
 - All DDD specifications exist
 
 ### Activities
@@ -239,7 +239,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 | Test Data Builders | Source code | `tests/builders/` |
 | Traceability Matrix | Markdown | `docs/traceability-matrix.md` |
 | Test Plan | Markdown | `docs/test-plan.md` |
-| Phase 4 Completion Record | JSON | `.agents/state/phase-4-complete.json` |
+| Phase 5 Completion Record | JSON | `.agents/state/phase-5-complete.json` |
 
 ### Iteration
 
@@ -247,7 +247,7 @@ Uses the red-green-refactor cycle internally — **RED only**. All tests must be
 
 ---
 
-## 7. Phase 5: Implementation (Story-Scoped)
+## 7. Phase 6: Implementation (Story-Scoped)
 
 **Owner Skill**: TDD-DDD Implementer (`tdd-ddd-implementer`)
 
@@ -255,7 +255,7 @@ Uses the red-green-refactor cycle internally — **RED only**. All tests must be
 
 ### Entry Criteria
 
-- Phase 4 complete
+- Phase 5 complete
 - Failing test suite exists
 
 ### Activities
@@ -277,7 +277,7 @@ Uses the red-green-refactor cycle internally — **RED only**. All tests must be
 |----------|--------|-----------------|
 | Production Source Code | Source code | `src/` organized by bounded context |
 | Build Configuration | Technology-specific | Project root |
-| Phase 5 Completion Record | JSON | `.agents/state/phase-5-complete.json` |
+| Phase 6 Completion Record | JSON | `.agents/state/phase-6-complete.json` |
 
 ### Iteration
 
@@ -285,7 +285,7 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 
 ---
 
-## 8. Phase 6: Refactoring (Story-Scoped)
+## 8. Phase 7: Refactoring (Story-Scoped)
 
 **Owner Skill**: TDD-DDD Refactorer (`tdd-ddd-refactorer`)
 
@@ -293,7 +293,7 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 
 ### Entry Criteria
 
-- Phase 5 complete
+- Phase 6 complete
 - All tests passing
 
 ### Activities
@@ -320,7 +320,7 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 | Technical Debt Register | Markdown | `docs/tech-debt-register.md` |
 | Refactoring Report | Markdown | `docs/refactoring-report.md` |
 | Updated Glossary | Markdown | `docs/glossary.md` (if naming changes) |
-| Phase 6 Completion Record | JSON | `.agents/state/phase-6-complete.json` |
+| Phase 7 Completion Record | JSON | `.agents/state/phase-7-complete.json` |
 
 ### Iteration
 
@@ -328,17 +328,17 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 
 ---
 
-## 9. Phase 7: Validation and Delivery (Story-Scoped + Final)
+## 9. Phase 8: Validation and Delivery (Story-Scoped + Final)
 
 **Owner Skill**: TDD-DDD Validator (`tdd-ddd-validator`)
 
-> **Story Loop**: Phase 7 is invoked twice: (1) **Per-story validation** — after each story's Phase 6, applying quality gates scoped to the story's tests, coverage, and traceability. (2) **Final full-product validation** — after all stories complete, applying quality gates across the entire codebase. See `11-story-decomposition.md` Section 7 for story-scoped quality gate behavior.
+> **Story Loop**: Phase 8 is invoked twice: (1) **Per-story validation** — after each story's Phase 7, applying quality gates scoped to the story's tests, coverage, and traceability. (2) **Final full-product validation** — after all stories complete, applying quality gates across the entire codebase. See `11-story-decomposition.md` Section 7 for story-scoped quality gate behavior.
 >
-> **Git Commit on Story Completion**: After a story passes its per-story Phase 7 validation, the orchestrator commits all changes and pushes to the remote. See `11-story-decomposition.md` Section 7.5 for the commit procedure, message format, and rules.
+> **Git Commit on Story Completion**: After a story passes its per-story Phase 8 validation, the orchestrator commits all changes and pushes to the remote. See `11-story-decomposition.md` Section 7.5 for the commit procedure, message format, and rules.
 
 ### Entry Criteria
 
-- Phase 6 complete (for current story, or for all stories in final validation)
+- Phase 7 complete (for current story, or for all stories in final validation)
 - All tests passing
 - Refactoring complete
 
@@ -369,14 +369,14 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 | ADR Collection | Markdown | `docs/adr/` (finalized) |
 | Technical Debt Register | Markdown | `docs/tech-debt-register.md` (finalized) |
 | Delivery Checklist | Markdown | `docs/delivery-checklist.md` |
-| Phase 7 Completion Record | JSON | `.agents/state/phase-7-complete.json` |
+| Phase 8 Completion Record | JSON | `.agents/state/phase-8-complete.json` |
 
 ### Failure
 
 If any quality gate fails, the orchestrator routes back to the appropriate phase:
-- **Missing tests** → Phase 4 (Test Author)
-- **Failing tests** → Phase 5 (Implementer)
-- **Quality/structure issues** → Phase 6 (Refactorer)
+- **Missing tests** → Phase 5 (Test Author)
+- **Failing tests** → Phase 6 (Implementer)
+- **Quality/structure issues** → Phase 7 (Refactorer)
 
 The orchestrator determines the correct routing based on the quality gate failure details.
 

@@ -33,7 +33,7 @@ Start with the overview document:
 This framework defines:
 - 8 mandatory development phases (HLD Intake → Story Decomposition → Validation & Delivery)
 - 8 skill roles with enforced file restrictions (Orchestrator, Analyst, DDD Architect, Story Planner, Test Author, Implementer, Refactorer, Validator)
-- Story-based iterative execution: Phase 3.5 decomposes the DDD model into MVP-scoped stories; Phases 4–7 execute per story
+- Story-based iterative execution: Phase 4 decomposes the DDD model into MVP-scoped stories; Phases 5–8 execute per story
 - Strict red-green-refactor TDD cycle as the only permitted development cadence
 - Domain-Driven Design transformation pipeline
 - Quality gates, naming conventions, and acceptance criteria
@@ -45,7 +45,7 @@ The TDD-DDD Orchestrator mode (`tdd-ddd-orchestrator`) is the mandatory
 entry point for all development work under this framework.
 
 The normative framework index is at `.agents/framework/00-overview.md`. The
-authoritative Story Planner / Phase 3.5 contract is defined in
+authoritative Story Planner / Phase 4 contract is defined in
 `.agents/framework/11-story-decomposition.md`.
 
 You MUST NOT skip phases, bypass the orchestrator, or violate

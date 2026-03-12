@@ -8,18 +8,18 @@
 
 ## 1. Executive Summary
 
-This plan introduces a new **Story Planner** skill into the TDD-DDD Framework. The skill sits between Phase 3 (Tactical Domain Modeling) and Phase 4 (Test Specification), creating a new **Phase 3.5: Story Decomposition**. It accepts the validated DDD architecture as input and decomposes it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story then drives a complete TDD red-green-refactor cycle through Phases 4–7, executed iteratively — one story at a time.
+This plan introduces a new **Story Planner** skill into the TDD-DDD Framework. The skill sits between Phase 3 (Tactical Domain Modeling) and Phase 4 (Test Specification), creating a new **Phase 4: Story Decomposition**. It accepts the validated DDD architecture as input and decomposes it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story then drives a complete TDD red-green-refactor cycle through Phases 5–8, executed iteratively — one story at a time.
 
 ### Key Design Decisions
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| Pipeline placement | Post-Phase-3, Pre-Phase-4 (Phase 3.5) | Requires validated DDD model as input; stories scope subsequent TDD cycles |
+| Pipeline placement | Post-Phase-3, Pre-Phase-4 (Phase 4) | Requires validated DDD model as input; stories scope subsequent TDD cycles |
 | Story granularity | Implementation-ready | Each story maps to one or more aggregates/services within a single bounded context |
 | Story ordering | Strict sequential | Story Planner determines optimal order upfront; order is fixed once backlog is created |
 | Story storage | Individual JSON files under `docs/stories/` | Version-control friendly, machine-parseable, human-readable, traceable |
 | Backlog index | Single `docs/stories/backlog.json` | Central manifest listing all stories in execution order with status tracking |
-| Workflow change | Iterative outer loop around Phases 4–7 | Orchestrator executes Phases 4→5→6→7 for each story sequentially |
+| Workflow change | Iterative outer loop around Phases 5–8 | Orchestrator executes Phases 5→6→7→8 for each story sequentially |
 
 ---
 
@@ -34,7 +34,7 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7
 ### 2.2 New Pipeline with Story Decomposition
 
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
 ```
 
 ### 2.3 Workflow Diagram
@@ -45,7 +45,7 @@ flowchart TD
     ORC --> P1[Phase 1: Analyst - HLD Intake]
     P1 --> P2[Phase 2: DDD Architect - Strategic Modeling]
     P2 --> P3[Phase 3: DDD Architect - Tactical Modeling]
-    P3 --> P35[Phase 3.5: Story Planner - Story Decomposition]
+    P3 --> P35[Phase 4: Story Planner - Story Decomposition]
     P35 --> BL{Backlog Created?}
     BL -->|No - gaps found| CLR[Request Clarification]
     CLR --> P35
@@ -61,7 +61,7 @@ flowchart TD
     PASS -->|Yes| MARK[Mark Story Complete]
     MARK --> MORE{More Stories?}
     MORE -->|Yes| PICK
-    MORE -->|No| FINAL[Phase 7-Final: Full Product Validation]
+    MORE -->|No| FINAL[Phase 8-Final: Full Product Validation]
     FINAL --> DONE[Delivery]
 ```
 
@@ -86,7 +86,7 @@ sequenceDiagram
     AR->>OR: Strategic Model
     OR->>AR: Dispatch Phase 3
     AR->>OR: Tactical Model - Full DDD Artifacts
-    OR->>SP: Dispatch Phase 3.5 - Decompose into Stories
+    OR->>SP: Dispatch Phase 4 - Decompose into Stories
     SP->>OR: Ordered Backlog + Story Files
 
     loop For Each Story in Backlog Order
@@ -101,7 +101,7 @@ sequenceDiagram
         OR->>OR: Mark Story Complete in Backlog
     end
 
-    OR->>VA: Dispatch Phase 7-Final - Full Product Validation
+    OR->>VA: Dispatch Phase 8-Final - Full Product Validation
     VA->>OR: Final Quality Gate Report
     OR->>CU: Final Deliverables
 ```
@@ -207,7 +207,7 @@ docs/
 | `createdAt` | string | Yes | ISO 8601 creation timestamp |
 | `completedAt` | string | No | ISO 8601 completion timestamp (null until done) |
 
-### 3.5 Complexity Scale
+### 4 Complexity Scale
 
 | Level | Label | Scope Indicator |
 |-------|-------|-----------------|
@@ -276,7 +276,7 @@ docs/
 | **Skill Name** | Story Planner |
 | **Mode Slug** | `tdd-ddd-story-planner` |
 | **Mode Name** | 📋 TDD-DDD Story Planner |
-| **Phase** | Phase 3.5: Story Decomposition |
+| **Phase** | Phase 4: Story Decomposition |
 | **Skill Number** | 8 (extends the existing 7-skill roster) |
 
 ### 4.2 Role Definition
@@ -334,7 +334,7 @@ The Story Planner is responsible for decomposing a validated DDD architecture in
 | Backlog Manifest | `docs/stories/backlog.json` | JSON |
 | Individual Story Files | `docs/stories/STORY-NNN-title.json` | JSON |
 | MVP Scope Document | `docs/stories/mvp-scope.md` | Markdown |
-| Phase 3.5 Completion Record | `.agents/state/phase-3.5-complete.json` | JSON |
+| Phase 4 Completion Record | `.agents/state/phase-4-complete.json` | JSON |
 
 ### 4.8 Preconditions for Activation
 
@@ -441,15 +441,15 @@ For each story, derive acceptance criteria from:
 
 The orchestrator's phase state machine must be extended to support:
 
-1. **Phase 3.5** as a valid phase between Phase 3 and Phase 4
-2. **Story-scoped iteration** — the ability to execute Phases 4–7 multiple times, once per story
+1. **Phase 4** as a valid phase between Phase 3 and Phase 5
+2. **Story-scoped iteration** — the ability to execute Phases 5–8 multiple times, once per story
 3. **Story status tracking** — reading and updating `backlog.json` to track progress
 
 ### 6.2 Updated Phase State Schema
 
 ```json
 {
-  "currentPhase": "3.5",
+  "currentPhase": "4",
   "currentSkill": "tdd-ddd-story-planner",
   "currentStoryId": null,
   "storyLoop": {
@@ -468,7 +468,7 @@ The orchestrator's phase state machine must be extended to support:
 
 ### 6.3 Story Loop Logic
 
-After Phase 3.5 completes:
+After Phase 4 completes:
 
 ```
 1. Read backlog.json
@@ -490,7 +490,7 @@ After Phase 3.5 completes:
       - Route to appropriate phase per failure-handling.md
       - Re-attempt from the routed phase
 4. After all stories complete:
-   a. Dispatch Phase 7-Final (Validator) for full product validation
+   a. Dispatch Phase 8-Final (Validator) for full product validation
    b. Apply all quality gates across the entire codebase
 5. Set storyLoop.active = false
 ```
@@ -539,7 +539,7 @@ A new framework document (number 11) defining the Story Planner skill, the story
 |----------|--------|
 | `00-overview.md` | Add document 11 to the index; add Story Planner to glossary |
 | `04-skill-definitions.md` | Add Skill 8: Story Planner with full specification |
-| `05-phase-definitions.md` | Add Phase 3.5 definition; modify Phases 4-7 to note story-scoped execution |
+| `05-phase-definitions.md` | Add Phase 4 definition; modify Phases 5-8 to note story-scoped execution |
 | `09-handoff-protocol.md` | Add `storyScope` field to handoff message format |
 
 ### 7.3 Unchanged Documents
@@ -564,7 +564,7 @@ A new framework document (number 11) defining the Story Planner skill, the story
 {
   "slug": "tdd-ddd-story-planner",
   "name": "📋 TDD-DDD Story Planner",
-  "roleDefinition": "You are the Story Planner skill in the TDD-DDD Framework. You are responsible for Phase 3.5: Story Decomposition. You analyze the validated DDD architecture produced in Phases 2-3 and decompose it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story is scoped to a single bounded context, references specific DDD artifacts, includes testable acceptance criteria derived from aggregate invariants and HLD requirements, and carries full traceability tags. You apply MVP scoping principles to include only features required for core value delivery. You determine the optimal sequential execution order for the story backlog. You are PROHIBITED from writing ANY source code or test code. You may only write JSON story files and markdown documentation. Before executing ANY command, read and follow `.agents/ROO_EXECUTION_RULES.md`.",
+  "roleDefinition": "You are the Story Planner skill in the TDD-DDD Framework. You are responsible for Phase 4: Story Decomposition. You analyze the validated DDD architecture produced in Phases 2-3 and decompose it into an ordered backlog of MVP-scoped, implementation-ready user stories. Each story is scoped to a single bounded context, references specific DDD artifacts, includes testable acceptance criteria derived from aggregate invariants and HLD requirements, and carries full traceability tags. You apply MVP scoping principles to include only features required for core value delivery. You determine the optimal sequential execution order for the story backlog. You are PROHIBITED from writing ANY source code or test code. You may only write JSON story files and markdown documentation. Before executing ANY command, read and follow `.agents/ROO_EXECUTION_RULES.md`.",
   "customInstructions": "Before starting, read `.agents/framework/11-story-decomposition.md` completely. Read all DDD specifications under `docs/ddd/` and the validated HLD at `docs/hld/validated-hld.md`. Follow the 7-step decomposition algorithm exactly. Every story MUST have at least one `[HLD-REQ-NNN]` traceability tag. Stories must NOT span multiple bounded contexts. Apply MVP scoping: include only `must`-priority business goals and their transitive dependencies. Output artifacts: backlog at `docs/stories/backlog.json`, individual stories at `docs/stories/STORY-NNN-title.json`, MVP scope document at `docs/stories/mvp-scope.md`. When complete, use `attempt_completion` to signal back to the orchestrator.",
   "groups": [
     "read",
@@ -588,10 +588,10 @@ The Story Planner **cannot** write to `src/`, `tests/`, `.agents/framework/`, or
 
 ## 9. Orchestrator Role Definition Update
 
-The orchestrator's `roleDefinition` in `.roomodes` must be updated to include Phase 3.5 awareness and story loop management. Key additions:
+The orchestrator's `roleDefinition` in `.roomodes` must be updated to include Phase 4 awareness and story loop management. Key additions:
 
-- Track Phase 3.5 as a valid phase
-- Manage the story iteration loop after Phase 3.5
+- Track Phase 4 as a valid phase
+- Manage the story iteration loop after Phase 4
 - Include `storyScope` in handoff messages during the story loop
 - Update `backlog.json` status as stories progress
 - Perform a final full-product validation after all stories complete
@@ -614,7 +614,7 @@ The orchestrator's `roleDefinition` in `.roomodes` must be updated to include Ph
 | 1 | `.roomodes` | Add the `tdd-ddd-story-planner` mode entry (Section 8.1 of this plan) |
 | 2 | `.agents/framework/00-overview.md` | Add doc 11 to index; add Story Planner and Story to glossary |
 | 3 | `.agents/framework/04-skill-definitions.md` | Add Skill 8: Story Planner with responsibilities, permissions, prohibitions, I/O artifacts, preconditions |
-| 4 | `.agents/framework/05-phase-definitions.md` | Add Phase 3.5 definition with entry/exit criteria and artifacts; add story-scoped iteration notes to Phases 4-7 |
+| 4 | `.agents/framework/05-phase-definitions.md` | Add Phase 4 definition with entry/exit criteria and artifacts; add story-scoped iteration notes to Phases 5-8 |
 | 5 | `.agents/framework/07-acceptance-criteria.md` | Add story-level acceptance criteria and per-story Definition of Done |
 | 6 | `.agents/framework/09-handoff-protocol.md` | Add `storyScope` field to handoff message format |
 | 7 | `.roo/rules.md` | Add reference to story decomposition phase |
@@ -641,7 +641,7 @@ The files must be created/modified in this order:
 1. **Create** `.agents/framework/11-story-decomposition.md` — Core framework document with full specification
 2. **Modify** `.agents/framework/00-overview.md` — Add doc 11 to index, update glossary
 3. **Modify** `.agents/framework/04-skill-definitions.md` — Add Skill 8: Story Planner
-4. **Modify** `.agents/framework/05-phase-definitions.md` — Add Phase 3.5, update Phases 4-7 for story scope
+4. **Modify** `.agents/framework/05-phase-definitions.md` — Add Phase 4, update Phases 5-8 for story scope
 5. **Modify** `.agents/framework/07-acceptance-criteria.md` — Add story-level acceptance criteria
 6. **Modify** `.agents/framework/09-handoff-protocol.md` — Add `storyScope` to handoff format
 7. **Modify** `.roomodes` — Add tdd-ddd-story-planner mode entry
@@ -657,7 +657,7 @@ After implementation, verify:
 - [ ] The `tdd-ddd-story-planner` mode is registered in `.roomodes` with correct file restrictions
 - [ ] Framework document 11 exists and is referenced in the document index
 - [ ] The Story Planner skill is defined in `04-skill-definitions.md`
-- [ ] Phase 3.5 is defined in `05-phase-definitions.md` with entry/exit criteria
+- [ ] Phase 4 is defined in `05-phase-definitions.md` with entry/exit criteria
 - [ ] The handoff protocol supports the `storyScope` field
 - [ ] The story schema includes all required fields from Section 3.3
 - [ ] The backlog schema includes all required fields from Section 3.6
@@ -667,3 +667,4 @@ After implementation, verify:
 - [ ] Story naming conventions follow the framework's kebab-case documentation standard
 - [ ] File restrictions prevent the Story Planner from writing source or test code
 - [ ] All traceability requirements are maintained (HLD → DDD → Story → Tests)
+

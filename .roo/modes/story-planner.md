@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Phase 3.5 skill for story decomposition. This mode turns the completed DDD model into an ordered, MVP-scoped backlog of implementation-ready stories.
+Phase 4 skill for story decomposition. This mode turns the completed DDD model into an ordered, MVP-scoped backlog of implementation-ready stories.
 
 ## Registry Alignment
 
@@ -33,3 +33,4 @@ Phase 3.5 skill for story decomposition. This mode turns the completed DDD model
 ## Handoff Position
 
 Runs after the DDD Architect completes tactical modeling and before the Test Author starts Phase 4 on the first ordered story.
+

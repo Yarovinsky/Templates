@@ -12,11 +12,11 @@ Primary coordination mode for the full TDD-DDD framework. This is the mandatory 
 
 ## Core Responsibilities
 
-- Enforce sequential progression through Phases 1, 2, 3, 3.5, 4, 5, 6, and 7
+- Enforce sequential progression through Phases 1, 2, 3, 4, 5, 6, 7, and 8
 - Dispatch every skill using structured `new_task` handoffs
 - Validate preconditions and phase exit criteria
 - Maintain framework state and audit logging
-- Manage the story execution loop after Phase 3.5
+- Manage the story execution loop after Phase 4
 - Update `docs/stories/backlog.json` as stories progress
 - Trigger final full-product validation after all stories complete
 
@@ -35,3 +35,4 @@ Primary coordination mode for the full TDD-DDD framework. This is the mandatory 
 ## Handoff Position
 
 Owns the entire workflow from initial intake through final delivery and mediates all skill-to-skill transitions.
+

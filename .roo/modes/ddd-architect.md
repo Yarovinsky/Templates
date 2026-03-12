@@ -41,4 +41,5 @@ Phases 2 and 3 skill for strategic and tactical DDD modeling. This mode translat
 
 ## Handoff Position
 
-Consumes Phase 1 outputs and hands the full tactical model to the Story Planner for Phase 3.5 decomposition.
+Consumes Phase 1 outputs and hands the full tactical model to the Story Planner for Phase 4 decomposition.
+

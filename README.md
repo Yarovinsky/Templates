@@ -10,7 +10,7 @@ The baseline defines a technology-agnostic development process built around:
 
 - validated HLD intake
 - strategic and tactical DDD modeling
-- story decomposition at Phase 3.5
+- story decomposition at Phase 4
 - strict red-green-refactor execution per story
 - final validation and delivery reporting
 
@@ -26,15 +26,15 @@ Read these as the contract first. Everything else in the repository either suppo
 
 ## High-level framework model
 
-This baseline implements the framework as an **8-skill / Phase 3.5** model:
+This baseline implements the framework as an **8-skill / 8-phase** model:
 
 - **8 skills**: Orchestrator, Analyst, DDD Architect, Story Planner, Test Author, Implementer, Refactorer, and Validator
-- **8 phases**: Phases 1–3, **Phase 3.5 Story Decomposition**, then Phases 4–7
-- **story-scoped execution loop**: after Phase 3.5, the orchestrator drives Phases 4–7 once per ordered story until the backlog is complete
+- **8 phases**: Phase 1 through Phase 8, with **Phase 4 Story Decomposition** between tactical modeling and test specification
+- **story-scoped execution loop**: after Phase 4, the orchestrator drives Phases 5–8 once per ordered story until the backlog is complete
 
 At a high level, the workflow is:
 
-`Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories`
+`Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 5 → Phase 6 → Phase 7 → Phase 8] × N stories`
 
 The authoritative definition of that model is described in [`.roo/rules.md`](.roo/rules.md:22), [`.agents/framework/00-overview.md`](.agents/framework/00-overview.md:30), and [`.agents/framework/11-story-decomposition.md`](.agents/framework/11-story-decomposition.md:9).
 
@@ -49,7 +49,7 @@ Within [`docs/`](docs/), the main subareas are:
 
 - [`docs/hld/`](docs/hld/) — validated HLD and intake analysis artifacts
 - [`docs/ddd/`](docs/ddd/) — strategic and tactical DDD outputs such as domains, bounded contexts, aggregates, entities, value objects, events, repositories, and services
-- [`docs/stories/`](docs/stories/) — Phase 3.5 story backlog, ordered story files, and MVP scope artifacts
+- [`docs/stories/`](docs/stories/) — Phase 4 story backlog, ordered story files, and MVP scope artifacts
 - [`docs/reports/`](docs/reports/) — quality-gate, coverage, and mutation reporting outputs
 - [`docs/adr/`](docs/adr/) — architecture decision records
 
