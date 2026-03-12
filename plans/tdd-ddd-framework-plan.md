@@ -11,7 +11,7 @@ Create a production-ready, directly executable framework specification that serv
 | Output format | Structured directory `.agents/framework/` with separate files per section | Modularity, independent updates, easier navigation |
 | Technology scope | Fully technology-agnostic; stack derived from HLD | Reusable across projects |
 | Skill enforcement | 8 custom Roo modes with hard file restrictions (including orchestrator) | Mechanical enforcement of TDD discipline — violations become impossible, not merely discouraged |
-| Existing rules relationship | New framework references existing `ROO_EXECUTION_RULES.md` by cross-reference; existing rules updated with a pointer to the framework | Avoids duplication, maintains single source of truth for script security |
+| Existing rules relationship | New framework references existing `ROO_EXECUTION_RULES.md` by cross-reference; existing rules updated with a pointer to the framework | Avoids duplication, maintains single source of truth for wrapper-command security |
 
 ## 3. File Structure
 
@@ -29,7 +29,7 @@ Create a production-ready, directly executable framework specification that serv
 │   ├── 07-acceptance-criteria.md   # Acceptance criteria, Definition of Done
 │   ├── 08-failure-handling.md      # Recovery, rollback, audit log specification
 │   ├── 09-handoff-protocol.md      # Inter-skill structured message format
-│   └── 10-script-constraint.md     # .agents/scripts path enforcement, manifest reference
+│   └── 10-script-constraint.md     # bare wrapper command enforcement, manifest reference
 ├── scripts/
 │   ├── manifest.json               # NEW — script inventory with contracts
 │   ├── curl.cmd / curl.ps1
@@ -303,8 +303,8 @@ Each mode maps to a framework skill and enforces file restrictions:
 - Rejection protocol: if preconditions not met, return to originating skill with deficiency list
 
 ### 5.11 `10-script-constraint.md`
-- Inviolable rule: all scripts under `.agents/scripts/` only
-- Fatal error on any attempt to use/create/reference scripts outside this path
+- Inviolable rule: use only bare approved wrapper commands (`dotnet.cmd`, `docker.cmd`, `git.cmd`, `curl.cmd`, `repo.cmd`)
+- Fatal error on any attempt to use/create/reference non-approved commands or wrapper repo paths as invocation targets
 - Violation report format
 - Reference to `manifest.json` requirements
 - Manifest schema: script name, purpose, phase association, input contract, output contract

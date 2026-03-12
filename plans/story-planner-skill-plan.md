@@ -555,7 +555,7 @@ A new framework document (number 11) defining the Story Planner skill, the story
 | `06-naming-conventions.md` | Story naming conventions added in doc 11, not here |
 | `07-acceptance-criteria.md` | Add story-level acceptance criteria section |
 | `08-failure-handling.md` | Story-scoped failure routing uses existing failure modes |
-| `10-script-constraint.md` | Script rules are unaffected |
+| `10-script-constraint.md` | Approved wrapper command rules are unaffected |
 
 ---
 
@@ -631,8 +631,8 @@ The orchestrator's `roleDefinition` in `.roomodes` must be updated to include Ph
 | `.agents/framework/03-tdd-execution-model.md` | TDD model is unchanged; stories scope its execution |
 | `.agents/framework/06-naming-conventions.md` | Story naming is in doc 11 |
 | `.agents/framework/08-failure-handling.md` | Existing failure modes cover story-scoped failures |
-| `.agents/framework/10-script-constraint.md` | No new scripts needed |
-| `.agents/scripts/manifest.json` | No new scripts |
+| `.agents/framework/10-script-constraint.md` | No new wrapper commands needed |
+| `.agents/scripts/manifest.json` | No new wrapper implementations |
 | `.agents/ROO_EXECUTION_RULES.md` | Execution rules unchanged |
 
 ---

@@ -75,10 +75,11 @@ This framework operates **in addition to** the script security and execution rul
 
 Specifically:
 
-- All script invocations during any framework phase MUST comply with the security constraints in `ROO_EXECUTION_RULES.md`.
-- The script inventory in [`.agents/scripts/manifest.json`](../scripts/manifest.json) documents the sanctioned scripts and their contracts.
-- No scripts may be created, executed, or referenced outside the `.agents/scripts/` directory — see `10-script-constraint.md` for enforcement details.
-- The `ScriptSecurity.psm1` shared module provides the foundational security primitives (path validation, metacharacter blocking, symlink traversal prevention) that all scripts depend on.
+- All command invocations during any framework phase MUST comply with the security constraints in `ROO_EXECUTION_RULES.md`.
+- The approved entry points are the bare wrapper commands `dotnet.cmd`, `docker.cmd`, `git.cmd`, `curl.cmd`, and `repo.cmd`.
+- Framework guidance, skills, and examples MUST reference those base wrapper commands directly and MUST NOT instruct Roo to invoke wrapper files through `.agents/...` paths.
+- The wrapper implementation inventory in [`.agents/scripts/manifest.json`](../scripts/manifest.json) exists for repository documentation and maintenance only; it is not an invocation contract for skill prompts.
+- Shared implementation modules such as `ScriptSecurity.psm1` remain internal wrapper details and must not be treated as runnable entry points.
 
 Where a conflict exists between `ROO_EXECUTION_RULES.md` and this framework, the **more restrictive** rule applies.
 

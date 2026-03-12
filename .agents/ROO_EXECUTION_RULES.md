@@ -79,7 +79,7 @@ Syntax:
 
     dotnet.cmd <Action> [dotnet args...] [-MatchPattern <regex>] [-LastLines <N>] [-Timeout <seconds>]
 
-- `Action` (required): `test`, `run`, `build`, `restore`, `format`, `help`, `sln`
+- `Action` (required): `test`, `run`, `build`, `restore`, `format`, `help`
 - Path-bearing flags validated as repo-relative:
   - `--project`, `--solution`, `--startup-project`, `--results-directory`, `--output`, `-o`
 - For the `test` action, `--project <path>` is automatically rewritten to a positional argument for .NET 10+ SDK compatibility.
@@ -193,7 +193,7 @@ Examples:
 ## 5) Extension Rules
 
 If functionality is missing:
-1. propose how to modify the relevant `.ps1` wrapper
+1. modify the relevant `.ps1` wrapper
 2. add validated parameters/subcommands
 3. preserve all security invariants
 4. do not add ad-hoc direct-exec paths
@@ -230,13 +230,13 @@ regardless of mechanism. This means:
   circumventing mode boundaries.
 - **Violation of this rule is Failure Mode 7 (FATAL) per `08-failure-handling.md`.**
 
-Example: The TDD-DDD Test Author mode (`tdd-ddd-test-author`) may write to `tests/`, `docs/`, `.agents/state/`, and may
+Example: The Test Author mode (`test-author`) may write to `tests/`, `docs/`, `.agents/state/`, and may
 create project scaffolding under `src/` (solution files, project files, empty stub classes with no
 implementation). However, using `repo.cmd write src/MyClass.cs` to write a file containing method bodies
 or implementation logic is a FATAL violation — stubs must contain only namespace + empty type declarations.
 
-Example: The TDD-DDD Validator mode (`tdd-ddd-validator`) may only write to `docs/` and `.agents/state/`.
-Using `repo.cmd write src/...` or `repo.cmd write tests/...` from the TDD-DDD Validator mode is a FATAL violation.
+Example: The Validator mode (`validator`) may only write to `docs/` and `.agents/state/`.
+Using `repo.cmd write src/...` or `repo.cmd write tests/...` from the Validator mode is a FATAL violation.
 
 ## 8) TDD-DDD Framework Cross-Reference
 
@@ -246,7 +246,7 @@ skill roles, handoff protocols, quality gates, and naming conventions — see:
 
     .agents/framework/
 
-The framework specification documents (00 through 11) define the authoritative
+The framework specification documents (00 through 10) define the authoritative
 process rules for building software using Test-Driven Development and
 Domain-Driven Design. The framework index is at:
 
@@ -254,21 +254,17 @@ Domain-Driven Design. The framework index is at:
 
 Key integration points:
 
-1. **Script constraint**: The framework enforces that all scripts must reside
-   under `.agents\\scripts\\` (see `.agents/framework/10-script-constraint.md`).
-   This aligns with and extends Section 2 (Approved Entry Points) of this document.
+1. **Wrapper command constraint**: The framework enforces that Roo must invoke
+   only the bare approved wrapper commands (`dotnet.cmd`, `docker.cmd`, `git.cmd`,
+   `curl.cmd`, `repo.cmd`) and must not reference wrapper repo paths as command
+   targets (see `.agents/framework/10-script-constraint.md`). This aligns with and
+   extends Section 2 (Approved Entry Points) of this document.
 
 2. **Skill modes**: Custom Roo modes defined in `.roomodes` enforce file-level
    access restrictions per skill role. See `.agents/framework/04-skill-definitions.md`.
 
 3. **Validation**: The Validator skill uses approved wrappers from Section 4
    to execute test suites and generate reports.
-
-4. **Story decomposition and Phase 4**: The framework's Story Planner skill,
-   Phase 4 contract, and story-scoped execution loop are defined in
-   `.agents/framework/11-story-decomposition.md`, with supporting normative
-   definitions in `.agents/framework/04-skill-definitions.md` and
-   `.agents/framework/05-phase-definitions.md`.
 
 Both this document and the framework are mandatory and complementary.
 In case of conflict, the more restrictive rule applies.
