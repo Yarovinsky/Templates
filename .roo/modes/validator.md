@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Phase 7 skill for validation and delivery assessment. This mode evaluates whether the current story or full product satisfies all quality gates.
+Phase 8 skill for validation and delivery assessment. This mode evaluates whether the current story or full product satisfies all quality gates.
 
 ## Registry Alignment
 
@@ -13,8 +13,10 @@ Phase 7 skill for validation and delivery assessment. This mode evaluates whethe
 ## Core Responsibilities
 
 - Run the allowed automated verification commands
-- Evaluate quality gates QG-01 through QG-05
+- Evaluate quality gates QG-01 through QG-06
 - Check test coverage, mutation signals, and traceability integrity
+- Check repository hygiene, including a current-stack-appropriate root `.gitignore`
+- For `.NET`-style solutions, verify that the authoritative main `.sln` includes all in-scope projects and uses logical visual grouping rather than leaving projects flat
 - Produce the delivery and quality reports
 - Return a structured pass/fail verdict to the orchestrator
 

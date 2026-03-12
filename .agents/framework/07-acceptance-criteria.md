@@ -55,6 +55,13 @@ Applies to: domains, bounded contexts, aggregates, entities, value objects, even
 - MUST not contain speculative code (code not required by any test)
 - MUST align with ubiquitous language naming
 
+### Repository Hygiene And Solution Structure
+
+- The repository MUST contain a root-level `.gitignore`
+- The `.gitignore` MUST be appropriate to the technologies actually used in the repository; stack-specific generated artifacts, build outputs, tool caches, IDE files, and local secrets must not be left unignored due to use of an overly generic template
+- For `.NET`-style solutions, the authoritative main `.sln` file MUST include all in-scope source and test projects that are intended to build, test, or ship together
+- For `.NET`-style solutions with multiple projects, the authoritative main `.sln` MUST present a logical visual structure using solution folders or an equivalent documented grouping; leaving all projects flat at the top level is not acceptable without an explicit documented exception
+
 ### Stories
 
 Applies to: individual story files produced in Phase 4.
@@ -76,11 +83,13 @@ All of the following MUST be true for a single story to be marked `completed`:
 - [ ] Phase 5 complete: All acceptance criteria have corresponding failing tests
 - [ ] Phase 6 complete: All story tests pass (GREEN state)
 - [ ] Phase 7 complete: Refactoring checklist applied, all tests still pass
-- [ ] Phase 8 complete: Story-scoped quality gates pass (QG-01 through QG-05)
+- [ ] Phase 8 complete: Story-scoped quality gates pass (QG-01 through QG-06)
 - [ ] All previously passing tests (from prior stories) continue to pass — no regressions
 - [ ] Story status updated to `completed` in `docs/stories/backlog.json`
 - [ ] Story `completedAt` timestamp set
 - [ ] Story `phaseProgress` fields all set to `completed`
+- [ ] Repository hygiene remains valid for the delivered story scope: root `.gitignore` is current for the stack/tooling in use
+- [ ] If the story introduces or changes `.NET` projects, the authoritative main solution includes them and preserves logical visual grouping
 
 ---
 
@@ -89,12 +98,13 @@ All of the following MUST be true for a single story to be marked `completed`:
 All of the following MUST be true for the product to be considered complete:
 
 - [ ] All 8 phases completed in prescribed order (Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7 → Phase 8)
-- [ ] All quality gates passed (QG-01 through QG-05):
+- [ ] All quality gates passed (QG-01 through QG-06):
   - [ ] QG-01: No skipped/pending tests without blocking-issue ID
   - [ ] QG-02: Code coverage ≥ threshold (default 90%) on domain/application layers
   - [ ] QG-03: Mutation kill rate ≥ 85% on aggregate invariant tests
   - [ ] QG-04: Zero failing tests across all layers
   - [ ] QG-05: Complete traceability — no orphaned requirements or tests
+  - [ ] QG-06: Repository hygiene and solution structure satisfied
 - [ ] Traceability matrix complete and validated:
   - Every `[HLD-REQ-NNN]` has at least one test
   - Every test traces to at least one `[HLD-REQ-NNN]`
@@ -108,6 +118,8 @@ All of the following MUST be true for the product to be considered complete:
 - [ ] Audit log complete with no gaps in phase transitions
 - [ ] All documentation artifacts exist at prescribed paths
 - [ ] Deliverable artifacts are buildable and deployable
+- [ ] Root `.gitignore` exists and is current-stack-appropriate
+- [ ] For `.NET`-style solutions, the authoritative main solution includes all in-scope projects and uses logical visual structure
 
 ---
 
@@ -162,49 +174,70 @@ The orchestrator maintains a Definition of Done checklist in `.agents/state/defi
     },
     {
       "id": "DOD-07",
-      "description": "Traceability matrix complete and validated",
+      "description": "QG-06: Repository hygiene and solution structure satisfied",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
     },
     {
       "id": "DOD-08",
-      "description": "Ubiquitous language glossary reviewed and finalized",
+      "description": "Traceability matrix complete and validated",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
     },
     {
       "id": "DOD-09",
-      "description": "All ADRs complete",
+      "description": "Ubiquitous language glossary reviewed and finalized",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
     },
     {
       "id": "DOD-10",
-      "description": "Technical debt register complete with prioritized remediation plan",
+      "description": "All ADRs complete",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
     },
     {
       "id": "DOD-11",
-      "description": "Audit log complete with no gaps",
+      "description": "Technical debt register complete with prioritized remediation plan",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
     },
     {
       "id": "DOD-12",
-      "description": "All documentation artifacts exist at prescribed paths",
+      "description": "Audit log complete with no gaps",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
     },
     {
       "id": "DOD-13",
+      "description": "All documentation artifacts exist at prescribed paths",
+      "status": "PENDING",
+      "evidence": "",
+      "evaluatedAt": ""
+    },
+    {
+      "id": "DOD-14",
       "description": "Deliverable artifacts are buildable and deployable",
+      "status": "PENDING",
+      "evidence": "",
+      "evaluatedAt": ""
+    },
+    {
+      "id": "DOD-15",
+      "description": "Root `.gitignore` exists and is current-stack-appropriate",
+      "status": "PENDING",
+      "evidence": "",
+      "evaluatedAt": ""
+    },
+    {
+      "id": "DOD-16",
+      "description": "For `.NET`-style solutions, the authoritative main solution includes all in-scope projects and uses logical visual structure",
       "status": "PENDING",
       "evidence": "",
       "evaluatedAt": ""
@@ -220,4 +253,4 @@ The orchestrator maintains a Definition of Done checklist in `.agents/state/defi
 - The `evidence` field must point to a concrete artifact or provide a verifiable description
 - The `evaluatedAt` field uses ISO-8601 timestamps
 - The orchestrator updates this file as criteria are evaluated
-- The Validator skill populates most items during Phase 7
+- The Validator skill populates most items during Phase 8

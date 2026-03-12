@@ -37,6 +37,7 @@ This framework defines:
 - Strict red-green-refactor TDD cycle as the only permitted development cadence
 - Domain-Driven Design transformation pipeline
 - Quality gates, naming conventions, and acceptance criteria
+- Repository hygiene rules, including current-stack-appropriate `.gitignore` and authoritative `.NET` solution completeness/visual structure requirements
 - Failure handling and recovery procedures
 - Structured handoff protocol between skills (with story scoping)
 - Immutable audit log requirements

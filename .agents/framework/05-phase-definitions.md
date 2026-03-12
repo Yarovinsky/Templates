@@ -216,6 +216,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 5. Write failing property-based tests for value objects and invariants where applicable
 6. Create test data builders and fixtures
 7. Create traceability matrix mapping tests to `[HLD-REQ-NNN]` requirements
+8. When scaffolding is required, create the initial root `.gitignore` appropriate to the detected stack and establish the initial authoritative solution/project structure needed for compilation
 
 ### Exit Criteria
 
@@ -226,6 +227,7 @@ If gaps or ambiguities are found, **halt** and request customer clarification. R
 - Every test has `[HLD-REQ-NNN]` traceability (via comment or attribute)
 - All tests are in FAILING state (RED)
 - Traceability matrix complete with no orphaned requirements
+- If solution/project scaffolding was introduced, the root `.gitignore` exists and the authoritative solution includes the scaffolded projects in an intentional initial structure
 
 ### Output Artifacts
 
@@ -264,12 +266,15 @@ Uses the red-green-refactor cycle internally — **RED only**. All tests must be
 2. Implement domain logic as specified by DDD model
 3. Implement infrastructure adapters to fulfill repository contracts
 4. Verify GREEN state after each implementation step
+5. Maintain repository hygiene affected by implementation changes: update the root `.gitignore` for newly introduced tooling/artifacts and add newly created projects to the authoritative solution
 
 ### Exit Criteria
 
 - ALL tests pass (GREEN state)
 - No speculative code added
 - All production code traceable to a test
+- The authoritative solution includes all implementation-created projects that belong to product scope
+- The root `.gitignore` remains appropriate to the current stack after implementation changes
 
 ### Output Artifacts
 
@@ -303,6 +308,7 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 3. Evaluate aggregate boundaries for correctness
 4. Ensure SOLID compliance
 5. Log technical debt items with severity and effort estimates
+6. Reorganize the authoritative solution's visual structure when needed so projects are grouped logically rather than left flat
 
 ### Exit Criteria
 
@@ -311,6 +317,7 @@ Red-green cycle — implement one test at a time, verify GREEN, proceed to next.
 - Technical debt logged
 - Ubiquitous language alignment verified
 - No naming mismatches with glossary
+- The authoritative solution uses a logical visual structure appropriate to bounded contexts, layers, or delivery slices when multiple projects exist
 
 ### Output Artifacts
 
@@ -345,11 +352,12 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 ### Activities
 
 1. Run all test suites at all layers (unit, integration, contract, acceptance, property-based)
-2. Enforce all quality gates (QG-01 through QG-05 from `03-tdd-execution-model.md`)
+2. Enforce all quality gates (QG-01 through QG-06 from `03-tdd-execution-model.md`)
 3. Generate coverage report
 4. Generate mutation testing report
 5. Validate traceability matrix completeness (no orphaned requirements or tests)
 6. Compile final deliverables and delivery checklist
+7. Validate repository hygiene and solution structure: root `.gitignore`, stack appropriateness, authoritative solution completeness, and logical visual grouping for `.NET`-style solutions
 
 ### Exit Criteria
 
@@ -357,6 +365,8 @@ Refactor one concern at a time. Verify GREEN after each change. If a refactoring
 - Traceability matrix complete with no orphans
 - Coverage and mutation thresholds met
 - All documentation finalized
+- Repository hygiene checks pass, including a current-stack-appropriate root `.gitignore`
+- For `.NET`-style solutions, the authoritative main solution includes all in-scope projects and uses logical visual grouping rather than a flat structure
 
 ### Output Artifacts
 
@@ -377,6 +387,8 @@ If any quality gate fails, the orchestrator routes back to the appropriate phase
 - **Missing tests** → Phase 5 (Test Author)
 - **Failing tests** → Phase 6 (Implementer)
 - **Quality/structure issues** → Phase 7 (Refactorer)
+- **Missing or outdated `.gitignore`, missing projects from solution** → Phase 6 (Implementer) unless the issue originates from initial scaffolding, in which case Phase 5 may be re-entered
+- **Flat or illogical solution organization** → Phase 7 (Refactorer)
 
 The orchestrator determines the correct routing based on the quality gate failure details.
 

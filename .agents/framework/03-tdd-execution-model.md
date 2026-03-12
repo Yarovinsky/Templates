@@ -326,13 +326,38 @@ Traceability must be **complete** in both directions:
 - Tests with no requirements are reported as orphans
 - Both conditions block phase completion
 
+### QG-06: Repository Hygiene and Solution Structure
+
+The repository MUST satisfy baseline delivery structure checks before validation can pass.
+
+| Check | Requirement |
+|-------|-------------|
+| **Root `.gitignore` exists** | The repository MUST contain a root-level `.gitignore`. |
+| **`.gitignore` matches current stack** | The `.gitignore` MUST be appropriate to the technologies actually present in the repository and MUST cover generated/build/tooling artifacts for that stack. Generic placeholders are insufficient when stack-specific ignores are required. |
+| **Main solution completeness** | For `.NET`-style solutions, the main solution file MUST include every deliverable project that belongs to the product scope. No active source or test project may be omitted from the authoritative solution without documented rationale. |
+| **Logical visual structure** | For `.NET`-style solutions with more than one project, the main solution MUST use solution folders or an equivalent documented visual grouping so projects are organized by bounded context, architectural layer, delivery slice, or other justified structure rather than remaining entirely flat. |
+
+**Interpretation rules:**
+
+- `Current stack` means the technologies actually used by the repository as evidenced by manifests, project files, tooling configuration, and implementation artifacts.
+- `Main solution file` means the authoritative delivered `.sln` entry point for the product. If multiple solution files exist, the architect or implementation artifacts MUST identify which solution is authoritative.
+- `All projects` means all in-scope deliverable projects for the product or validated story set, including source and test projects that are intended to build, test, or ship together.
+- `Logical visual structure` means a deliberate organization that communicates intent to maintainers. Flat top-level placement of all projects is a violation unless a documented exception explicitly justifies it.
+
+**Ownership rules across phases:**
+
+- Test Author may create the initial `.sln`, project scaffolding, and a stack-appropriate initial `.gitignore` when scaffolding is required for test compilation.
+- Implementer is responsible for keeping `.gitignore` current with newly introduced stack/tooling artifacts and for ensuring newly created projects are added to the main solution.
+- Refactorer is responsible for improving solution organization when structure becomes unclear, flat, or inconsistent with bounded contexts/layers.
+- Validator enforces this gate and fails validation when repository hygiene or solution structure does not satisfy the required standard.
+
 ### Quality Gate Configuration Schema:
 
 Quality gate thresholds are stored in `.agents/state/quality-gates.json`:
 
 ```json
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "gates": {
     "QG-01": {
       "name": "No Skipped Tests",
@@ -365,6 +390,15 @@ Quality gate thresholds are stored in `.agents/state/quality-gates.json`:
       "enabled": true,
       "noOrphanedTests": true,
       "noOrphanedRequirements": true
+    },
+    "QG-06": {
+      "name": "Repository Hygiene and Solution Structure",
+      "enabled": true,
+      "requireRootGitignore": true,
+      "gitignoreMustMatchCurrentStack": true,
+      "requireMainSolutionProjectCompleteness": true,
+      "requireLogicalSolutionFolders": true,
+      "solutionApplicability": ".net-style-solutions"
     }
   }
 }

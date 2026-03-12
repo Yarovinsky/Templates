@@ -254,6 +254,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Defining test data builders and fixtures
 - Maintaining test-to-requirement traceability matrix
 - Ensuring tests encode DDD invariants and HLD behaviors
+- Creating initial repository scaffolding artifacts required for testability, including a current-stack-appropriate root `.gitignore` and the initial authoritative solution structure when project scaffolding is introduced
 
 ### Permitted Actions
 
@@ -262,6 +263,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Create traceability matrix documents (markdown)
 - READ production source files and interfaces for contract discovery (but NOT modify them)
 - **Project scaffolding** — Create solution files (`.sln`), project files (`.csproj`, `.fsproj`), build props files (`Directory.Build.props`, `Directory.Packages.props`), and empty stub source files under `src/` to enable test compilation. Stubs must contain ONLY a namespace declaration and an empty type declaration (class, struct, record, or interface) with NO method bodies, NO constructors with logic, and NO implementation code. Example: `namespace Ingestion.Domain.ValueObjects; public record Language;`
+- Create or update the root `.gitignore` when initial scaffolding establishes the stack/tooling footprint for the repository
 - Create directories under `src/` as needed for project scaffolding
 
 ### Prohibited Actions
@@ -303,12 +305,14 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Writing MINIMUM production code to pass existing failing tests
 - Implementing domain logic as specified by DDD model
 - Implementing infrastructure adapters to fulfill repository contracts
+- Maintaining implementation-owned repository hygiene artifacts affected by the introduced stack/tooling, including keeping the root `.gitignore` current and ensuring newly introduced projects are added to the authoritative solution
 
 ### Permitted Actions
 
 - Create and modify production source files (NOT test files)
 - Implement interface contracts
 - Write method bodies
+- Create or update root-level repository/build configuration files needed by the current stack, including `.gitignore` and authoritative solution/project configuration files
 
 ### Prohibited Actions
 
@@ -347,6 +351,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Technical debt logging
 - DDD alignment review
 - Ubiquitous language alignment verification
+- Improving repository-level maintainability where it does not change behavior, including logical solution folder organization and alignment of the main solution structure to bounded contexts, layers, or delivery slices
 
 ### Permitted Actions
 
@@ -354,6 +359,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - Create/update technical debt log (markdown)
 - Update ubiquitous language glossary
 - Restructure code within the same bounded context
+- Reorganize the authoritative solution's visual structure and update the root `.gitignore` when required to keep repository hygiene aligned with the delivered stack
 
 ### Prohibited Actions
 
@@ -391,11 +397,12 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 ### Responsibilities
 
 - Running all test suites at all layers
-- Enforcing quality gates (QG-01 through QG-05 from `03-tdd-execution-model.md`)
+- Enforcing quality gates (QG-01 through QG-06 from `03-tdd-execution-model.md`)
 - Generating coverage reports
 - Generating mutation testing reports
 - Issuing pass/fail verdicts for phase completion
 - Producing final traceability matrix validation
+- Verifying repository hygiene and solution structure, including stack-appropriate `.gitignore`, authoritative solution completeness, and logical visual grouping for `.NET`-style solutions
 
 ### Permitted Actions
 

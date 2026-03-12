@@ -1,6 +1,6 @@
 # 00 — TDD-DDD Framework Overview
 
-> **Version**: 1.1.0
+> **Version**: 1.2.0
 > **Date**: 2026-03-12  
 > **Status**: Authoritative
 
@@ -58,7 +58,10 @@ Enforcement is achieved through **8 custom Roo modes** (including an orchestrato
 | **Story**               | An implementation-ready unit of work scoped to a single bounded context, containing references to specific DDD artifacts, testable acceptance criteria, HLD traceability tags, complexity estimate, and MVP justification. Each story drives one complete TDD cycle through Phases 5–8. |
 | **Story Backlog**       | An ordered list of stories produced by the Story Planner in Phase 4. The orchestrator iterates through the backlog sequentially, executing Phases 5–8 for each story. Stored at `docs/stories/backlog.json`. |
 | **MVP Scope**           | The minimum set of stories required to deliver core business value, determined by tracing `must`-priority business goals through feature narratives to DDD artifacts with transitive dependency inclusion. |
-| **Quality Gate**        | A mandatory checkpoint that must be passed before an artifact or phase can be marked complete. Includes coverage thresholds, mutation testing kill rates, and traceability completeness. |
+| **Quality Gate**        | A mandatory checkpoint that must be passed before an artifact or phase can be marked complete. Includes coverage thresholds, mutation testing kill rates, traceability completeness, repository hygiene, and solution structure completeness. |
+| **Current-Stack-Appropriate `.gitignore`** | A root-level `.gitignore` whose entries match the technologies actually used by the repository (for example .NET, Node.js, Python, container tooling, IDE outputs, and generated artifacts in scope) and that does not omit stack-specific generated files that should be ignored. |
+| **Main Solution File**  | The primary `.sln` file used as the authoritative entry point for a .NET-style multi-project solution. Unless explicitly overridden by the HLD or architecture artifacts, this is the root-level solution file that represents the delivered product. |
+| **Logical Visual Structure** | A non-flat solution organization in the main solution file that groups projects into meaningful solution folders or equivalent visual structure by bounded context, architectural layer, delivery slice, or other documented domain-aligned grouping, instead of leaving all projects at the top level without rationale. |
 | **Traceability Tag**    | A structured identifier in the format `[HLD-REQ-NNN]` (global) or `[HLD-{SECTION}-NNN]` (section-local) that links every DDD and TDD artifact back to an HLD requirement. |
 | **Handoff Protocol**    | The structured message format used when one skill/mode transfers work to another, including artifact references, traceability tags, precondition assertions, and status summary. |
 | **Audit Log**           | An immutable, append-only JSON-lines log recording every phase transition, skill handoff, test result, quality gate evaluation, and process deviation with ISO 8601 timestamps. |
@@ -85,8 +88,9 @@ Where a conflict exists between `ROO_EXECUTION_RULES.md` and this framework, the
 
 | Field       | Value      |
 |-------------|------------|
-| Version     | 1.1.0      |
+| Version     | 1.2.0      |
 | Date        | 2026-03-12 |
 | Status      | Authoritative |
 | Change Log  | 1.0.0 — Initial release of TDD-DDD Framework Specification |
 |             | 1.1.0 — Added Story Planner skill (Phase 4), story-scoped iteration loop for Phases 5–8, `11-story-decomposition.md`, updated glossary, skill definitions, phase definitions, acceptance criteria, and handoff protocol |
+|             | 1.2.0 — Added repository quality requirements for current-stack-appropriate `.gitignore`, main solution completeness, and logical solution visual structure; updated quality gates, phase responsibilities, skill definitions, validator guidance, and Definition of Done |
