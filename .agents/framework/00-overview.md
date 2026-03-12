@@ -1,7 +1,7 @@
 # 00 — TDD-DDD Framework Overview
 
 > **Version**: 1.1.0
-> **Date**: 2026-03-02  
+> **Date**: 2026-03-12  
 > **Status**: Authoritative
 
 ---
@@ -86,7 +86,7 @@ Where a conflict exists between `ROO_EXECUTION_RULES.md` and this framework, the
 | Field       | Value      |
 |-------------|------------|
 | Version     | 1.1.0      |
-| Date        | 2026-03-02 |
+| Date        | 2026-03-12 |
 | Status      | Authoritative |
 | Change Log  | 1.0.0 — Initial release of TDD-DDD Framework Specification |
 |             | 1.1.0 — Added Story Planner skill (Phase 3.5), story-scoped iteration loop for Phases 4–7, `11-story-decomposition.md`, updated glossary, skill definitions, phase definitions, acceptance criteria, and handoff protocol |

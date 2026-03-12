@@ -330,7 +330,7 @@ The backlog manifest is stored at `docs/stories/backlog.json`.
 ```json
 {
   "$schema": "backlog-schema-v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "projectName": "string — derived from HLD",
   "createdAt": "ISO-8601 timestamp",
   "updatedAt": "ISO-8601 timestamp",

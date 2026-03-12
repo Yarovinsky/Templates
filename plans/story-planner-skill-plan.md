@@ -1,7 +1,7 @@
 # Story Planner Skill — Complete Implementation Plan
 
-> **Version**: 1.0.0
-> **Date**: 2026-03-02
+> **Version**: 1.1.0
+> **Date**: 2026-03-12
 > **Status**: Draft — Awaiting Approval
 
 ---
@@ -181,7 +181,7 @@ docs/
     "phase6": "pending",
     "phase7": "pending"
   },
-  "createdAt": "2026-03-02T12:00:00.000Z",
+  "createdAt": "2026-03-12T12:00:00.000Z",
   "completedAt": null
 }
 ```
@@ -222,10 +222,10 @@ docs/
 ```json
 {
   "$schema": "backlog-schema-v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "projectName": "Derived from HLD",
-  "createdAt": "2026-03-02T12:00:00.000Z",
-  "updatedAt": "2026-03-02T12:00:00.000Z",
+  "createdAt": "2026-03-12T12:00:00.000Z",
+  "updatedAt": "2026-03-12T12:00:00.000Z",
   "totalStories": 12,
   "completedStories": 0,
   "currentStoryId": null,

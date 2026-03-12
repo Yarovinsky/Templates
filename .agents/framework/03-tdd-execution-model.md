@@ -332,7 +332,7 @@ Quality gate thresholds are stored in `.agents/state/quality-gates.json`:
 
 ```json
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "gates": {
     "QG-01": {
       "name": "No Skipped Tests",
