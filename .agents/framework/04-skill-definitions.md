@@ -31,7 +31,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 
 ### Responsibilities
 
-- **Phase state management** — Tracks phases 1–7, enforces strict sequential progression
+- **Phase state management** — Tracks phases 1–3, 3.5, and 4–7, enforces strict sequential progression
 - **Skill dispatching** — Determines next skill mode and dispatches via subtask (`new_task` tool) with structured handoff
 - **Precondition validation** — Verifies input artifacts exist and are valid before dispatching to any skill
 - **Handoff coordination** — Receives completion signals from skills, validates outputs, routes to next skill or rework
@@ -41,6 +41,7 @@ The **TDD-DDD Orchestrator is the mandatory entry point** — no skill mode may 
 - **Clarification aggregation** — Collects and batches clarification requests for the customer
 - **Story commit and push** — After each story passes per-story Phase 7 validation, commits all changes and pushes to the remote per `11-story-decomposition.md` Section 7.5
 - **Story pause control** — Reads `storyLoop.pauseAfterStory` from `phase-state.json` after each story commit; when `true`, halts and waits for customer approval before proceeding to the next story; when `false` (default), proceeds automatically
+- **Final validation coordination** — After all stories are complete, dispatches Phase 7-Final for full-product validation before delivery
 
 ### Permitted Actions
 

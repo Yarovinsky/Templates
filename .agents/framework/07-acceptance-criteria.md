@@ -88,7 +88,7 @@ All of the following MUST be true for a single story to be marked `completed`:
 
 All of the following MUST be true for the product to be considered complete:
 
-- [ ] All 7 phases completed in prescribed order (Phase 1 → Phase 7)
+- [ ] All 8 phases completed in prescribed order (Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → Phase 4 → Phase 5 → Phase 6 → Phase 7)
 - [ ] All quality gates passed (QG-01 through QG-05):
   - [ ] QG-01: No skipped/pending tests without blocking-issue ID
   - [ ] QG-02: Code coverage ≥ threshold (default 90%) on domain/application layers
@@ -120,7 +120,7 @@ The orchestrator maintains a Definition of Done checklist in `.agents/state/defi
   "items": [
     {
       "id": "DOD-01",
-      "description": "All 7 phases completed in order",
+      "description": "All 8 phases completed in order, including Phase 3.5",
       "status": "PASS|FAIL|PENDING",
       "evidence": "path to proof or description",
       "evaluatedAt": "ISO-8601 timestamp"

@@ -1,4 +1,45 @@
 {
-  "status": "placeholder",
-  "stories": []
+  "$schema": "backlog-schema-v1",
+  "version": "1.1.0",
+  "projectName": "<project-name-derived-from-validated-hld>",
+  "createdAt": "2026-03-12T12:00:00.000Z",
+  "updatedAt": "2026-03-12T12:00:00.000Z",
+  "totalStories": 2,
+  "completedStories": 0,
+  "currentStoryId": null,
+  "mvpScope": {
+    "description": "Baseline example showing how Phase 3.5 records MVP inclusion and exclusion decisions.",
+    "includedBoundedContexts": [
+      "CoreDomain"
+    ],
+    "excludedFeatures": [
+      {
+        "feature": "Advanced reporting dashboard",
+        "reason": "Deferred until core value delivery is validated.",
+        "hldRequirements": [
+          "HLD-REQ-045"
+        ]
+      }
+    ]
+  },
+  "stories": [
+    {
+      "storyId": "STORY-001",
+      "sequenceNumber": 1,
+      "title": "Create Core Aggregate",
+      "boundedContext": "CoreDomain",
+      "complexity": "M",
+      "status": "pending",
+      "filePath": "docs/stories/STORY-001-create-core-aggregate.json"
+    },
+    {
+      "storyId": "STORY-002",
+      "sequenceNumber": 2,
+      "title": "Orchestrate Core Application Workflow",
+      "boundedContext": "CoreDomain",
+      "complexity": "L",
+      "status": "pending",
+      "filePath": "docs/stories/STORY-002-orchestrate-core-application-workflow.json"
+    }
+  ]
 }

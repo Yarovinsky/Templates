@@ -1,60 +1,107 @@
 # Templates
 
-Reusable documentation and workflow templates for structured software delivery using a TDD + DDD-oriented process.
+Reusable **TDD-DDD framework baseline** for starting and governing software projects with a strict, story-driven delivery model.
 
-## Overview
+## What this repository is
 
-This repository provides a starter set of planning, architecture, delivery, reporting, and story-tracking artifacts. It is organized to support teams that want a consistent documentation baseline before implementation begins.
+This repository is a finished reusable baseline for the TDD-DDD delivery framework. It is not a placeholder shell and not just a folder scaffold: it packages the framework contract, Roo mode configuration, baseline project structure, and example/template artifacts needed to start a repository that follows the framework end to end.
 
-The repository currently includes:
+The baseline defines a technology-agnostic development process built around:
 
-- Framework and planning documents under `docs/` and `plans/`
-- High-level design placeholders for project intake and validation
-- DDD-oriented documentation structure for domains, bounded contexts, and context mapping
-- Story backlog placeholders under `docs/stories/`
-- Supporting framework assets under `.agents/` and `.roo/`
+- validated HLD intake
+- strategic and tactical DDD modeling
+- story decomposition at Phase 3.5
+- strict red-green-refactor execution per story
+- final validation and delivery reporting
 
-## Repository Structure
+## Authoritative assets
 
-- `README.md` — repository introduction and usage guidance
-- `docs/` — delivery, DDD, HLD, report, and story documentation templates
-- `plans/` — implementation and framework planning documents
-- `.agents/` — framework and supporting automation metadata
-- `.roo/` — Roo mode and rules configuration
+The following repository assets are authoritative and define how the framework operates:
 
-## Primary Documentation Areas
+- [`.agents/framework/`](.agents/framework/) — normative framework specification, with the index and authority statement in [`.agents/framework/00-overview.md`](.agents/framework/00-overview.md:1)
+- [`.roomodes`](.roomodes) — enforced Roo custom mode definitions, responsibilities, and file restrictions for the framework skills
+- [`.roo/rules.md`](.roo/rules.md:1) — repository-level execution and framework policy entry point that binds Roo behavior to the authoritative framework and execution rules
 
-### `docs/hld/`
+Read these as the contract first. Everything else in the repository either supports that contract, demonstrates its expected outputs, or provides a project baseline onto which real product work is added.
 
-Contains high-level design artifacts, including a validated HLD placeholder and reports used during intake and review.
+## High-level framework model
 
-### `docs/ddd/`
+This baseline implements the framework as an **8-skill / Phase 3.5** model:
 
-Contains strategic domain-design templates such as bounded contexts, domain definitions, context maps, and conflict notes.
+- **8 skills**: Orchestrator, Analyst, DDD Architect, Story Planner, Test Author, Implementer, Refactorer, and Validator
+- **8 phases**: Phases 1–3, **Phase 3.5 Story Decomposition**, then Phases 4–7
+- **story-scoped execution loop**: after Phase 3.5, the orchestrator drives Phases 4–7 once per ordered story until the backlog is complete
 
-### `docs/reports/`
+At a high level, the workflow is:
 
-Contains quality-oriented report placeholders, including coverage, mutation, and quality gate reporting.
+`Phase 1 → Phase 2 → Phase 3 → Phase 3.5 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories`
 
-### `docs/stories/`
+The authoritative definition of that model is described in [`.roo/rules.md`](.roo/rules.md:22), [`.agents/framework/00-overview.md`](.agents/framework/00-overview.md:30), and [`.agents/framework/11-story-decomposition.md`](.agents/framework/11-story-decomposition.md:9).
 
-Contains story backlog templates and placeholder story definitions intended for iterative execution workflows.
+## Repository layout
 
-## Intended Usage
+- [`docs/`](docs/) — framework-facing and project-facing documentation baseline, including HLD intake outputs, DDD artifacts, ADRs, traceability, reports, and story-layer artifacts
+- [`plans/`](plans/) — implementation planning records for the framework/baseline itself; useful as repository history and design rationale, not as the runtime contract
+- [`src/`](src/) — production source location for projects created from this baseline
+- [`tests/`](tests/) — automated test location for projects created from this baseline
 
-Use this repository as a template when starting a new project that needs:
+Within [`docs/`](docs/), the main subareas are:
 
-1. A predefined documentation structure
-2. Traceable planning and delivery artifacts
-3. DDD-oriented analysis and modeling documents
-4. Story-based execution planning
-5. Quality and release reporting placeholders
+- [`docs/hld/`](docs/hld/) — validated HLD and intake analysis artifacts
+- [`docs/ddd/`](docs/ddd/) — strategic and tactical DDD outputs such as domains, bounded contexts, aggregates, entities, value objects, events, repositories, and services
+- [`docs/stories/`](docs/stories/) — Phase 3.5 story backlog, ordered story files, and MVP scope artifacts
+- [`docs/reports/`](docs/reports/) — quality-gate, coverage, and mutation reporting outputs
+- [`docs/adr/`](docs/adr/) — architecture decision records
 
-## Current Metadata
+## Artifact categories and repository contract
 
-- Version: `1.1.0`
-- Last updated: `2026-03-12`
+This repository intentionally separates three kinds of content:
 
-## Notes
+### 1. Normative framework documentation
 
-Several files in this repository are intentionally placeholders. Replace them with project-specific content as work progresses.
+These files define the enforceable rules of the framework and are the source of truth for behavior:
+
+- [`.agents/framework/`](.agents/framework/)
+- [`.roomodes`](.roomodes)
+- [`.roo/rules.md`](.roo/rules.md:1)
+
+If a repository consumer needs to know what is mandatory, these files are the answer.
+
+### 2. Baseline templates and examples
+
+These files provide the reusable starting structure and representative outputs expected in a project using the framework:
+
+- documentation skeletons and baseline records under [`docs/`](docs/)
+- baseline story artifacts under [`docs/stories/`](docs/stories/)
+- empty project roots under [`src/`](src/) and [`tests/`](tests/)
+- planning/background material under [`plans/`](plans/)
+
+These are intended to be copied forward, filled in, or replaced by project-specific content while preserving the framework contract.
+
+### 3. Runtime or generated artifacts
+
+These are artifacts a real framework run produces or updates during delivery, such as:
+
+- validated HLD outputs
+- DDD specifications
+- story backlog and story files
+- traceability, delivery, and quality reports
+- state/audit records under [`.agents/state/`](.agents/state/)
+
+In this baseline repository, some of those artifacts are present as examples or scaffolding so the expected shape of the repository is explicit.
+
+## Implementation status
+
+This repository should be treated as a **completed framework baseline**:
+
+- the framework contract is authored under [`.agents/framework/`](.agents/framework/)
+- Roo mode registration is present in [`.roomodes`](.roomodes)
+- repository policy entry points are present in [`.roo/rules.md`](.roo/rules.md:1)
+- baseline scaffolding exists for documentation, planning, source, tests, and story artifacts
+
+What remains intentionally open is **project-specific product content**, not framework definition. Teams using this baseline are expected to add or regenerate product artifacts within the established structure while keeping the authoritative framework assets intact.
+
+## Version
+
+- Framework baseline version: `1.1.0`
+- Repository state aligned through: `2026-03-12`

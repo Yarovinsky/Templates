@@ -44,5 +44,9 @@ This framework defines:
 The TDD-DDD Orchestrator mode (`tdd-ddd-orchestrator`) is the mandatory
 entry point for all development work under this framework.
 
+The normative framework index is at `.agents/framework/00-overview.md`. The
+authoritative Story Planner / Phase 3.5 contract is defined in
+`.agents/framework/11-story-decomposition.md`.
+
 You MUST NOT skip phases, bypass the orchestrator, or violate
 skill role boundaries defined in the framework.

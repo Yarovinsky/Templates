@@ -1,6 +1,59 @@
 {
-  "status": "placeholder",
+  "$schema": "story-schema-v1",
   "storyId": "STORY-NNN",
-  "title": "replace-with-story-title",
-  "description": "Placeholder kebab-case story artifact referenced by the framework."
+  "sequenceNumber": 1,
+  "title": "Replace With Story Title",
+  "fileNameConvention": "STORY-NNN-kebab-case-title.json",
+  "userStory": "As a <persona>, I want <capability> so that <business-value>",
+  "boundedContext": "<BoundedContextName>",
+  "aggregates": [
+    "<AggregateName>"
+  ],
+  "dddArtifacts": [
+    {
+      "type": "aggregate",
+      "name": "<AggregateName>",
+      "specPath": "docs/ddd/aggregates/<aggregate-name>.md"
+    },
+    {
+      "type": "application-service",
+      "name": "<WorkflowOrServiceName>",
+      "specPath": "docs/ddd/application-services/<workflow-or-service-name>.md"
+    }
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "criterion": "<testable acceptance criterion derived from HLD or DDD invariants>",
+      "testable": true
+    },
+    {
+      "id": "AC-002",
+      "criterion": "<additional testable acceptance criterion>",
+      "testable": true
+    }
+  ],
+  "traceability": {
+    "hldRequirements": [
+      "HLD-REQ-NNN"
+    ],
+    "hldFeatureNarratives": [
+      "HLD-FN-NNN"
+    ],
+    "hldBusinessGoals": [
+      "HLD-BG-NNN"
+    ]
+  },
+  "complexity": "M",
+  "mvpJustification": "Explain why this story is required for MVP delivery and why it belongs in the current sequence.",
+  "dependsOn": [],
+  "status": "pending",
+  "phaseProgress": {
+    "phase4": "pending",
+    "phase5": "pending",
+    "phase6": "pending",
+    "phase7": "pending"
+  },
+  "createdAt": "2026-03-12T12:00:00.000Z",
+  "completedAt": null
 }
