@@ -513,7 +513,71 @@ The orchestrator's phase-state.json gains a `storyLoop` section:
 |-------|------|---------|-------------|
 | `pauseAfterStory` | boolean | `false` | When `true`, the orchestrator halts after each story's commit/push and waits for explicit customer approval before proceeding to the next story. When `false`, the orchestrator advances automatically. The customer may change this value at any time in `phase-state.json`; the orchestrator reads it before each story iteration. |
 
-### 7.5 Git Commit and Push on Story Completion
+### 7.4 Git Commit and Push After HLD Acceptance
+
+After the customer accepts the analyzed HLD/DDD baseline and before the orchestrator dispatches the Story Planner, the orchestrator MUST commit and push the accepted analysis artifacts. This ensures the pre-story baseline is preserved as a discrete checkpoint before backlog generation begins.
+
+#### Procedure
+
+1. **Stage all changes**: Run `git.cmd add -A` to stage all modified, added, and deleted files
+2. **Commit**: Run `git.cmd commit -m "docs(hld): accept analyzed hld baseline"`
+3. **Push**: Run `git.cmd push` to push the commit to the remote
+
+#### Rules
+
+| Rule | Description |
+|------|-------------|
+| HA-01 | This commit occurs only after explicit customer acceptance of the analyzed HLD/DDD artifacts |
+| HA-02 | The commit MUST happen before story creation begins |
+| HA-03 | All git operations MUST be invoked via `git.cmd` |
+| HA-04 | The commit includes all accepted HLD, glossary, DDD, ADR, and state-file changes that define the approved baseline |
+| HA-05 | The orchestrator appends an `HLD_ACCEPTED` event to the audit log (`.agents/state/audit.jsonl`) with the commit message, commit hash, and timestamp |
+
+#### Audit Log Event
+
+```json
+{
+  "event": "HLD_ACCEPTED",
+  "timestamp": "ISO-8601",
+  "commitMessage": "docs(hld): accept analyzed hld baseline",
+  "pushStatus": "SUCCESS | FAILED_RETRIED_SUCCESS | FAILED_LOCAL_ONLY",
+  "notes": "optional details"
+}
+```
+
+### 7.5 Git Commit and Push After Story Creation
+
+Immediately after Phase 4 story creation completes successfully, the orchestrator MUST commit and push the newly created story-planning artifacts before beginning story implementation. This ensures the ordered backlog is preserved as its own repository checkpoint.
+
+#### Procedure
+
+1. **Stage all changes**: Run `git.cmd add -A` to stage all modified, added, and deleted files
+2. **Commit**: Run `git.cmd commit -m "feat(stories): create MVP story backlog"`
+3. **Push**: Run `git.cmd push` to push the commit to the remote
+
+#### Rules
+
+| Rule | Description |
+|------|-------------|
+| SB-01 | This commit occurs only after Phase 4 exit criteria pass and the backlog is finalized |
+| SB-02 | The commit MUST happen before the first story enters test-authoring/implementation phases |
+| SB-03 | All git operations MUST be invoked via `git.cmd` |
+| SB-04 | The commit includes the backlog manifest, individual story files, MVP scope document, and associated state-file updates |
+| SB-05 | The orchestrator appends a `STORY_BACKLOG_COMMITTED` event to the audit log (`.agents/state/audit.jsonl`) with the commit message, commit hash, and timestamp |
+
+#### Audit Log Event
+
+```json
+{
+  "event": "STORY_BACKLOG_COMMITTED",
+  "timestamp": "ISO-8601",
+  "commitMessage": "feat(stories): create MVP story backlog",
+  "pushStatus": "SUCCESS | FAILED_RETRIED_SUCCESS | FAILED_LOCAL_ONLY",
+  "notes": "optional details"
+}
+```
+
+### 7.6 Git Commit and Push on Story Completion
 
 After a story passes its per-story Phase 7 validation (all quality gates pass), the orchestrator MUST commit and push the story's work to version control. This ensures each completed story is a discrete, traceable checkpoint in the repository history.
 

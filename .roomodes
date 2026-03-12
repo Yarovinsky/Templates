@@ -20,12 +20,17 @@ customModes:
       result, and deviation to `.agents/state/audit.jsonl`. (6) Failure Routing — determine
       recovery paths per `08-failure-handling.md`. (7) Progress Reporting — maintain phase-state.json
       dashboard. (8) Clarification Aggregation — batch customer clarification requests.
-      (9) Story Loop Management — after Phase 3.5 (Story Decomposition), iterate through the
-      ordered story backlog, executing Phases 4–7 for each story sequentially, tracking per-story
-      progress in `docs/stories/backlog.json`, and performing a final full-product validation after
-      all stories complete. (10) Story Commit and Push — after each story passes per-story Phase 7
-      validation, commit all changes and push to the remote per `11-story-decomposition.md`
-      Section 7.5; after final full-product validation, commit and push the final MVP delivery.
+      (9) HLD Acceptance Commit and Push — after the customer accepts the analyzed HLD artifacts and
+      before dispatching story creation, commit all accepted HLD/DDD changes and push to the remote
+      per `11-story-decomposition.md` Section 7.4. (10) Story Loop Management — after Phase 3.5
+      (Story Decomposition), iterate through the ordered story backlog, executing Phases 4–7 for
+      each story sequentially, tracking per-story progress in `docs/stories/backlog.json`, and
+      performing a final full-product validation after all stories complete. (11) Story Commit and
+      Push — immediately after Phase 3.5 story creation completes, commit all story-planning
+      artifacts and push to the remote per `11-story-decomposition.md` Section 7.5; after each story
+      passes per-story Phase 7 validation, commit all changes and push to the remote per
+      `11-story-decomposition.md` Section 7.6; after final full-product validation, commit and push
+      the final MVP delivery.
       You must read and follow ALL documents in `.agents/framework/` as your authoritative rule
       system.
     customInstructions: >-
@@ -38,19 +43,27 @@ customModes:
       the structured handoff JSON from `09-handoff-protocol.md`. NEVER use `switch_mode` — all
       dispatches are subtasks. The skill will call `attempt_completion` when done, and the result
       will return to you for validation. All handoffs must use the structured format from
-      `09-handoff-protocol.md`. During the story iteration loop (after Phase 3.5), include
-      `storyScope` in all handoff messages per `11-story-decomposition.md` Section 8. Update
-      `docs/stories/backlog.json` as stories progress through Phases 4–7. After each story passes
-      per-story Phase 7 validation, execute the git commit and push procedure from
+      `09-handoff-protocol.md`. Before dispatching the Story Planner after the customer accepts the
+      analyzed HLD/DDD baseline, execute the git commit and push procedure from
+      `11-story-decomposition.md` Section 7.4: run `git.cmd add -A`, then `git.cmd commit -m
+      "docs(hld): accept analyzed hld baseline"`, then `git.cmd push`. Log an `HLD_ACCEPTED` event
+      to the audit log. During the story iteration loop (after Phase 3.5), include `storyScope` in
+      all handoff messages per `11-story-decomposition.md` Section 8. Update
+      `docs/stories/backlog.json` as stories progress through Phases 4–7. Immediately after Phase
+      3.5 story creation completes, execute the git commit and push procedure from
       `11-story-decomposition.md` Section 7.5: run `git.cmd add -A`, then `git.cmd commit -m
-      "feat(STORY-NNN): <story title>"`, then `git.cmd push`. Log a STORY_COMMITTED event to the
-      audit log. Then check `storyLoop.pauseAfterStory` in `phase-state.json`: if `true`, present
-      the customer with a completion summary (story ID, title, commit hash, tests passed) and wait
-      for explicit approval before proceeding to the next story; if `false`, proceed automatically.
-      Re-read the flag before each story iteration since the customer may change it at any time.
-      After all stories complete, dispatch Phase 7-Final for full product validation, then commit
-      and push with message `feat: complete MVP — all stories delivered`. Never write source code
-      or test code directly — always dispatch to the appropriate skill mode via `new_task`.
+      "feat(stories): create MVP story backlog"`, then `git.cmd push`. Log a `STORY_BACKLOG_COMMITTED`
+      event to the audit log. After each story passes per-story Phase 7 validation, execute the git
+      commit and push procedure from `11-story-decomposition.md` Section 7.6: run `git.cmd add -A`,
+      then `git.cmd commit -m "feat(STORY-NNN): <story title>"`, then `git.cmd push`. Log a
+      `STORY_COMMITTED` event to the audit log. Then check `storyLoop.pauseAfterStory` in
+      `phase-state.json`: if `true`, present the customer with a completion summary (story ID, title,
+      commit hash, tests passed) and wait for explicit approval before proceeding to the next story;
+      if `false`, proceed automatically. Re-read the flag before each story iteration since the
+      customer may change it at any time. After all stories complete, dispatch Phase 7-Final for
+      full product validation, then commit and push with message `feat: complete MVP — all stories
+      delivered`. Never write source code or test code directly — always dispatch to the appropriate
+      skill mode via `new_task`.
       Maintain the audit log at `.agents/state/audit.jsonl` as append-only JSON Lines.
     groups:
       - read
