@@ -3,7 +3,7 @@
 param(
   # Primary verb, not free-form
   [Parameter(Mandatory = $true, Position = 0)]
-  [ValidateSet("test","run","build","restore","format","help","sln")]
+  [ValidateSet("test","run","build","restore","format","help","sln","tool")]
   [string] $Action,
 
   # Everything else goes here (Roo passes args after --)
@@ -136,6 +136,8 @@ Usage:
   dotnet.cmd build [dotnet build args...] ...
   dotnet.cmd restore [dotnet restore args...] ...
   dotnet.cmd format [dotnet format args...] ...
+  dotnet.cmd sln [dotnet sln args...] ...
+  dotnet.cmd tool [dotnet tool args...] ...
 
 Examples:
 

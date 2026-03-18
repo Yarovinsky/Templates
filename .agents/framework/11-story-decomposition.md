@@ -13,7 +13,7 @@ This document defines the **Story Planner** skill and the **Phase 4: Story Decom
 ### Pipeline Position
 
 ```
-Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 4 → Phase 5 → Phase 6 → Phase 7] × N stories
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → [Phase 5 → Phase 6 → Phase 7 → Phase 8] × N stories
 ```
 
 Phase 4 transforms the DDD model (a static architecture) into an **executable plan** (an ordered sequence of implementation units). This bridges the gap between "what to build" (DDD model) and "in what order to build it" (story backlog).
@@ -279,10 +279,10 @@ Each story is stored as a JSON file at `docs/stories/STORY-NNN-kebab-case-title.
   "dependsOn": ["STORY-NNN"],
   "status": "pending | in-progress | completed | blocked",
   "phaseProgress": {
-    "phase4": "pending | in-progress | completed | failed",
     "phase5": "pending | in-progress | completed | failed",
     "phase6": "pending | in-progress | completed | failed",
-    "phase7": "pending | in-progress | completed | failed"
+    "phase7": "pending | in-progress | completed | failed",
+    "phase8": "pending | in-progress | completed | failed"
   },
   "createdAt": "ISO-8601 timestamp",
   "completedAt": "ISO-8601 timestamp | null"
