@@ -1,0 +1,128 @@
+{
+  "version": 2,
+  "toolsRoot": ".agents/tools",
+  "compatibilityRoot": ".agents/scripts",
+  "tools": [
+    {
+      "name": "dotnet",
+      "preferredEntryPoint": ".agents/tools/bin/windows/dotnet.cmd",
+      "compatibilityEntryPoint": ".agents/scripts/dotnet.cmd",
+      "implementation": ".agents/tools/pwsh/dotnet.ps1",
+      "capability": "bounded .NET CLI execution for build/run/test workflows",
+      "allowedActions": [
+        "test",
+        "run",
+        "build",
+        "restore",
+        "format",
+        "sln",
+        "help"
+      ],
+      "restrictions": [
+        "path-bearing flags must stay inside the repo",
+        "tool verb is intentionally not exposed",
+        "positional project/solution paths are validated when path-like"
+      ]
+    },
+    {
+      "name": "docker",
+      "preferredEntryPoint": ".agents/tools/bin/windows/docker.cmd",
+      "compatibilityEntryPoint": ".agents/scripts/docker.cmd",
+      "implementation": ".agents/tools/pwsh/docker.ps1",
+      "capability": "bounded Docker execution for local development workflows",
+      "allowedActions": [
+        "build",
+        "compose",
+        "run",
+        "ps",
+        "logs",
+        "exec",
+        "stop",
+        "rm",
+        "images",
+        "pull",
+        "help"
+      ],
+      "restrictions": [
+        "bind mounts must use repo-local paths",
+        "build context must be local, repo-relative, or '-'",
+        "path-bearing flags are validated"
+      ]
+    },
+    {
+      "name": "git",
+      "preferredEntryPoint": ".agents/tools/bin/windows/git.cmd",
+      "compatibilityEntryPoint": ".agents/scripts/git.cmd",
+      "implementation": ".agents/tools/pwsh/git.ps1",
+      "capability": "bounded Git execution for day-to-day development",
+      "allowedActions": [
+        "status",
+        "diff",
+        "log",
+        "show",
+        "add",
+        "restore",
+        "rm",
+        "mv",
+        "branch",
+        "switch",
+        "checkout",
+        "commit",
+        "fetch",
+        "pull",
+        "push",
+        "tag",
+        "stash",
+        "reset",
+        "help"
+      ],
+      "restrictions": [
+        "user-supplied git -c and --config-env are blocked",
+        "hooks are disabled via an internal hooks path",
+        "path-bearing flags are validated"
+      ]
+    },
+    {
+      "name": "curl",
+      "preferredEntryPoint": ".agents/tools/bin/windows/curl.cmd",
+      "compatibilityEntryPoint": ".agents/scripts/curl.cmd",
+      "implementation": ".agents/tools/pwsh/curl.ps1",
+      "capability": "localhost-only HTTP probing",
+      "allowedActions": [
+        "raw curl arguments"
+      ],
+      "restrictions": [
+        "only localhost HTTP(S) URLs are allowed",
+        "config and proxy escape hatches are blocked",
+        "output files must stay inside the repo"
+      ]
+    },
+    {
+      "name": "repo",
+      "preferredEntryPoint": ".agents/tools/bin/windows/repo.cmd",
+      "compatibilityEntryPoint": ".agents/scripts/repo.cmd",
+      "implementation": ".agents/tools/pwsh/repo.ps1",
+      "capability": "repo-local filesystem operations",
+      "allowedActions": [
+        "ls",
+        "cat",
+        "write",
+        "append",
+        "write-base64",
+        "append-base64",
+        "mkdir",
+        "rm",
+        "mv",
+        "cp",
+        "grep",
+        "touch",
+        "help"
+      ],
+      "restrictions": [
+        "all path arguments must remain inside the repo",
+        "use base64 variants for multi-line content",
+        "content arguments are separated from path arguments with --"
+      ]
+    }
+  ]
+}

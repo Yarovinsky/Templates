@@ -1,0 +1,24 @@
+# Build outputs
+bin/
+obj/
+out/
+dist/
+build/
+coverage/
+TestResults/
+
+# Tooling
+.vscode/
+.idea/
+*.user
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local agent scratch
+.agents/tmp/
